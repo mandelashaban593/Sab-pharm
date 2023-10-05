@@ -231,6 +231,7 @@ if($position=="admin"){?>
 
 <!-- order-supplies.php -->
 <a href="select_customers.php"><i class="icon-group icon-2x"></i><br>  customers </a> 
+<a href="supplier.php"><i class="icon-group icon-2x"></i><br>  Suppliers </a> 
 <a href="https://edoctorug.com/"><i class="icon-group icon-2x"></i><br>  Edoctorug </a>  
 
 

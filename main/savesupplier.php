@@ -2,22 +2,14 @@
 error_reporting(0);
 session_start();
 require '../conn2.php';
-
-if(isset($_POST['name'])) $username = $_POST['name'];
-if(isset($_POST['password'])) $password = $_POST['password'];
-$name=$username;
 $position='supplier';
-if(isset($_POST['businessname'])) $business_name = $_POST['businessname'];
-if(isset($_POST['address'])) $business_address = $_POST['address'];
-if(isset($_POST['work_contact'])) $work_contact = $_POST['work_contact'];
-if(isset($_POST['note'])) $note = $_POST['note'];
+if(isset($_POST['name'])) $name = $_POST['name'];
+if(isset($_POST['contact_person'])) $contact_person = $_POST['contact_person'];
+if(isset($_POST['suplier_contact'])) $suplier_contact = $_POST['suplier_contact'];
+if(isset($_POST['location'])) $location = $_POST['location'];
+if(isset($_POST['suplier_address'])) $suplier_address = $_POST['suplier_address'];
 
-
-echo "Business Name<br/>";
-echo $business_name;
-
-
-$q = mysqli_query($con, "SELECT * FROM user WHERE username ='$name' ") or die(mysqli_error($con));
+$q = mysqli_query($con, "SELECT * FROM supliers WHERE suplier_name ='$name' ") or die(mysqli_error($con));
 $rowcount_user=mysqli_num_rows($q);
 
 
@@ -25,7 +17,7 @@ $rowcount_user=mysqli_num_rows($q);
 
 echo $rowcount_user;
 if($rowcount_user == 1){
-	header("location: search_asupplier.php");
+	header("location: supplier.php");
 
 }
 
@@ -33,12 +25,12 @@ if($rowcount_user == 1){
 
 
 // query
-$sql = "INSERT INTO user (username,password,name,position,business_name,business_address,work_contact,note) VALUES (:username,:password,:name,:position,:business_name,:business_address,:work_contact,:note)";
+$sql = "INSERT INTO supliers (suplier_name,suplier_address,suplier_contact,contact_person ,location) VALUES (:suplier_name,:suplier_address,:suplier_contact,:contact_person ,:location)";
 
 
 $q = $db->prepare($sql);
-$q->execute(array(':username'=>$username,':password'=>$password,':name'=>$name,':position'=>$position,':business_name'=>$business_name,':business_address'=>$business_address,':work_contact'=>$work_contact,':note'=>$note));
-header("location: search_asupplier.php");
+$q->execute(array(':suplier_name'=>$name,':suplier_address'=>$suplier_address,':suplier_contact'=>$suplier_contact,':contact_person'=>$contact_person,':location'=>$location));
+header("location: supplier.php");
 
 
 ?>

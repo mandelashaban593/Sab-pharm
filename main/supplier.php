@@ -1,3 +1,6 @@
+<?php
+include('../conn2.php');
+?>
 <html>
 <head>
 <title>
@@ -38,28 +41,6 @@ POS
     })
   })
 </script>
-</head>
-<?php
-function createRandomPassword() {
-	$chars = "003232303232023232023456789";
-	srand((double)microtime()*1000000);
-	$i = 0;
-	$pass = '' ;
-	while ($i <= 7) {
-
-		$num = rand() % 33;
-
-		$tmp = substr($chars, $num, 1);
-
-		$pass = $pass . $tmp;
-
-		$i++;
-
-	}
-	return $pass;
-}
-$finalcode='RS-'.createRandomPassword();
-?>
 
 
 
@@ -94,76 +75,90 @@ showtime();
 }
 window.onload=startclock;
 // End -->
-</SCRIPT>
+</SCRIPT>	
+
+
+</head>
+<?php
+function createRandomPassword() {
+	$chars = "003232303232023232023456789";
+	srand((double)microtime()*1000000);
+	$i = 0;
+	$pass = '' ;
+	while ($i <= 7) {
+
+		$num = rand() % 33;
+
+		$tmp = substr($chars, $num, 1);
+
+		$pass = $pass . $tmp;
+
+		$i++;
+
+	}
+	return $pass;
+}
+$finalcode='RS-'.createRandomPassword();
+?>
 <body>
 <?php include('navfixed.php');?>
 <div class="container-fluid">
       <div class="row-fluid">
-	
+      	
 	<div class="span10">
-	
+	<div class="contentheader">
+			<i class="icon-group"></i> Suppliers
+			</div>
+			<ul class="breadcrumb">
+			<li><a href="index.php">Dashboard</a></li> /
+			<li class="active">Suppliers</li>
+			</ul>
 
 <div style="margin-top: -19px; margin-bottom: 21px;">
 <a  href="index.php"><button class="btn btn-default btn-large" style="float: left;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
-<input type="button"  class="btn btn-info icon-print icon-large" onclick="printDiv('printableArea')" value="print products list!"  style="margin-left:700px;font-size:20x; "/>
-
-
-
-<script type="text/javascript">
-function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
-
-
+<a href="#" onclick="window.print()" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
 </div>
 <?php 
-			require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
 				$result->execute();
 				$rowcount = $result->rowcount();
 			?>
-		
+			<div style="text-align:center;">
+			Total Number of Suppliers: <font color="green" style="font:bold 22px 'Aleo';"><?php echo $rowcount;?></font>
+			</div>
 </div>
-<br><br/>
+<input type="text" name="filter" style="padding:15px;" id="filter" placeholder="Search Customer..." autocomplete="off" />
+<a rel="facebox" href="addsupplier.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Supplier</button></a><br><br><br><br><br><br><br><br>
 
-
-<div id="printableArea">
 <p style="text-align:center">Ojinga Pharmacy</p>
 <p style="text-align:center">Kutch road ,West,plot No:95e, Jinja</p>
 <p style="text-align:center">Tel: 0704694467</p>
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 	<thead>
 		<tr>
-			<th> Supplier </th>
-			<th> Contact Person </th>
-			<th> Address </th>
-			<th> Contact No.</th>
-			<th> Note</th>
-			<th width="120"> Action </th>
+			<th width="17%"> Name </th>
+			<th width="10%"> Address </th>
+			<th width="10%"> Contact Number</th>
+			<th width="10%"> Contact Person</th>
+			<th width="17%"> Location</th>
+			<th width="14%"> Action </th>
 		</tr>
 	</thead>
 	<tbody>
 		
 			<?php
-				include('../connect.php');
-				$result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
+			
+				$result = $db->prepare("SELECT * FROM supliers  ORDER BY suplier_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
 			?>
 			<tr class="record">
 			<td><?php echo $row['suplier_name']; ?></td>
-			<td><?php echo $row['contact_person']; ?></td>
 			<td><?php echo $row['suplier_address']; ?></td>
 			<td><?php echo $row['suplier_contact']; ?></td>
-			<td><?php echo $row['note']; ?></td>
+			<td><?php echo $row['contact_person']; ?></td>
+			<td><?php echo $row['location']; ?></td>
+	
 			<td><a rel="facebox" href="editsupplier.php?id=<?php echo $row['suplier_id']; ?>"><button class="btn btn-warning btn-mini"><i class="icon-edit"></i> Edit </button></a>
 			<a href="#" id="<?php echo $row['suplier_id']; ?>" class="delbutton" title="Click To Delete"><button class="btn btn-danger btn-mini"><i class="icon-trash"></i> Delete</button></a></td>
 			</tr>
@@ -173,12 +168,11 @@ function printDiv(divName) {
 		
 	</tbody>
 </table>
-</div>
 <div class="clearfix"></div>
-</div>
-</div>
-</div>
 
+</div>
+</div>
+</div>
 <script src="js/jquery.js"></script>
   <script type="text/javascript">
 $(function() {

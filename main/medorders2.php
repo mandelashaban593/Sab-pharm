@@ -1,10 +1,17 @@
-<?php
+<?php 
 include('../conn2.php');
-?>
+
+    ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<!-- js -->			
+    <title>Product Price Calculator</title>
+  
+<!DOCTYPE html>
+<html>
+<head>
+<!-- js -->         
 <link href="src/facebox.css" media="screen" rel="stylesheet" type="text/css" />
 <script src="lib/jquery.js" type="text/javascript"></script>
 <script src="src/facebox.js" type="text/javascript"></script>
@@ -37,10 +44,15 @@ padding-bottom: 40px;
 .sidebar-nav {
 padding: 9px 0;
 }
+
+select option {
+    width: 400px;
+}
+
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-<!-- combosearch box-->	
+<!-- combosearch box--> 
 
 <script src="vendors/jquery-1.7.2.min.js"></script>
 <script src="vendors/bootstrap.js"></script>
@@ -50,6 +62,112 @@ padding: 9px 0;
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
 <!--sa poip up-->
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function addRow() {
+            var table = document.getElementById("productTable");
+            var row = table.insertRow(table.rows.length);
+
+            var productCell = row.insertCell(0);
+            var batchnoCell = row.insertCell(1);
+            var expdateCell = row.insertCell(2);
+            var quantityCell = row.insertCell(3);
+            var priceCell = row.insertCell(4);
+            var amountCell = row.insertCell(5);
+            var paytypeCell = row.insertCell(6);
+
+            productCell.innerHTML = '<select name="productid[]" onchange="getProductDetails(this)" style="width:120px"><option value="">Select Medicine</option><?php echo getProductOptions(); ?></select>';
+            batchnoCell.innerHTML = '<input type="text" name="batch_no[]" placeholder="Batch No" >';
+            expdateCell.innerHTML = '<input type="date" name="expiry_date[]" placeholder=""Expiry date">';
+            quantityCell.innerHTML = '<input type="number" name="quantity[]" placeholder="Quantity" >';
+            priceCell.innerHTML = '<input type="number" name="price[]" placeholder="Price" readonly>';
+            amountCell.innerHTML = '<input  name="amount[]" placeholder="Amount"  onchange="calculateRate(this)">';
+            paytypeCell.innerHTML = '<select name="pay_type[]"  style="width:90x"><option value="cash">Cash</option><option value="credit">Credit</option></select>';
+
+
+
+
+
+        }
+
+        function getProductDetails(select) {
+            var row = select.closest("tr");
+            var productId = select.value;
+
+            if (productId) {
+                $.ajax({
+                    type: "POST",
+                    url: "get_product_details.php",
+                    data: { product_id: productId },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data) {
+               /*             row.cells[1].getElementsByTagName("input")[0].value = data.batch_no;*/
+                            row.cells[2].getElementsByTagName("input")[0].value = data.price;
+                            calculateTotal(row.cells[2].getElementsByTagName("input")[0]);
+                        } else {
+                            alert("Product details not found.");
+                        }
+                    },
+                    error: function() {
+                        alert("Failed to fetch product details.");
+                    }
+                });
+            } else {
+                row.cells[2].getElementsByTagName("input")[0].value = "";
+                calculateTotal(row.cells[2].getElementsByTagName("input")[0]);
+            }
+        }
+
+        function calculateTotal(inputField) {
+            var row = inputField.closest("tr");
+            var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+            var price = parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
+
+            if (!isNaN(quantity) && !isNaN(price)) {
+                var total = (price * quantity).toFixed(2);
+                row.cells[3].getElementsByTagName("input")[0].value = total;
+            }
+        }
+
+
+         function calculateRate(inputField) {
+            var row = inputField.closest("tr");
+            var quantity = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+            var amount = parseFloat(row.cells[5].getElementsByTagName("input")[0].value);
+
+            if (!isNaN(quantity) && !isNaN(amount)) {
+                var rate = (amount/quantity).toFixed(2);
+                row.cells[4].getElementsByTagName("input")[0].value = rate;
+            }
+        }
+
+
+    </script>
+
+    <?php 
+
+  function createRandomPassword() {
+    $chars = "003232303232023232023456789";
+    srand((double)microtime()*1000000);
+    $i = 0;
+    $pass = '' ;
+    while ($i <= 7) {
+
+    $num = rand() % 33;
+
+    $tmp = substr($chars, $num, 1);
+
+    $pass = $pass . $tmp;
+
+    $i++;
+
+    }
+    return $pass;
+    }
+    $finalcode='RS-'.createRandomPassword();
+
+    ?>
 
 
 
@@ -84,30 +202,10 @@ showtime();
 }
 window.onload=startclock;
 // End -->
-</SCRIPT>	
+</SCRIPT>   
 
 </head>
-<?php
-function createRandomPassword() {
-$chars = "003232303232023232023456789";
-srand((double)microtime()*1000000);
-$i = 0;
-$pass = '' ;
-while ($i <= 7) {
 
-$num = rand() % 33;
-
-$tmp = substr($chars, $num, 1);
-
-$pass = $pass . $tmp;
-
-$i++;
-
-}
-return $pass;
-}
-$finalcode='RS-'.createRandomPassword();
-?>
 <body>
 <?php include('navfixed.php');?>
 <?php
@@ -125,7 +223,7 @@ if($position=='admin') {
 <div class="container-fluid">
 <div class="row-fluid">
 
-<?php } ?>	
+<?php } ?>  
 
 
 
@@ -136,199 +234,103 @@ if($position=='admin') {
 <br />
 <br />
 
+<form id="productForm" method="post" action="savepurchases.php" style="width:250px;margin-top: 50px;">
 
-<form action="incompurchases.php" method="post" >
-        <table>
+
+        <table id="productTable" border="1"  style="width:150px">
             <tr>
-                <td><label for="phone">Product</label><select name="product_id" style="width:265px; height:30px;"  class="chz-lect" required>
-									<option>Select a product</option>	
-									<?php
-									$status = "Approved";
-									$result = $db->prepare("SELECT * FROM products WHERE status= :status");
-									$result->bindParam(':status', $status);
-									$result->execute();
-									for($i=0; $row = $result->fetch(); $i++){
-									?>ddd
-									<option value="<?php echo $row['product_id'];?>"><?php echo $row['med_name']; ?> - <?php echo $row['category']; ?> | Expires at: <?php echo $row['exp_date']; ?></option>
-
-
-
-									<?php
-									}
-									?>
-									</select></td>
+                <th>Medicine</th>
+                <th>Batch No</th>
+                <th>Expiry date</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Amount</th>
+                <th>Type</th>
+            </tr>
+            <tr>
                 <td>
-								<label for="phone">Category</label><input type="text" style="width:265px; height:30px;" id="med_name" name="med_name" placeholder="Enter Category"></td>
-            </tr><br/>
-            <tr>
-                <td><label for="phone">Quantity</label><input type="number" name="qty" value="1" min="1" placeholder="Qty" autocomplete="off" style="width:265px; height:30px;"  placeholder="Enter Quantity" / required></td>
-                <td><label for="phone">Unit</label><select style="width:265px; height:30px; border-color: #000080" name="sell_type"> 
-										<option value="Bot">Bot</option>
-										<option value="Stp">Stp</option>
-										<option value="Tab">Tab</option>
-										<option value="Sachet">Sachet</option>	
-										<option value="Unit">Unit</option>
-										<option value="Tube">Tube</option>
-										</select></td>
-            </tr><br/>
-            <tr>
-                <td><label for="phone">Batch No</label><input type="text" style="width:265px; height:30px;" id="batch_no" name="batch_no" placeholder="Enter Batch No"></td>
-                <td><label for="phone">Expiry date</label><input type="date" style="width:265px; height:30px;" id="exp_date" name="exp_date" placeholder="Select Expiry date"></td>
-            </tr><br/>
-            <tr>
-                <td><label for="phone">Invoice No</label><input type="text" style="width:265px; height:30px;" id="invoice" name="invoice" placeholder="Enter Invoice No"></td>
-                <td><label for="phone">Date Arrival</label><input type="date" style="width:265px; height:30px;" id="date_arrival" name="invoice_no" placeholder="Enter Date of Arrival"></td></td>
-            </tr><br/>
-            <tr>
-                <td><label for="phone">Selling Rate</label><input type="text" style="width:265px; height:30px;" id="txt1"  name="price" placeholder="Enter Selling Rate" onkeyup="sum();" ></td>
-                <td><label for="phone">Original Rate</label><input type="text" style="width:265px; height:30px;" id="txt2"  name="o_price" placeholder="Enter Original Rate" onkeyup="sum();" ></td>
+                    <select name="productid[]" onchange="getProductDetails(this)" style="width:120px" id="prod">
+                        <option value="">Select Medicine</option>
+                        <?php echo getProductOptions(); ?>
+                    </select>
+                </td>
+                <td><input type="text" name="batch_no[]" placeholder="Batch No"></td>
+                <td><input type="date" name="expiry_date[]" placeholder="Expiry date"></td>
+                <td><input type="number" name="quantity[]" placeholder="Quantity" ></td>
+                <td><input type="number" name="price[]" placeholder="Rate" readonly></td>
+                <td><input type="number" name="amount[]" placeholder="Amount"  onchange="calculateRate(this)"></td>
+                 <td>
+                    <select name="pay_type[]"  >
+                       <option value="cash">Cash</option>
+                       <option value="credit">Credit</option>
+                    </select>
+                </td>
             </tr>
-             <tr>
-                <td><label for="phone">Profit</label><input type="text" style="width:265px; height:30px;" id="txt3"  name="profit" onkeyup="sum();" ></td>
-                <td><label for="phone">Original Rate</label><select name="supplier" style="width:265px; height:30px;"  class="chzn-seect" required>
-								<option value="">Select Supplier</option>
-								<?php
-								$position = "supplier";
-								$result = $db->prepare("SELECT * FROM user WHERE position = :position");
-								$result->bindParam(':position', $position);
-								$result->execute();
-								for($i=0; $row = $result->fetch(); $i++){
-								?>
-								<option value="<?php echo $row['name'];?>"><?php echo $row['name']; ?><option>
-								<?php
-								}
-								?>
-								</select></td> <td>   <input type="hidden" name="reg_date" value="<?php echo date("m/d/y"); ?>" />
-									<Button type="submit" class="btn btn-info"  style="width:100px; height:30px;margin-top:15px"  /><i class="icon-plus-sign icon-large"></i> Add</button></td>
-            </tr>
-
-             
-
-         
-
-
         </table>
+        
+        <button type="button" onclick="addRow()" style="width: 120px;">Add</button>
+        <br><br>
+        <input type="hidden" name="cashier" value="<?php echo $_SESSION['SESS_LAST_NAME']; ?>" />
+        	 	<table><tr><td>
+       <input type="text" name="invoice" placeholder="Enter invoice" /></td><td>
+       <input type="date" name="date" placeholder="Date" /></td></tr></table>
+        <table><tr><td>
+        <select name="customer_name" style="widt;" class="chzn-seect" required>
+        <option>Select Supplier</option>
+	       <?php
+	    	$position = "supplier";
+			$result = $db->prepare("SELECT * FROM supliers");
+			$result->execute();
+			for($i=0; $row = $result->fetch(); $i++){
+		?>
+			<option value="<?php echo $row['suplier_name']; ?>"><?php echo $row['suplier_name']; ?></option>
+		<?php
+		}
+		?>
+        </select></td></tr></table>
+
+        <input type="submit" value="Save" style="width: 120px;">
     </form>
 
+    <?php
+  
 
-<table class="table table-bordered" id="resultTable" data-responsive="table">
-<thead>
-<tr>
-<th> Date</th>
-<th> Invoice </th>
-<th> Medicine </th>
-<th> Price</th>
-<th> Customer </th>
-<th> Qty </th>
-<th> Price </th>
-<th> Total Sales Price </th>
-<th> Profit </th>
-<th> Action </th>
-</tr>
-</thead>
-<tbody>
+    function getProductOptions() {
+        // Create a PDO database connection (replace with your credentials)
+        $hostname = 'localhost';
+        $username = 'root';
+        $password = '';
+        $database = 'sales';
 
-<?php
-echo $id=$_GET['invoice'];
-if(isset($_GET['id'])) $id=$_GET['invoice'];
-if(isset($_GET['transaction_id'])) $transaction_id=$_GET['transaction_id'];
-if(isset($_GET['sale_price'])) $sale_price=$_GET['sale_price'];
-$result = $db->prepare("SELECT * FROM purchase_details WHERE invoice= :invoice");
-$result->bindParam(':invoice', $id);
-$result->execute();
 
-for($i=1; $row = $result->fetch(); $i++){
-?>
-<tr class="record">
-<td><?php echo $row['reg_date']; ?></td>
-<td><?php echo $row['invoice']; ?></td>
-<td><?php echo $row['med_name']; ?></td>
-<td><?php echo $row['price']; ?></td>
-<td><?php echo $row['supplier']; ?></td>
-<td><?php echo $row['qty']; ?></td>
-<td>
-<?php
-$ppp=$_GET['sale_price'];
-echo formatMoney($ppp, true);
-?>
-</td>
+        try {
+            $pdo = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+            die();
+        }
 
-<td>
-<?php
-$dfdf=$row['amount'];
-echo formatMoney($dfdf, true);
-?>
-</td>
-<td>
-<?php
-$profit=$row['profit'];
-echo formatMoney($profit, true);
-?>
-</td>
-<td width="90"><a href="delete.php?id=<?php echo $row['transaction_id']; ?>&invoice=<?php echo $_GET['invoice']; ?>&pay_type=<?php echo $_GET['pay_type']; ?>&qty=<?php echo $row['qty'];?>&med_name=<?php echo $row['product_code'];?>"><button class="btn btn-mini btn-warning"><i class="icon icon-remove"></i> Cancel </button></a></td>
-</tr>
-<?php
-}
-?>
-<tr>
-<th> </th>
-<th>  </th>
-<th>  </th>
-<th>  </th>
+        // Retrieve product data from the database
+        $productOptions = "";
+        $query = "SELECT product_id,batch_no,exp_date,quantity, med_name, price FROM products";
+        $stmt = $pdo->query($query);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
-<td> Total Amount: </td>
-<td> Total Profit: </td>
-<th>  </th>
-</tr>
-<tr>
-<th colspan="4"><strong style="font-size: 12px; color: #222222;">Total:</strong></th>
-<td colspan="1"><strong style="font-size: 12px; color: #222222;">
-<?php
-function formatMoney($number, $fractional=false) {
-if ($fractional) {
-$number = sprintf('%.2f', $number);
-}
-while (true) {
-$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-if ($replaced != $number) {
-$number = $replaced;
-} else {
-break;
-}
-}
-return $number;
-}
-$sdsd=$_GET['invoice'];
-$transaction_id=$_GET['transaction_id'];
-$resultas = $db->prepare("SELECT sum(amount) FROM sales_order WHERE invoice= :a");
-$resultas->bindParam(':a', $sdsd);
-$resultas->execute();
-for($i=0; $rowas = $resultas->fetch(); $i++){
-$total=$rowas['sum(amount)'];
-echo formatMoney($total, true);
-}
-?>
-</strong></td>
-<td colspan="0"><strong style="font-size: 12px; color: #222222;">
-<?php 
-$resulta = $db->prepare("SELECT sum(profit) FROM sales_order WHERE invoice= :b");
-$resulta->bindParam(':b', $sdsd);
-$resulta->execute();
-for($i=0; $qwe = $resulta->fetch(); $i++){
-$total_profit=$qwe['sum(profit)'];
-echo formatMoney($total_profit, true);
-}
-?>
+            $productID = $row['product_id'];
+            $productName = $row['med_name'];
+            $productPrice = $row['price'];
+            $batchNo= $row['batch_no'];
+            $exp_date = $row['exp_date'];
+            $quantity = $row['quantity'];
+            $selectWidth = "400px";
+            // Create an option element
+            $productOptions .= "<option value=\"$productID\" >$productName</option>";
+        }
 
-</td>
-<th></th>
-</tr>
-
-</tbody>
-</table><br>
-<a rel="facebox" href="checkout2.php?pay_type=<?php echo $_GET['pay_type']?>&invoice=<?php echo $_GET['invoice']?>&total=<?php echo $total ?>&totalprof=<?php echo $_GET['profit'] ?>&transaction_id=<?php echo $_GET['transaction_id'] ?>&customer_name=<?php echo $_GET['customer_name'] ?>&cashier=<?php echo $_SESSION['SESS_FIRST_NAME']?>"><button class="btn btn-success btn-large btn-block"><i class="icon icon-save icon-large"></i>SAVE</button></a>
-<div class="clearfix"></div>
-
+        return $productOptions;
+    }
+    ?>
 
 
 </div>
@@ -336,71 +338,5 @@ echo formatMoney($total_profit, true);
 </div>
 </body>
 <?php include('footer.php');?>
-
-<script>
-function sum() {
-var txtFirstNumberValue = document.getElementById('txt1').value;
-var txtSecondNumberValue = document.getElementById('txt2').value;
-var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
-if (!isNaN(result)) {
-document.getElementById('txt3').value = result;
-
-}
-
-var txtFirstNumberValue = document.getElementById('txt11').value;
-var result = parseInt(txtFirstNumberValue);
-if (!isNaN(result)) {
-document.getElementById('txt22').value = result;				
-}
-
-var txtFirstNumberValue = document.getElementById('txt11').value;
-var txtSecondNumberValue = document.getElementById('txt33').value;
-var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue);
-if (!isNaN(result)) {
-document.getElementById('txt55').value = result;
-
-}
-
-var txtFirstNumberValue = document.getElementById('txt4').value;
-var result = parseInt(txtFirstNumberValue);
-if (!isNaN(result)) {
-document.getElementById('txt5').value = result;
-}
-
-}
-</script>
-
-
-<script language="javascript" type="text/javascript">
-/* Visit http://www.yaldex.com/ for full source code
-and get more free JavaScript, CSS and DHTML scripts! */
-<!-- Begin
-var timerID = null;
-var timerRunning = false;
-function stopclock (){
-if(timerRunning)
-clearTimeout(timerID);
-timerRunning = false;
-}
-function showtime () {
-var now = new Date();
-var hours = now.getHours();
-var minutes = now.getMinutes();
-var seconds = now.getSeconds()
-var timeValue = "" + ((hours >12) ? hours -12 :hours)
-if (timeValue == "0") timeValue = 12;
-timeValue += ((minutes < 10) ? ":0" : ":") + minutes
-timeValue += ((seconds < 10) ? ":0" : ":") + seconds
-timeValue += (hours >= 12) ? " P.M." : " A.M."
-document.clock.face.value = timeValue;
-timerID = setTimeout("showtime()",1000);
-timerRunning = true;
-}
-function startclock() {
-stopclock();
-showtime();
-}
-window.onload=startclock;
-// End -->
-</SCRIPT>	
 </html>
+

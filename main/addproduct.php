@@ -24,28 +24,14 @@
 
 <span>Expired Date: </span><input type="date"   style="width:265px; height:30px;" name="exp_date" id="exp_date"  Required/><br>
 
-<span>Delelivery Note No: </span><input type="text" style="width:265px; height:30px;" name="del_no" Required/><br>
-<span>Date Arrival: </span><input type="date" style="width:265px; height:30px;" name="date_arrival" value="<?php echo date ('M-d-Y'); ?>"  /><br>
+<span> </span><input type="hidden" style="width:265px; height:30px;" name="del_no"  value="D876" Required/><br>
+<span></span><input type="hidden" style="width:265px; height:30px;" name="date_arrival" value="<?php echo date ('M-d-Y'); ?>"  /><br>
 
 <span>Selling Rate : </span><input type="text" id="txt1" style="width:265px; height:30px;" name="price" onkeyup="sum();" Required><br>
 <span>Original Rate: </span><input type="text" id="txt2" style="width:265px; height:30px;" name="o_price" onkeyup="sum();" Required><br>
-<span>Profit : </span><input type="text" id="txt3" style="width:265px; height:30px;" name="profit" readonly><br>
-<span>Supplier : </span>
-<select name="supplier"  style="width:265px; height:30px; margin-left:-5px;" >
-<option></option>
-	<?php
-	include('../conn2.php');
-    	$position = "supplier";
-		$result = $db->prepare("SELECT * FROM user WHERE position  = :position");
-		$result->bindParam(':position', $position);
-		$result->execute();
-		for($i=0; $row = $result->fetch(); $i++){
-	?>
-		<option value="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></option>
-	<?php
-	}
-	?>
-</select><br>
+<span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="profit" readonly><br>
+<span></span>
+<span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="supplier" value="None" readonly><br><br>
 
 
 

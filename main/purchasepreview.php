@@ -206,7 +206,7 @@ window.onload=startclock;
 <div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';">Sales Receipt</div>
+	<center><div style="font:bold 25px 'Aleo';">Purchases Invoice</div>
 	Sab Pharmacy	<br>
 	Jinja,Uganda	<br>	<br>
 	</center>
@@ -245,8 +245,8 @@ window.onload=startclock;
 				<th width="90"> Medicine</th>
 				<th> Invoice </th>
 				<th> Cashier </th>
-				<th> Customer</th>
-				<th> Amount</th>
+				<th> Supplier</th>
+				<th> Rate</th>
 				<th> Qty </th>
 				<th> Total </th>
 			</tr>
@@ -257,7 +257,7 @@ window.onload=startclock;
 				<?php
 					
 				  if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-					$result = $db->prepare("SELECT * FROM sales WHERE invoice_number= :userid");
+					$result = $db->prepare("SELECT * FROM purchases_ret WHERE invoice_number= :userid");
 					$result->bindParam(':userid', $id);
 					$result->execute();
 					for($i=0; $row = $result->fetch(); $i++){
@@ -288,11 +288,11 @@ window.onload=startclock;
 					<td colspan="2"><strong style="font-size: 12px;">
 					<?php
 					if(isset($_GET['invoice'])) $sdsd=$_GET['invoice'];
-					$resultas = $db->prepare("SELECT sum(amount) FROM sales WHERE invoice_number= :a");
+					$resultas = $db->prepare("SELECT sum(total) FROM purchases_ret WHERE invoice_number= :a");
 					$resultas->bindParam(':a', $sdsd);
 					$resultas->execute();
 					for($i=0; $rowas = $resultas->fetch(); $i++){
-					$fgfg=$rowas['sum(amount)'];
+					$fgfg=$rowas['sum(total)'];
 					echo formatMoney($fgfg, true);
 					}
 					?>
