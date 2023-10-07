@@ -18,6 +18,6 @@ $sql = "UPDATE customer
 		WHERE customer_id=?";
 $q = $db->prepare($sql);
 $q->execute(array($a,$b,$c,$d,$e,$f,$g,$id));
-header("location: customer.php");
+header("location: select_customers.php");
 
 ?>

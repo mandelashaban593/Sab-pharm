@@ -203,19 +203,14 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 <thead>
 <tr>
 <th width="7%"> Supplier </th>
-<th width="12%"> Medicine Name </th>
+<th width="12%"> Medicine</th>
 <th width="14%"> Quantity</th>
-<th width="14%"> selling type</th>
-<th width="13%">Registration date </th>
+<th width="13%"> Date </th>
 <th width="13%"> Expiry Date  </th>
-<th width="13%"> Spplier</th>
 <th width="13%"> Selling price </th>
 <th width="6%"> Buying price </th>
 <th width="6%"> Profit </th>
-<th width="6%"> Date of Arrival </th>
-<th width="6%"> Delivery Note</th>
 <th width="5%"> Qty Left </th>
-<th width="5%"> Quantity sold </th>
 <th width="6%"> Total Buying price</th>
 <th width="8%"> Action </th>
 
@@ -258,10 +253,8 @@ echo '<tr class="record">';
 <td><?php echo $row['supplier']; ?></td>
 <td><?php echo $row['med_name']; ?></td>
 <td><?php echo $row['quantity']; ?></td>
-<td><?php echo $row['sell_type']; ?></td>
 <td><?php echo $row['reg_date']; ?></td>
-<td><?php echo $row['exp_date']; ?></td>
-<td><?php echo $row['supplier']; ?></td>
+<td><?php echo $row['expiry_date']; ?></td>
 <td><?php
 $pprice=$row['price'];
 echo formatMoney($pprice, true);
@@ -273,14 +266,8 @@ echo formatMoney($oprice, true);
 ?></td>
 
 <td><?php echo $row['profit']; ?></td>
-<td><?php echo $row['date_arrival']; ?></td>
-<td><?php echo $row['del_no']; ?></td>
 
 <td><?php if(!$row['qty_left'] ) {echo $row['quantity']; } else {echo $row['qty_left'];  } ?></td>
-
-<td><?php echo $row['qty_sold']; ?></td>
-
-
 
 <td>
 <?php

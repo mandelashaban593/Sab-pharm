@@ -136,9 +136,8 @@ $finalcode='RS-'.createRandomPassword();
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 	<thead>
 		<tr>
-			<th> Supplier </th>
-			<th> Contact Person </th>
-			<th> Address </th>
+			<th> Name </th>
+			<th> Address</th>
 			<th> Contact No.</th>
 			<th> Note</th>
 			<th width="14%"> Action </th>
@@ -146,23 +145,24 @@ $finalcode='RS-'.createRandomPassword();
 	</thead>
 	<tbody>
 				<?php
-				include('../connect.php');
-				$result = $db->prepare("SELECT * FROM supliers ORDER BY suplier_id DESC");
+
+				$result = $db->prepare("SELECT * FROM  customer ORDER BY  customer_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
 			?>
 			<tr class="record">
-			<td><?php echo $row['suplier_name']; ?></td>
-			<td><?php echo $row['contact_person']; ?></td>
-			<td><?php echo $row['suplier_address']; ?></td>
-			<td><?php echo $row['suplier_contact']; ?></td>
+			<td><?php echo $row['customer_name']; ?></td>
+			<td><?php echo $row['address']; ?></td>
+			<td><?php echo $row['contact']; ?></td>
 			<td><?php echo $row['note']; ?></td>
-			<td><a rel="facebox" href="editsupplier.php?id=<?php echo $row['suplier_id']; ?>"><button class="btn btn-warning btn-mini"><i class="icon-edit"></i> Edit </button></a>
-			<a href="#" id="<?php echo $row['suplier_id']; ?>" class="delbutton" title="Click To Delete"><button class="btn btn-danger btn-mini"><i class="icon-trash"></i> Delete</button></a></td>
+			<td><a rel="facebox" href="editcustomer.php?id=<?php echo $row['customer_id']; ?>"><button class="btn btn-warning btn-mini"><i class="icon-edit"></i> Edit </button></a>
+			<a href="#" id="<?php echo $row['customer_id']; ?>" class="delbutton" title="Click To Delete"><button class="btn btn-danger btn-mini"><i class="icon-trash"></i> Delete</button></a></td>
 			</tr>
 			<?php
 				}
 			?>
+
+
 		
 	</tbody>
 </table>

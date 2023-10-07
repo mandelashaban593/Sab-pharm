@@ -1,10 +1,12 @@
 <?php
-	include('../connect.php');
-	if(isset($_GET['id'])) $id=$_GET['id'];
-	$result = $db->prepare("SELECT * FROM products WHERE product_id= :userid");
-	$result->bindParam(':userid', $id);
+	require '../conn2.php';
+	if(isset($_GET['id'])) $product_id=$_GET['id'];
+
+	$result = $db->prepare("SELECT * FROM  products WHERE product_id = :product_id");
+	$result->bindParam(':product_id', $product_id);
 	$result->execute();
-	for($i=0; $row = $result->fetch(); $i++){
+
+for($i=0; $row = $result->fetch(); $i++) {
 ?>
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
 <form action="saveeditproduct.php" method="post">
@@ -17,7 +19,7 @@
 
 
 <table><tr>
-<td><span>Quantity:</span></td>
+<td><span>Quantity<br>(optional):</span></td>
 <td><input type="number" style="width:100px; height:30px;" name="quantity" value="<?php echo $row['quantity']; ?>" >
 <select style="width:165px; height:30px; border-color: #000080" name="sell_type" value="<?php echo $row['sell_type']; ?>"> 
 <option value="Bot">Bot</option>
@@ -30,33 +32,31 @@
 
 
 
-<span>Registered Date: </span><input type="date"   style="width:265px; height:30px;" name="reg_date" id="reg_date"  value="<?php echo $row['reg_date']; ?>" Required/><br>
+<span>Date: </span><input type="date"   style="width:265px; height:30px;" name="reg_date" id="reg_date"  value="<?php echo $row['reg_date']; ?>" Required/><br>
 
 
-<span>Expired Date: </span><input type="date"   style="width:265px; height:30px;" name="exp_date" id="exp_date"  value="<?php echo $row['expiry_date']; ?>" Required/><br>
+<span>Expired Date (optional):  </span><input type="date"   style="width:265px; height:30px;" name="exp_date" id="exp_date"  value="<?php echo $row['expiry_date']; ?>"/><br>
 
-<span>Delelivery Note No: </span><input type="text" style="width:265px; height:30px;" name="del_no"  value="<?php echo $row['del_no']; ?>"  Required/><br>
-<span>Date Arrival: </span><input type="date" style="width:265px; height:30px;" name="date_arrival" value="<?php echo $row['date_arrival']; ?>" /><br>
+<span> </span><input type="hidden" style="width:265px; height:30px;" name="del_no"  value="D876" Required/><br>
+<span></span><input type="hidden" style="width:265px; height:30px;" name="date_arrival" value="<?php echo date ('M-d-Y'); ?>"  /><br>
 
 <span>Selling Rate : </span><input type="text" id="txt1" style="width:265px; height:30px;" name="price" onkeyup="sum();" value="<?php echo $row['price']; ?>"  Required><br>
-<span>Original Rate: </span><input type="text" id="txt2" style="width:265px; height:30px;" name="o_price" onkeyup="sum();"   value="<?php echo $row['o_price']; ?>" Required><br>
-<span>Profit : </span><input type="text" id="txt3" style="width:265px; height:30px;" name="profit" value="<?php echo $row['profit']; ?>" readonly><br>
+<span> </span><input type="hidden" id="txt2" style="width:265px; height:30px;" name="o_price" onkeyup="sum();"   value="<?php echo $row['o_price']; ?>" Required><br>
+<span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="profit" value="<?php echo $row['profit']; ?>" readonly><br>
 <span>Supplier : </span>
 <select name="supplier" style="width:265px; height:30px; margin-left:-5px;" >
 	<option value="<?php echo $row['supplier']; ?>"><?php echo $row['supplier']; ?></option>
 	<?php
-	include('../connect.php');
-	$result = $db->prepare("SELECT * FROM user where position='supplier' ");
-		$result->bindParam(':userid', $res);
+	$result = $db->prepare("SELECT * FROM supliers");
 		$result->execute();
 		for($i=0; $row = $result->fetch(); $i++){
 	?>
-		<option value="<?php echo $row['id']; ?>"><?php echo $row['business_name']; ?></option>
+		<option value="<?php echo $row['suplier_name']; ?>"><?php echo $row['suplier_name']; ?></option>
 	<?php
 	}
 	?>
 </select><br>
-<span>QTY Left: </span><input type="number" style="width:265px; height:30px;" min="0" name="qty_left" value="<?php if(!$row['qty_left'] ) {echo $row['quantity']; } else {echo $row['quantity']-$row['qty_sold'];  } ?>" /><br>
+<span></span><input type="hidden" style="width:265px; height:30px;" min="0" name="qty_left" value="<?php if(!$row['qty_left'] ) {echo $row['quantity']; } else {echo $row['quantity']-$row['qty_sold'];  } ?>" /><br>
 
 <div style="float:right; margin-right:10px;">
 
@@ -67,3 +67,4 @@
 <?php
 }
 ?>
+

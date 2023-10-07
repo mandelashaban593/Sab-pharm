@@ -110,15 +110,62 @@ select option {
             }
         }
 
+
+              // Initialize an array to store dynamically added input elements
+        let amounts = [];
+
+
         function calculateTotal(inputField) {
+            const totalAmountElement = document.getElementById('totalAmount');
             var row = inputField.closest("tr");
             var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
             var price = parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
 
+
             if (!isNaN(quantity) && !isNaN(price)) {
                 var total = (price * quantity).toFixed(2);
                 row.cells[3].getElementsByTagName("input")[0].value = total;
+
+                var totalGrand = (price * quantity);
+                amounts.push(totalGrand);
+                console.log(amounts);
+                    // Calculate the total from the 'amounts' array
+                const totalAmount = amounts.reduce((acc, val) => acc + val, 0);
+
+                // Display the total
+                totalAmountElement.textContent = totalAmount;
+                
             }
+        }
+
+
+
+        function calculateRate(inputField) {
+          /*  const amountInput = document.querySelector('input[name="amount[]"]');
+               // Get the value from the input field
+            const inputValue = parseFloat(amountInput.value);
+            // Add the value to the array
+            amounts.push(inputValue);*/
+            const totalAmountElement = document.getElementById('totalAmount');
+
+            var row = inputField.closest("tr");
+            var quantity = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+            var amount = parseFloat(row.cells[5].getElementsByTagName("input")[0].value);
+
+            // Add the value to the array
+            amounts.push(amount);
+
+            if (!isNaN(quantity) && !isNaN(amount)) {
+                var rate = (amount/quantity).toFixed(2);
+                row.cells[4].getElementsByTagName("input")[0].value = rate;
+            }
+
+             // Calculate the total from the 'amounts' array
+            const total = amounts.reduce((acc, val) => acc + val, 0);
+
+            // Display the total
+            totalAmountElement.textContent = total;
+
         }
     </script>
 
@@ -237,11 +284,15 @@ if($position=='admin') {
                 </td>
             </tr>
         </table>
-        
+
+          <div id="totalDisplay" style="margin:10px">
+            Total: <span id="totalAmount">0</span>
+          </div>
+
+
         <button type="button" onclick="addRow()" style="width: 120px;">Add</button>
         <br><br>
-    
-        <input type="hidden" name="date" value="<?php echo date("m/d/y"); ?>" />
+        
         <input type="hidden" name="invoice" value="<?php echo $finalcode; ?>" />
         <input type="hidden" name="cashier" value="<?php echo $_SESSION['SESS_LAST_NAME']; ?>" />
         <table><tr><td>
@@ -252,11 +303,11 @@ if($position=='admin') {
         $result->execute();
         for($i=0; $row = $result->fetch(); $i++){
         ?>
-        <option value="<?php echo $row['customer_name'];?>"><?php echo $row['customer_name']; ?><option>
+        <option value="<?php echo $row['customer_id'];?>"><?php echo $row['customer_name']; ?><option>
         <?php
         }
         ?>
-        </select></td></tr></table>
+        </select></td><td><input type="date" name="date" placeholder="Date" /></td></tr></table>
 
         <input type="submit" value="Save" style="width: 120px;">
     </form>

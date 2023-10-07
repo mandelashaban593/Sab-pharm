@@ -1,4 +1,4 @@
-<?php
+n<?php
 session_start();
 //Connect to mysql server and selecting db
 require '../conn2.php';
@@ -11,63 +11,64 @@ if(isset($_POST['pay_type'])) $ptype= $_POST['pay_type'];
 if(isset($_POST['quantity'])) $quantity= $_POST['quantity'];
 if(isset($_POST['price'])) $price = $_POST['price'];
 if(isset($_POST['total'])) $total = $_POST['total'];
-if(isset($_POST['customer_name'])) $cname = $_POST['customer_name'];
+if(isset($_POST['customer_name'])) $customer_id = $_POST['customer_name'];
 if(isset($_POST['productid'])) $productid = $_POST['productid'];
 if(isset($_POST['batch_no'])) $batch_no=  $_POST['batch_no']; 
 
-  for ($i = 0; $i <= count((array)$productid); $i++) {
-        $productid = $productid[$i];
-        $quantity = $quantity[$i];
-        $price = $price[$i];
-        $total = $total[$i];
-        $ptype = $ptype[$i];
+
+$query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id= '$customer_id'") or die(mysqli_error($con));
+$row=mysqli_fetch_array($query);
+$cname = $row['customer_name'];
+
+foreach ($productid as $key => $pid) {
+	
+        $prodid = $productid[$key];
+        $qty = $quantity[$key];
+        $pri = $price[$key];
+        $tot = $total[$key];
+        $pty = $ptype[$key];
         
-        echo "Product: $productid<br>";
-        echo "Quantity: $quantity<br>";
-        echo "Price: $price<br>";
-        echo "Total Price: $total<br><br>";
-		$query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity FROM products WHERE product_id= '$productid'") or die(mysqli_error($con));
-		$row=mysqli_fetch_array($query);
-		$price=$row['price'];
-		$category=$row['category'];
-		$med_name=$row['med_name'];
-		$profit=$row['profit'];
-		$qty_left=$row['quantity'];
-		$o_price=$row['o_price'];
-		$profit = $price - $o_price;
-		$qty_left=(int)$qty_left - (int)$quantity;
-		$sql = "UPDATE products 
-		        SET quantity='$qty_left'
-				WHERE product_id='$productid'";
-		$query2 = mysqli_query($con, $sql) or die(mysqli_error($con));
+        echo "Product: $prodid<br>";
+        echo "Quantity: $qty<br>";
+        echo "Price: $pri<br>";
+        echo "Total Price: $tot<br><br>";
+   			$query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
+				$row=mysqli_fetch_array($query);
+				$rate=$row['price'];
+				$cat=$row['category'];
+				$medname=$row['med_name'];
+				$prof=$row['profit'];
+				$qty_lef=$row['quantity'];
+				$opri=$row['o_price'];
+				$qtylef=(int)$qty_lef - (int)$qty;
+				$sql = "UPDATE products 
+		        SET quantity='$qtylef'
+				WHERE product_id='$prodid'";
+				$query2 = mysqli_query($con, $sql) or die(mysqli_error($con));
 
-		if($ptype=='credit') {
-		$due_date = $_POST['date'];
+				if($pty=='cash') {
+				$due_date = $_POST['date'];
 
-		$sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity) VALUES ('$invoice','$cashier','$date','$ptype','$price','$profit',CURDATE(),'$cname',CURTIME(), '$productid', '$total', '$ptype', '$quantity')";
-
-		$q = mysqli_query($con, $sql) or die(mysqli_error($con));
-		
+				$sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,customer_id) VALUES ('$invoice','$cashier','$date','$pty','$pri','$prof',CURDATE(),'$cname',CURTIME(), '$prodid', '$tot', '$pty', '$qty','$customer_id')";
+				$q = mysqli_query($con, $sql) or die(mysqli_error($con));
 		
 		}
 
-		/*Cash is when the customer pays by cash immediately , either partly or on full payment*/
+			if($pty=='credit') {
+				$due_date = $_POST['date'];
 
-		if($ptype=='cash') {
-		$due_date = $_POST['date'];
-
-		$sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity) VALUES ('$invoice','$cashier','$date','$ptype','$price','$profit',CURDATE(),'$cname',CURTIME(), '$productid', '$total', '$ptype', '$quantity')";
-		$q = mysqli_query($con, $sql) or die(mysqli_error($con));
+				$sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,customer_id) VALUES ('$invoice','$cashier','$date','$pty','$pri','$prof',CURDATE(),'$cname',CURTIME(), '$prodid', '$tot', '$pty', '$qty','$customer_id')";
+				$q = mysqli_query($con, $sql) or die(mysqli_error($con));
 		
-		
-	}
+		}
 
+
+
+		
 
 }
-
-
     
-header("location: preview.php?invoice=$invoice");
+header("location: preview.php?invoice=$invoice&date=$date");
 exit();
 
 

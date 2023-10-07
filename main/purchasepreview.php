@@ -123,71 +123,76 @@ window.onload=startclock;
       <div class="row-fluid">
 	<div class="span2">
           <div class="well sidebar-nav">
-                     <ul class="nav nav-list">
-              <li class="active"><a href="#"><i class="icon-dashboard icon-2x"></i> Dashboard </a></li> 
-			
-
-			 <?php
-			$position= $_SESSION['SESS_LAST_NAME'];
-			if($position=="store"){?>
-
-			<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-			                                 </li>
-
-			<li><a href="search_asupplier.php"><i class="icon-group icon-2x"></i><br>  Suppliers </a>  		
-
-			<?php } ?>
+      <ul class="nav nav-list">
+<li class="active"><a href="#"><i class="icon-dashboard icon-2x"></i> Dashboard </a></li> 
 
 
+<?php
+$position= $_SESSION['SESS_LAST_NAME'];
+if($position=="store"){?>
 
-			 <?php
-			$position= $_SESSION['SESS_LAST_NAME'];
-			if($position=="pharmacist"){?>
-			<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
+<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
+</li>
+
+<li><a href="search_asupplier.php"><i class="icon-group icon-2x"></i><br>  Suppliers </a>  	
+
+<li><a href="https://edoctorug.com/"><i  class="icon-group icon-2x"></i> Edoctorug </a>     
+</li>
 
 
-			<li><a href="ordermedicines.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-			                                 </li>
-			<li><a href="select_customers.php"><i class="icon-group icon-2x"></i><br>  customers </a>  
-
-			
-			
-
-			<?php } ?>
+<?php } ?>
 
 
 
-			             <?php
-			$position= $_SESSION['SESS_LAST_NAME'];
-			if($position=="admin"){?>
-			<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
+<?php
+$position= $_SESSION['SESS_LAST_NAME'];
+if($position=="pharmacist"){?>
+<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
 
-			<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-			                                 </li>
 
-			<li><a href="search_asupplier.php"><i class="icon-group icon-2x"></i><br>  Suppliers </a>                                   </li>
-			<li><a href="select_customers.php"><i class="icon-group icon-2x"></i><br>  customers </a>                                 </li>
-			
+<li><a href="ordermedicines.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
+</li>
+<li><a href="select_customers.php"><i class="icon-group icon-2x"></i><br>  customers </a>  
+</li>
 
-			<?php } ?>	
+<li><a href="https://edoctorug.com/"><i  class="iicon-group icon-2x"></i> Edoctorug </a>     
+</li>
 
-			<?php
-			$position= $_SESSION['SESS_LAST_NAME'];
-			if($position=="admin"){?>
-			<li><a href="addassets.php"><i class="icon-group icon-2"></i> Add Assets</a>  </li>
-			<li><a href="addliab.php"><i class="icon-group icon-2"></i> Add Liabilities</a>  </li>
-			<li><a href="addequity.php"><i class="icon-group icon-2"></i> Add Stock holders Equity</a>  </li>
-			<li><a href="general_ledger.php"><i class="icon-group icon-2"></i> General Ledger</a>                                  </li>
 
-			<li><a href="balance_sheet.php"><i class="icon-group icon-2x]"></i> Balance Sheet</a>                                  </li>
-			<li><a href="profit_loss.php"><i class="icon-group icon-2x"></i> Profit and Loss Account</a>                                  </li>
-			<li><a href="users.php"><i class="icon-group icon-2x"></i> Users</a>                                  </li>
-			
-			<li><a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x"></i> Sales Report</a>                </li>
-			<br><br><br><br><br><br>
 
-			<?php }?>		
-			<li>
+
+
+<?php } ?>
+
+
+
+<?php
+$position= $_SESSION['SESS_LAST_NAME'];
+if($position=="admin"){?>
+<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
+
+<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
+</li>
+
+<li><a href="https://edoctorug.com/"><i  class="icon-list-alt icon-2"></i> Edoctorug </a>     
+</li>
+
+
+
+</li>	
+
+<?php } ?>	
+
+<?php
+$position= $_SESSION['SESS_LAST_NAME'];
+if($position=="admin"){?>
+
+
+
+<br><br><br><br><br><br>
+
+<?php }?>		
+<li>
 			 <div class="hero-unit-clock">
 		
 			<form name="clock">
@@ -212,12 +217,27 @@ window.onload=startclock;
 	</center>
 	<div>
 	<?php
-	$resulta = $db->prepare("SELECT * FROM customer WHERE customer_name= :a");
-	$resulta->bindParam(':a', $cname);
-	$resulta->execute();
-	for($i=0; $rowa = $resulta->fetch(); $i++){
-	$address=$rowa['address'];
-	$contact=$rowa['contact'];
+	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
+	$result = $db->prepare("SELECT * FROM purchases_ret WHERE invoice_number= :userid LIMIT 1");
+	$result->bindParam(':userid', $id);
+	$result->execute();
+	for($i=0; $rowa = $result->fetch(); $i++){
+	$suplier_id = $rowa['suplier_id'];
+	$date = $rowa['date'];	
+
+	$query = mysqli_query($con, "SELECT * FROM supliers WHERE suplier_id='$suplier_id'") or die(mysqli_error($con));
+	$row=mysqli_fetch_array($query);
+	$suplier_name=$row['suplier_name'];
+	$suplier_contact=$row['suplier_contact'];
+	$address=$row['suplier_address'];
+	$location=$row['location'];
+
+	echo $suplier_name; echo"<br>";
+
+	echo $address; echo "<br>";
+
+	echo $location; echo "<br>";
+
 	}
 	?>
 	</div>

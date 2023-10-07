@@ -1,5 +1,5 @@
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
-<form action="saveproduct.php" method="post">
+<form action="saveproduct.php" method="post" >
 <center><h4><i class="icon-plus-sign icon-large"></i> Add Medicine</h4></center>
 <hr>
 <div id="ac">
@@ -8,7 +8,7 @@
 
 
 <table><tr>
-<td><span>Quantity:</span></td>
+<td><span>Quantity<br>(optional):</span></td>
 <td><input type="number" style="width:100px; height:30px;" name="quantity">
 <select style="width:165px; height:30px; border-color: #000080" name="sell_type" > 
 <option value="Bot">Bot</option>
@@ -19,16 +19,16 @@
 <option value="Tube">Tube</option>
 </select></td></tr></table>
 
-<span>Registered Date: </span><input type="date"   style="width:265px; height:30px;" name="reg_date" id="reg_date"  Required/><br>
+<span>Date: </span><input type="date"   style="width:265px; height:30px;" name="reg_date" id="reg_date"  Required/><br>
 
 
-<span>Expired Date: </span><input type="date"   style="width:265px; height:30px;" name="exp_date" id="exp_date"  Required/><br>
+<span>Expired Date (optional): </span><input type="date"   style="width:260px; height:30px;" name="exp_date" id="exp_date"  /><br>
 
 <span> </span><input type="hidden" style="width:265px; height:30px;" name="del_no"  value="D876" Required/><br>
 <span></span><input type="hidden" style="width:265px; height:30px;" name="date_arrival" value="<?php echo date ('M-d-Y'); ?>"  /><br>
 
 <span>Selling Rate : </span><input type="text" id="txt1" style="width:265px; height:30px;" name="price" onkeyup="sum();" Required><br>
-<span>Original Rate: </span><input type="text" id="txt2" style="width:265px; height:30px;" name="o_price" onkeyup="sum();" Required><br>
+<span></span><input type="hidden" id="txt2" style="width:265px; height:30px;" name="o_price" value="0"><br>
 <span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="profit" readonly><br>
 <span></span>
 <span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="supplier" value="None" readonly><br><br>

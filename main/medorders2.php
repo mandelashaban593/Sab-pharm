@@ -130,17 +130,41 @@ select option {
             }
         }
 
+              // Initialize an array to store dynamically added input elements
+        let amounts = [];
 
-         function calculateRate(inputField) {
+
+        function calculateRate(inputField) {
+          /*  const amountInput = document.querySelector('input[name="amount[]"]');
+               // Get the value from the input field
+            const inputValue = parseFloat(amountInput.value);
+            // Add the value to the array
+            amounts.push(inputValue);*/
+            const totalAmountElement = document.getElementById('totalAmount');
+
             var row = inputField.closest("tr");
             var quantity = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
             var amount = parseFloat(row.cells[5].getElementsByTagName("input")[0].value);
+
+            // Add the value to the array
+            amounts.push(amount);
 
             if (!isNaN(quantity) && !isNaN(amount)) {
                 var rate = (amount/quantity).toFixed(2);
                 row.cells[4].getElementsByTagName("input")[0].value = rate;
             }
+
+             // Calculate the total from the 'amounts' array
+            const total = amounts.reduce((acc, val) => acc + val, 0);
+
+            // Display the total
+            totalAmountElement.textContent = total;
+
         }
+
+   
+
+
 
 
     </script>
@@ -258,7 +282,7 @@ if($position=='admin') {
                 <td><input type="date" name="expiry_date[]" placeholder="Expiry date"></td>
                 <td><input type="number" name="quantity[]" placeholder="Quantity" ></td>
                 <td><input type="number" name="price[]" placeholder="Rate" readonly></td>
-                <td><input type="number" name="amount[]" placeholder="Amount"  onchange="calculateRate(this)"></td>
+                <td><input type="number" name="amount[]" placeholder="Amount"  onchange="calculateRate(this);"></td>
                  <td>
                     <select name="pay_type[]"  >
                        <option value="cash">Cash</option>
@@ -267,12 +291,15 @@ if($position=='admin') {
                 </td>
             </tr>
         </table>
-        
+         <div id="totalDisplay" style="margin:10px">
+            Total: <span id="totalAmount">0</span>
+          </div>
+
         <button type="button" onclick="addRow()" style="width: 120px;">Add</button>
         <br><br>
         <input type="hidden" name="cashier" value="<?php echo $_SESSION['SESS_LAST_NAME']; ?>" />
         	 	<table><tr><td>
-       <input type="text" name="invoice" placeholder="Enter invoice" /></td><td>
+       <input type="text" name="invoice" placeholder="Enter invoice Number" /></td><td>
        <input type="date" name="date" placeholder="Date" /></td></tr></table>
         <table><tr><td>
         <select name="customer_name" style="widt;" class="chzn-seect" required>
@@ -283,7 +310,7 @@ if($position=='admin') {
 			$result->execute();
 			for($i=0; $row = $result->fetch(); $i++){
 		?>
-			<option value="<?php echo $row['suplier_name']; ?>"><?php echo $row['suplier_name']; ?></option>
+			<option value="<?php echo $row['suplier_id']; ?>"><?php echo $row['suplier_name']; ?></option>
 		<?php
 		}
 		?>
@@ -331,6 +358,11 @@ if($position=='admin') {
         return $productOptions;
     }
     ?>
+
+
+  <script>
+   
+  </script>
 
 
 </div>
