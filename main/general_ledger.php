@@ -162,7 +162,7 @@ echo formatMoney($dsdsd, true);
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 <thead>
 <tr>
-<th>Transaction Id</th>
+<th>Invoice Number</th>
 <th>Date</th>
 <th>Product</th>
 <th>Quantity</th>
@@ -179,17 +179,20 @@ echo formatMoney($dsdsd, true);
 if(isset($_POST['fdate'])) $d1=date($_POST['fdate']);
 if(isset($_POST['tdate'])) $d2=date($_POST['tdate']);
 
+/*echo "OOOOOOK";
+echo $d2;
+*/
 // Query to fetch sales records within the date range with debit entries
-$salesQuery = "SELECT transaction_id, sales_date,med_name, qty,amount, NULL AS Debit, amount AS Credit
-               FROM  sales_order
-               WHERE sales_date  BETWEEN :startDate AND :endDate";
+$salesQuery = "SELECT invoice_number, date, name, quantity,amount, NULL AS Debit, amount AS Credit
+               FROM  sales
+               WHERE date  BETWEEN :startDate AND :endDate";
 
 // Query to fetch purchases records within the date range with credit entries
-$purchasesQuery = "SELECT product_id, reg_date, med_name, quantity, NULL AS Amount, price AS Debit, NULL AS Credit 
-                   FROM purchase_details
-                   WHERE reg_date BETWEEN :startDate AND :endDate";
+$purchasesQuery = "SELECT invoice_number, date, name, quantity, NULL AS Amount, amount AS Debit, NULL AS Credit 
+                   FROM purchases_ret
+                   WHERE date BETWEEN :startDate AND :endDate";
 
-$ledgerQuery = "$salesQuery UNION ALL $purchasesQuery ORDER BY med_name";
+$ledgerQuery = "$salesQuery UNION ALL $purchasesQuery ORDER BY name";
 
 $stmt = $db->prepare($ledgerQuery);
 $stmt->bindParam(':startDate', $d1, PDO::PARAM_STR);
@@ -201,10 +204,10 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <?php foreach ($rows as $row) { ?>
     <tr>
-        <td><?php echo $row['transaction_id']; ?></td>
-        <td><?php echo $row['sales_date']; ?></td>
-        <td><?php echo $row['med_name']; ?></td>
-        <td><?php echo $row['qty']; ?></td>
+        <td><?php echo $row['invoice_number']; ?></td>
+        <td><?php echo $row['date']; ?></td>
+        <td><?php echo $row['name']; ?></td>
+        <td><?php echo $row['quantity']; ?></td>
         <td><?php echo $row['amount']; ?></td>
         <td><?php echo $row['Debit']; ?></td>
         <td><?php echo $row['Credit']; ?></td>

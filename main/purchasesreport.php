@@ -1,122 +1,53 @@
 <?php
-//Connect to mysql server and selecting db
-require '../conn2.php';
+include('../conn2.php');
 ?>
 <html>
+<?php
+require_once('auth.php');
+?>
 <head>
 <title>
 POS
 </title>
+<link href="css/bootstrap.css" rel="stylesheet">
 
-<?php 
-require_once('auth.php');
-?>
- <link href="css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
 
-    <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
-  
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<style type="text/css">
+body {
+padding-top: 60px;
+padding-bottom: 40px;
+}
+.sidebar-nav {
+padding: 9px 0;
+}
+</style>
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+
 
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
-<!--sa poip up-->
-<script src="jeffartagame.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/application.js" type="text/javascript" charset="utf-8"></script>
-<link href="src/facebox.css" media="screen" rel="stylesheet" type="text/css" />
-<script src="lib/jquery.js" type="text/javascript"></script>
-<script src="src/facebox.js" type="text/javascript"></script>
+<link href="../print.css" rel="stylesheet" media="print">
+<link rel="stylesheet" type="text/css" href="tcal.css" />
+<script type="text/javascript" src="tcal.js"></script>
+<script language="javascript">
+function Clickheretoprint()
+{ 
+var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
+disp_setting+="scrollbars=yes,width=700, height=400, left=100, top=25"; 
+var content_vlue = document.getElementById("content").innerHTML; 
 
-
-<script type="text/javascript">
-  jQuery(document).ready(function($) {
-    $('a[rel*=facebox]').facebox({
-      loadingImage : 'src/loading.gif',
-      closeImage   : 'src/closelabel.png'
-    })
-  })
-
-
-  function printPage(id) {
-    var html="<html>";
-    html+= document.getElementById(id).innerHTML;
-    html+="</html>";
-    var printWin = window.open('','','left=0,top=0,width=1,height=1,toolbar=0,scrollbars=0,status =0');
-    printWin.document.write(html);
-    printWin.document.close();
-    printWin.focus();
-    printWin.print();
-    printWin.close();
+var docprint=window.open("","",disp_setting); 
+docprint.document.open(); 
+docprint.document.write('</head><body onLoad="self.print()" style="width: 700px; font-size:11px; font-family:arial; font-weight:normal;">');          
+docprint.document.write(content_vlue); 
+docprint.document.close(); 
+docprint.focus(); 
 }
-
-
-</script>
-</head>
-<?php
-function createRandomPassword() {
-	$chars = "003232303232023232023456789";
-	srand((double)microtime()*1000000);
-	$i = 0;
-	$pass = '' ;
-	while ($i <= 7) {
-
-		$num = rand() % 33;
-
-		$tmp = substr($chars, $num, 1);
-
-		$pass = $pass . $tmp;
-
-		$i++;
-
-	}
-	return $pass;
-}
-$finalcode='RS-'.createRandomPassword();
-?>
-
-<script>
-function sum() {
-            var txtFirstNumberValue = document.getElementById('txt1').value;
-            var txtSecondNumberValue = document.getElementById('txt2').value;
-            var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
-            if (!isNaN(result)) {
-                document.getElementById('txt3').value = result;
-				
-            }
-			
-			 var txtFirstNumberValue = document.getElementById('txt11').value;
-            var result = parseInt(txtFirstNumberValue);
-            if (!isNaN(result)) {
-                document.getElementById('txt22').value = result;				
-            }
-			
-			 var txtFirstNumberValue = document.getElementById('txt11').value;
-            var txtSecondNumberValue = document.getElementById('txt33').value;
-            var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue);
-            if (!isNaN(result)) {
-                document.getElementById('txt55').value = result;
-				
-            }
-			
-			 var txtFirstNumberValue = document.getElementById('txt4').value;
-			 var result = parseInt(txtFirstNumberValue);
-            if (!isNaN(result)) {
-                document.getElementById('txt5').value = result;
-				}
-			
-        }
 </script>
 
 
- <script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript">
 /* Visit http://www.yaldex.com/ for full source code
 and get more free JavaScript, CSS and DHTML scripts! */
 <!-- Begin
@@ -147,187 +78,258 @@ showtime();
 }
 window.onload=startclock;
 // End -->
-</SCRIPT>	
+</SCRIPT>
+</head>
+<?php
+function createRandomPassword() {
+$chars = "003232303232023232023456789";
+srand((double)microtime()*1000000);
+$i = 0;
+$pass = '' ;
+while ($i <= 7) {
 
+$num = rand() % 33;
+
+$tmp = substr($chars, $num, 1);
+
+$pass = $pass . $tmp;
+
+$i++;
+
+}
+return $pass;
+}
+$finalcode='RS-'.createRandomPassword();
+?>
 <body>
 <?php include('navfixed.php');?>
 <div class="container-fluid">
-      <div class="row-fluid">
-	
-	<div class="span10">
-	<div class="contentheader">
-			<i class="icon-table"></i> Medicines
-			</div>
-			<ul class="breadcrumb">
-			<li><a href="index.php">Dashboard</a></li> /
-			<li class="active">Medicines</li>
-			</ul>
+<div class="row-fluid">
 
+<div class="span10">
+<div class="contentheader">
+<i class="icon-bar-chart"></i> Purchases Report
+</div>
+<ul class="breadcrumb">
+<li><a href="index.php">Dashboard</a></li> /
+<li class="active">Purchases Report</li>
+</ul>
 
 <div style="margin-top: -19px; margin-bottom: 21px;">
-<a  href="index.php"><button class="btn btn-default btn-large" style="float: left;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
-<a href="#" onclick="printPage('prodlist');" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
-
-			<?php 
-			
-				$result = $db->prepare("SELECT * FROM purchase_details ORDER BY quantity DESC");
-				$result->execute();
-				$rowcount = $result->rowcount();	
-			?>
-			
-			<?php 
-			
-				$result = $db->prepare("SELECT * FROM products where quantity< 10 ORDER BY product_id DESC");
-				$result->execute();
-				$rowcount123 = $result->rowcount();
-
-			?>
-				<div style="text-align:center;">
-			Total Number of Medicines Order:  <font color="green" style="font:bold 22px 'Aleo';">[<?php echo $rowcount;?>]</font>
-			</div>
-			
-			<div style="text-align:center;">
-			<font style="color:rgb(255, 95, 66);; font:bold 22px 'Aleo';">[<?php echo $rowcount123;?>]</font> Medicines are below QTY of 10 
-			</div>
+<a  href="index.php"><button class="btn btn-default btn-large" style="float: none;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
+<a href="#" onclick="window.print()" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
 </div>
 
 
-<input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<br><br><br/>
 
-<p style="text-align:center">Ojinga Pharmacy</p>
-<p style="text-align:center">Kutch road ,West,plot No:95e, Jinja</p>
-<p style="text-align:center">Tel: 0704694467</p>
-<div id="prodlist">
+    
+    <form id="reportForm" method="post" action="purchasesreport.php" style="margin-left: 500px;">
+        <h1>Purchases Reports</h1>
+        <label for="report_type">Select Report Duration:</label>
+        <select name="report_type" id="report_type">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="range">Date Range</option>
+        </select>
+        
+        <div id="dateInputs">
+            <!-- Date input fields will be added dynamically here -->
+        </div>
+        <div>
+        <select name="suplier_id" style="width:265px; height:30px;">
+            <?php
+            $result = $db->prepare("SELECT * FROM supliers");
+                $result->execute();
+                for($i=0; $row = $result->fetch(); $i++){
+            ?>
+                <option  value="<?php echo $row['suplier_id']; ?>"><?php echo $row['suplier_name']; ?></option>
+            <?php
+            }
+            ?>
+        </select><br>
+        </div>
+        
+        <button type="submit">Generate Report</button>
+    </form>
 
-<table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
-	<thead>
-		<tr>
-			<th width="7%"> Supplier </th>
-			<th width="12%"> Medicine Name </th>
-			<th width="14%"> quantity</th>
-			<th width="14%"> selling type</th>
-			<th width="13%">Registration date </th>
-			<th width="13%"> Expiry Date  </th>
-			<th width="13%"> Spplier</th>
-			<th width="13%"> Selling price </th>
-			<th width="6%"> Buying price </th>
-			<th width="6%"> Profit </th>
-			<th width="6%"> Date of Arrival </th>
-			<th width="6%"> Delivery Note</th>
-			<th width="6%"> Total Buying price</th>
-			<th width="8%"> Action </th>
+    <div id="reportResults">
+        <!-- Report data will be displayed here -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reportForm = document.getElementById("reportForm");
+            const dateInputs = document.getElementById("dateInputs");
+            var currentYear = new Date().getFullYear();
+
+            // Function to toggle date input fields based on the selected report duration
+            function toggleDateInputs() {
+                const reportType = document.getElementById("report_type").value;
+                dateInputs.innerHTML = ""; // Clear existing date inputs
+
+                if (reportType === "daily") {
+                    dateInputs.innerHTML = '<label for="daily_date">Select Date (YYYY-MM-DD):</label>' +
+                        '<input type="date"  name="daily_date" id="daily_date">';
+                } else if (reportType === "weekly") {
+                    dateInputs.innerHTML = '<label for="weekly_start_date">Select Start Date (YYYY-MM-DD):</label>' +
+                        '<input type="date" name="weekly_start_date" id="weekly_start_date">' +
+                        '<label for="weekly_end_date">Select End Date (YYYY-MM-DD):</label>' +
+                        '<input type="date"  name="weekly_end_date" id="weekly_end_date">';
+                } else if (reportType === "monthly") {
+                    dateInputs.innerHTML = '<label for="monthly_year">Select Year:</label>' +
+                        '<select name="monthly_year" id="monthly_year"> ' +
+                        '<option value="20">2020</option>'+
+                        '<option value="21">2021</option>'+
+                        '<option value="23">2023</option>'+
+                        '<option value="22">2022</option>'+
+                        '<option value="24">2024</option>'+
+                        '<option value="25">2025</option>'+
+                        '<option value="26">2026</option>'+
+                        '<option value="27">2027</option>'+
+                        '<option value="28">2028</option>'+
+                        '<option value="29">2029</option>'+
+                        '<option value="30">2030</option>'+
+                        '<option value="31">231</option>'+
+                        '<option value="32">2032</option>'+
+                        '<option value="33">2033</option>'+
+                        '<option value="34">2024</option>'+
+                        '<option value="35">2025</option>'+
+                        '<option value="36">2036</option>'+
+                        '<option value="37">2037</option>'+
+                        '<option value="38">2038</option>'+
+                        '<option value="39">2039</option>'+
+                        '<option value="40">2040</option>'+
+                        '<option value="41">2041</option>'+
+                        '<option value="42">2042</option>'+
+                        '<option value="43">2043</option>'+
+                        '<option value="44">2044</option>'+
+                        '<option value="45">2045</option>'+
+                        '<option value="46">2046</option>'+
+                         '</select>' +
+                         '<label for="monthly_year">Select Year:</label>' +
+                        '<select name="monthly_month" id="monthly_month">'+
+                        '<option value="01">January</option>'+
+                        '<option value="02">February</option>'+
+                        '<option value="03">March</option>'+
+                        '<option value="04">April</option>'+
+                        '<option value="05">May</option>'+
+                        '<option value="06">June</option>'+
+                        '<option value="07">July</option>'+
+                        '<option value="08">August</option>'+
+                        '<option value="09">September</option>'+
+                        '<option value="10">October</option>'+
+                        '<option value="11">November</option>'+
+                        '<option value="12">December</option>'+
+                        '</select>';
+                } else if (reportType === "range") {
+                    dateInputs.innerHTML = '<label for="range_start_date">Select Start Date (YYYY-MM-DD):</label>' +
+                        '<input type="date" name="range_start_date" id="range_start_date">' +
+                        '<label for="range_end_date">Select End Date (YYYY-MM-DD):</label>' +
+                        '<input type="date" name="range_end_date" id="range_end_date">';
+                }
+            }
+
+            // Add event listener to the report type select element
+            document.getElementById("report_type").addEventListener("change", toggleDateInputs);
+
+            // Initial call to toggleDateInputs to set up the form
+            toggleDateInputs();
+
+            // Add event listener to the form to handle submission via AJAX
+          
+        });
+    </script>
 
 
 
+<div class="content" id="content">
+<div style="font-weight:bold; text-align:center;font-size:14px;margin-bottom: 15px;">
+</div>
+<table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
+<thead>
+<tr>
+<th> Date </th>
+<th> Invoice number </th>
+<th> Total</th>
 
-		</tr>
-	</thead>
-	<tbody>
-		
-			<?php
-			function formatMoney($number, $fractional=false) {
-					if ($fractional) {
-						$number = sprintf('%.2f', $number);
-					}
-					while (true) {
-						$replaced	 = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-						if ($replaced != $number) {
-							$number = $replaced;
-						} else {
-							break;
-						}
-					}
-					return $number;
-				}
-			
-				$result = $db->prepare("SELECT *, price * quantity as total FROM  purchase_details   ORDER BY med_name");
-				$result->execute();
-				for($i=0; $row = $result->fetch(); $i++){
-				$total=$row['tot_buy'];
-				$availableqty=$row['qty_left'];
-				if ($availableqty < 10) {
-				echo '<tr class="alert alert-warning record" style="color: #fff; background:rgb(255, 95, 66);">';
-				}
-				else {
-				echo '<tr class="record">';
-				}
-			?>
-		
-			<td><?php echo $row['supplier']; ?></td>
-			<td><?php echo $row['med_name']; ?></td>
-			<td><?php echo $row['quantity']; ?></td>
-			<td><?php echo $row['sell_type']; ?></td>
-			<td><?php echo $row['reg_date']; ?></td>
-			<td><?php echo $row['exp_date']; ?></td>
-			<td><?php echo $row['supplier']; ?></td>
-			<td><?php
-			$pprice=$row['price'];
-			echo formatMoney($pprice, true);
-			?></td>
+</tr>
+</thead>
+<tbody>
 
-			<td><?php
-			$oprice=$row['o_price'];
-			echo formatMoney($oprice, true);
-			?></td>
-						
-			<td><?php echo $row['profit']; ?></td>
-			<td><?php echo $row['date_arrival']; ?></td>
-				<td><?php echo $row['del_no']; ?></td>			
+<?php
+if(isset($_POST['report_type'])) {
 
-			<td>
-			<?php
-			$total=$row['tot_buy'];
-			echo formatMoney($total, true);
-			?>
-			</td>	
+$reportType = $_POST['report_type'];
+$suplier_id =  $_POST['suplier_id'];
+ if ($reportType === 'daily') {
+    $date = date('m/d/y', strtotime($_POST['daily_date']));
+    echo "DATE<br/>";
+    echo $date;
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND suplier_id = :suplier_id GROUP BY invoice_number,date";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->execute();
+} elseif ($reportType === 'weekly') {
+    $startDate = date('m/d/y', strtotime($_POST['weekly_start_date']));
+    $endDate = date('m/d/y', strtotime($_POST['weekly_end_date']));
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY invoice_number,date";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':start', $startDate);
+    $stmt->bindParam(':end',  $endDate);
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->execute();
+} elseif ($reportType === 'monthly') {
+    $year =$_POST['monthly_year'];
+    $month  = $_POST['monthly_month'];
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND suplier_id = :suplier_id GROUP BY invoice_number,date";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':year', $year);
+    $stmt->bindParam(':month', $month);
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->execute();
+} elseif ($reportType === 'range') {
+    $rangeStartDate =date("m/d/y", strtotime($_POST['range_start_date']));
+    $rangeEndDate = date("m/d/y", strtotime($_POST['range_end_date'])); 
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY invoice_number,date";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':start', $rangeStartDate);
+    $stmt->bindParam(':end', $rangeEndDate);
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->execute();
+}
 
 
 
-		
+foreach ($stmt as $row) { 
+?>
 
-						<td><a rel="facebox" title="Click to edit the product" href="editorderstatus.php?id=<?php echo $row['order_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
-			<a href="#" id="<?php echo $row['order_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
-			</tr>
-			<?php
-				}
-			?>
-		
-		
-		
-	</tbody>
-</table>
+<tr  class='record clickable-row' data-href='purchinvsumm.php?invoice_number=<?php echo $row['invoice_number']; ?>'>
+<td><?php echo $row['date']; ?> </td>
+<td><?php echo $row['invoice_number']; ?> </td>
+<td><?php echo  $row['total']; ?> </td>
+</tr>
+<?php
+}
+
+
+}
+?>
+<tr>
+
+</tbody>
+</table><br>
 </div>
 <div class="clearfix"></div>
 </div>
 </div>
 </div>
 
+</body>
 <script src="js/jquery.js"></script>
-  <script type="text/javascript">
+<script type="text/javascript">
 $(function() {
-
-
- $(document).on('keyup','#med_name', 
-
-function(){
-     var med_name_cap = $("#med_name").val();
-      
-      $("#med_name").val(med_name_cap.charAt(0).toUpperCase()+med_name_cap.slice(1));
-
-});
-
-
-$(document).on('keyup','#category', 
-
-function(){
-     var category_cap = $("#category").val();
-      
-      $("#category").val(category_cap.charAt(0).toUpperCase()+category_cap.slice(1));
-
-});
-
-
 
 
 $(".delbutton").click(function(){
@@ -340,38 +342,44 @@ var del_id = element.attr("id");
 
 //Built a url to send
 var info = 'id=' + del_id;
- if(confirm("Sure you want to delete this Product? There is NO undo!"))
-		  {
+if(confirm("Sure you want to delete this update? There is NO undo!"))
+{
 
- $.ajax({
-   type: "GET",
-   url: "deletemedorder.php",
-   data: info,
-   success: function(){
-   
-   }
- });
-         $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
-		.animate({ opacity: "hide" }, "slow");
+$.ajax({
+type: "GET",
+url: "deletesales.php",
+data: info,
+success: function(){
 
- }
+}
+});
+$(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
+.animate({ opacity: "hide" }, "slow");
+
+}
 
 return false;
 
 });
 
 });
-
-
-
-
-  
+</script>
+<?php include('footer.php');?>
 
 </script>
 
 
 
-</body>
-<?php include('footer.php');?>
-
+ <script>
+        // Add a click event handler to each row with the 'clickable-row' class
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll(".clickable-row");
+            rows.forEach((row) => {
+                row.addEventListener("click", function () {
+                    window.location.href = this.dataset.href;
+                });
+            });
+        });
+    </script>
+    
 </html>

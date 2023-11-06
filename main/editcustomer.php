@@ -14,6 +14,7 @@
 <div id="ac">
 <input type="hidden" name="memi" value="<?php echo $id; ?>" />
 <span>Full Name : </span><input type="text" style="width:265px; height:30px;" name="name" value="<?php echo $row['customer_name']; ?>" /><br>
+<span>Contact Person : </span><input type="text" style="width:265px; height:30px;" name="contact_person" value="<?php echo $row['contact_person']; ?>" /><br>
 <span>Address : </span><input type="text" style="width:265px; height:30px;" name="address" value="<?php echo $row['address']; ?>" /><br>
 <span>Contact : </span><input type="text" style="width:265px; height:30px;" name="contact" value="<?php echo $row['contact']; ?>" /><br>
 <span>Note : </span><textarea style="height:60px; width:265px;" name="note"><?php echo $row['note'];?></textarea><br>
@@ -27,3 +28,5 @@
 <?php
 }
 ?>
+
+

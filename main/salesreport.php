@@ -136,6 +136,19 @@ $finalcode='RS-'.createRandomPassword();
         <div id="dateInputs">
             <!-- Date input fields will be added dynamically here -->
         </div>
+        <div>
+        <select name="suplier_id" style="width:265px; height:30px;">
+            <?php
+            $result = $db->prepare("SELECT * FROM customer");
+                $result->execute();
+                for($i=0; $row = $result->fetch(); $i++){
+            ?>
+                <option  value="<?php echo $row['customer_id']; ?>"><?php echo $row['customer_name']; ?></option>
+            <?php
+            }
+            ?>
+        </select><br>
+        </div>
         
         <button type="submit">Generate Report</button>
     </form>
@@ -236,48 +249,54 @@ $finalcode='RS-'.createRandomPassword();
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 <thead>
 <tr>
-<th> ID</th>
 <th> Date </th>
 <th> Invoice number </th>
-<th> Cashier </th>
-<th> Amount</th>
+<th> Total</th>
 
 </tr>
 </thead>
 <tbody>
 
 <?php
-$reportType = $_POST['report_type'];
+if(isset($_POST['report_type'])) {
 
+$reportType = $_POST['report_type'];
+$suplier_id =  $_POST['suplier_id'];
  if ($reportType === 'daily') {
     $date = date('m/d/y', strtotime($_POST['daily_date']));
-    $sql = "SELECT * FROM sales WHERE curdate  = :date";
+    echo "DATE<br/>";
+    echo $date;
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM sales WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND customer_id = :suplier_id GROUP BY invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':date', $date);
+    $stmt->bindParam(':suplier_id', $suplier_id);
     $stmt->execute();
 } elseif ($reportType === 'weekly') {
     $startDate = date('m/d/y', strtotime($_POST['weekly_start_date']));
     $endDate = date('m/d/y', strtotime($_POST['weekly_end_date']));
-    $sql = "SELECT * FROM sales WHERE curdate BETWEEN :start AND :end";
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM sales WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $startDate);
     $stmt->bindParam(':end',  $endDate);
+    $stmt->bindParam(':suplier_id', $suplier_id);
     $stmt->execute();
 } elseif ($reportType === 'monthly') {
     $year =$_POST['monthly_year'];
     $month  = $_POST['monthly_month'];
-    $sql = "SELECT * FROM sales WHERE RIGHT(curdate, 2) = :year AND SUBSTRING(curdate, 1, 2) = :month";
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM sales WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND customer_id = :suplier_id GROUP BY invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':year', $year);
     $stmt->bindParam(':month', $month);
+    $stmt->bindParam(':suplier_id', $suplier_id);
     $stmt->execute();
 } elseif ($reportType === 'range') {
-    $rangeStartDate =date("y-m-d", strtotime($_POST['range_start_date']));
-    $rangeEndDate = date("y-m-d", strtotime($_POST['range_end_date'])); 
-    $sql = "SELECT * FROM sales WHERE  DATE_FORMAT(STR_TO_DATE(curdate, '%m/%d/%Y'), '%y-%m-%d')  BETWEEN :start AND :end";
+    $rangeStartDate =date("m/d/y", strtotime($_POST['range_start_date']));
+    $rangeEndDate = date("m/d/y", strtotime($_POST['range_end_date'])); 
+    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM sales WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $rangeStartDate);
     $stmt->bindParam(':end', $rangeEndDate);
+    $stmt->bindParam(':suplier_id', $suplier_id);
     $stmt->execute();
 }
 
@@ -285,14 +304,16 @@ $reportType = $_POST['report_type'];
 
 foreach ($stmt as $row) { 
 ?>
-<tr class="record">
-<td><?php echo $row['transaction_id']; ?></td>
-<td><?php echo $row['curdate']; ?> </td>
+
+<tr  class='record clickable-row' data-href='salesinvsumm.php?invoice_number=<?php echo $row['invoice_number']; ?>'>
+<td><?php echo $row['date']; ?> </td>
 <td><?php echo $row['invoice_number']; ?> </td>
-<td> <?php echo $row['cashier']; ?> </td>
-<td><?php echo  $row['amount']; ?> </td>
+<td><?php echo  $row['total']; ?> </td>
 </tr>
 <?php
+}
+
+
 }
 ?>
 <tr>
@@ -347,4 +368,18 @@ return false;
 
 </script>
 
+
+
+ <script>
+        // Add a click event handler to each row with the 'clickable-row' class
+        document.addEventListener("DOMContentLoaded", function () {
+            const rows = document.querySelectorAll(".clickable-row");
+            rows.forEach((row) => {
+                row.addEventListener("click", function () {
+                    window.location.href = this.dataset.href;
+                });
+            });
+        });
+    </script>
+    
 </html>

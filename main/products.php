@@ -192,7 +192,9 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
-<a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Medicine</button></a><br><br><br/>
+<a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Item</button></a><br><br><br/>
+<a rel="facebox" href="uploadproducts.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Upload products</button></a><br><br><br/>
+
 
 <p style="text-align:center">Ojinga Pharmacy</p>
 <p style="text-align:center">Kutch road ,West,plot No:95e, Jinja</p>

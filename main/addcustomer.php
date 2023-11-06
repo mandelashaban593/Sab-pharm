@@ -4,6 +4,7 @@
 <hr>
 <div id="ac">
 <span>Full Name : </span><input type="text" style="width:265px; height:30px;" name="name" placeholder="Full Name" Required/><br>
+<span>Contact Person: </span><input type="text" style="width:265px; height:30px;" name="contact_person" required/><br>
 <span>Address : </span><input type="text" style="width:265px; height:30px;" name="address" placeholder="Address"/><br>
 <span>Contact : </span><input type="text" style="width:265px; height:30px;" name="contact" placeholder="Contact"/><br>
 <span> </span><input type="hidden" style="width:265px; height:30px;" name="memno" value="0" placeholder="Total"/><br>

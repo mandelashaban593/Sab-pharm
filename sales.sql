@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 07, 2023 at 04:40 PM
+-- Generation Time: Oct 30, 2023 at 09:54 AM
 -- Server version: 8.0.34-0ubuntu0.22.04.1
--- PHP Version: 8.1.2-1ubuntu2.14
+-- PHP Version: 8.1.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -47,7 +47,9 @@ INSERT INTO `assets` (`transaction_id`, `entry_date`, `name`, `amount`, `supplie
 (3, '10/01/23', 'Chair', '40000', 'Babekri Sadala', 'current', 'For office'),
 (4, '10/01/23', '1 table', '30000', 'Ken', 'current', 'For office'),
 (5, '10/01/23', 'pen', '1000', 'sum', 'current', 'For office'),
-(6, '10/01/23', 'Book', '1000', 'Chris', 'current', 'For office');
+(6, '10/01/23', 'Book', '1000', 'Chris', 'current', 'For office'),
+(7, '10/11/23', 'speaker', '25000', 'kkl', 'current', 'p'),
+(8, '10/12/23', 'carteen', '40000', 'po', 'current', 'pp');
 
 -- --------------------------------------------------------
 
@@ -174,7 +176,9 @@ INSERT INTO `liabilities` (`transaction_id`, `entry_date`, `name`, `amount`, `su
 (5, '07/15/22', '2 tables', '65000', '', 'current', 'sabs'),
 (6, '10/01/23', 'Jerican', '5000', '', 'current', 'from jj'),
 (7, '10/01/23', 'monitor', '140000', '', 'current', 'from HP Ent'),
-(8, '10/01/23', 'CPU', '400000', '', 'current', 'From Comp Ent');
+(8, '10/01/23', 'CPU', '400000', '', 'current', 'From Comp Ent'),
+(9, '10/12/23', 'Loan', '200000', '', 'long', 'kk'),
+(10, '10/12/23', 'Chair', '30000', '', 'current', 'll');
 
 -- --------------------------------------------------------
 
@@ -249,47 +253,64 @@ CREATE TABLE `products` (
   `qty_left` int DEFAULT NULL,
   `category` varchar(266) DEFAULT NULL,
   `status` varchar(266) DEFAULT NULL,
-  `batch_no` varchar(255) DEFAULT NULL
+  `batch_no` varchar(255) DEFAULT NULL,
+  `inventory` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`) VALUES
-(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '99998', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B211'),
-(4, '', '', '', '', '900', '1600', '700', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton	', '101923', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B111'),
-(5, '', '', '', '', '200', '1000', '800', 'Tech Ltd', 0, 0, 0, '', '2044-11-16', 'Painkiller', '264', 'Bot', '11/15/20', '07/13/22', '32000', 'n-20', 160, 'Abdominal', 'Approved', NULL),
-(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '641', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Approved', NULL),
-(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '294', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Approved', NULL),
-(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1177', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Approved', NULL),
-(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9413', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Approved', NULL),
-(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '90000', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Approved', NULL),
-(12, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '100', 'Guardian Pharmacy', 0, 9000, 0, '2027-10-07', 'Quatem', 'Quatem', '18910', 'Tab', '2023-10-02', NULL, NULL, 'DD093', 0, 'Painkiller', 'Approved', NULL),
-(13, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '500', 'Super Medic', 0, 10000, 0, '2055-10-05', 'Ceptrine', 'Ceptrine', '10021', 'Tab', '2023-10-01', NULL, '4000000', 'HFFF43', 0, 'Painkiller', 'Approved', NULL),
-(14, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '1600', 'Super Medic', 0, 9000, 0, '2033-06-02', 'ArtEFAN', 'ArtEFAN', '8981', 'Tab', '2023-10-02', NULL, '21600000', 'nn-303', 0, 'Antimalario', 'Approved', NULL),
-(15, 'Periton	', '', 'Periton	', NULL, '900', '1600', '2600', 'Super Medic', 0, 200, 0, '2023-10-26', 'Periton	', 'Periton	', '190', 'cash', '2023-10-05', NULL, '700000', '9s', 100000, 'Head ache', 'Approved', 'B632'),
-(16, 'Mabendozol', 'Mabendozol', 'Mabendozol', NULL, '150', '200', '5564', 'Super Medic', 0, 140, 0, '2023-11-03', 'Mabendozol', 'Mabendozol', '133', 'cash', '2023-10-05', NULL, '800000', '392', 200, 'Urinary affection', 'Approved', 'B6432'),
-(17, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '12750', 'whitestar', 0, 50, 0, '2023-10-21', 'Asprine', 'Asprine', '270', 'cash', '2023-10-05', NULL, '640000', 'fff-933', 0, 'PainKiller', 'Approved', 'B11873'),
-(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '306', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Approved', 'RS2132'),
-(19, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '6903', 'abacus pharmacy', 0, 89, 0, '2023-10-04', 'Ceptrine', 'Ceptrine', '89', 'cash', '2023-10-05', NULL, '650000', 'HFFF43', 89, 'Painkiller', 'Approved', 'B987544'),
-(20, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '9010', 'abacus pharmacy', 0, 78, 0, '2023-10-25', 'ArtEFAN', 'ArtEFAN', '78', 'cash', '2023-10-05', NULL, '890000', 'nn-303', 78, 'Antimalario', 'Approved', 'B87233'),
-(21, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '304', 'Super Medic', 0, 44, 0, '2023-10-12', 'Capsul', 'Capsul', '90039', 'credit', '2023-10-05', NULL, '20000', 'f34', 44, 'Painkiller', 'Approved', 'B7201'),
-(22, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '9600', 'Super Medic', 0, 34, 0, '2023-11-01', 'Ceptrine', 'Ceptrine', '123', 'credit', '2023-10-05', NULL, '340000', 'HFFF43', 34, 'Painkiller', 'Approved', 'B78532'),
-(23, 'D-Artepp', 'D-Artepp', 'D-Artepp', '120', '120', '200', '80', 'None', 0, 20, 0, '2023-11-01', 'D-Artepp', 'D-Artepp', '20', 'Stp', '2023-10-06', NULL, '2400', 'D876', 0, 'Healer', 'Approved', NULL),
-(24, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '1050', 'Super Medic', 0, 4, 0, '2023-10-07', 'Painkiller', 'Painkiller', '4', 'cash', '2023-10-07', NULL, '5000', 'n-20', 4, 'Abdominal', 'Approved', 'b3'),
-(25, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '800', 'Super Medic', 0, 5, 0, '2023-10-04', 'Painkiller', 'Painkiller', '5', 'cash', '2023-10-07', NULL, '5000', 'n-20', 5, 'Abdominal', 'Approved', 'b6'),
-(26, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '600', 'Super Medic', 0, 2, 0, '2023-10-25', 'Ceptrine', 'Ceptrine', '2', 'cash', '2023-10-07', NULL, '2000', 'HFFF43', 2, 'Painkiller', 'Approved', 'B66'),
-(27, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3850', 'Super Medic', 0, 3, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-07', NULL, '12000', '392', 3, 'Urinary affection', 'Approved', 'b4'),
-(28, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '-20', 'abacus pharmacy', 0, 5, 0, '2023-10-07', 'Painkiller', 'Painkiller', '5', 'cash', '', NULL, '900', 'n-20', 5, 'Abdominal', 'Approved', 'B64'),
-(29, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '-234', 'abacus pharmacy', 0, 6, 0, '2023-10-05', 'Ceptrine', 'Ceptrine', '90200', 'cash', '', NULL, '1000', 'HFFF43', 6, 'Painkiller', 'Approved', 'B88'),
-(30, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3350', 'Guardian Pharmacy', 0, 2, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '2', 'cash', '2023-10-12', NULL, '7000', '392', 2, 'Urinary affection', 'Approved', 'B31'),
-(31, 'Kuiris', 'Kuiris', 'Kuiris', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Kuiris', 'Kuiris', '0', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL),
-(32, 'Centaprintecil', 'Centaprintecil', 'Centaprintecil', '0', '0', '300', '300', 'None', 0, 4, 0, '', 'Centaprintecil', 'Centaprintecil', '4', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL),
-(33, 'Pensil', 'Pensil', 'Pensil', '0', '0', '300', '300', 'None', 0, 12, 0, '', 'Pensil', 'Pensil', '24', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL),
-(34, 'Muniscapuls', 'Munis capuls', 'Muniscapuls', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Muniscapuls', 'Muniscapuls', '', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL),
-(35, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '819', 'Super Medic', 0, 23, 0, '2023-10-11', 'Asprine', 'Asprine', '23', 'cash', '2023-10-11', NULL, '20000', 'fff-933', 23, 'PainKiller', 'Approved', 'B43'),
-(36, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '-1538', 'Super Medic', 0, 522, 0, '2023-10-17', 'ArtEFAN', 'ArtEFAN', '522', 'cash', '2023-10-11', NULL, '450000', 'nn-303', 522, 'Antimalario', 'Approved', 'B722');
+INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`, `inventory`) VALUES
+(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '110000', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B211', NULL),
+(4, '', '', '', '', '900', '1600', '700', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton	', '109923', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B111', NULL),
+(5, '', '', '', '', '200', '1000', '800', 'Tech Ltd', 0, 0, 0, '', '2044-11-16', 'Painkiller', '264', 'Bot', '11/15/20', '07/13/22', '32000', 'n-20', 160, 'Abdominal', 'Approved', NULL, NULL),
+(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '100639', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Approved', NULL, NULL),
+(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '294', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Approved', NULL, NULL),
+(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1167', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Approved', NULL, NULL),
+(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9413', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Approved', NULL, NULL),
+(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '90000', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Approved', NULL, NULL),
+(12, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '100', 'Guardian Pharmacy', 0, 9000, 0, '2027-10-07', 'Quatem', 'Quatem', '18910', 'Tab', '2023-10-02', NULL, NULL, 'DD093', 0, 'Painkiller', 'Approved', NULL, NULL),
+(13, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '500', 'Super Medic', 0, 10000, 0, '2055-10-05', 'Ceptrine', 'Ceptrine', '10021', 'Tab', '2023-10-01', NULL, '4000000', 'HFFF43', 0, 'Painkiller', 'Approved', NULL, NULL),
+(14, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '1600', 'Super Medic', 0, 9000, 0, '2033-06-02', 'ArtEFAN', 'ArtEFAN', '8988', 'Tab', '2023-10-02', NULL, '21600000', 'nn-303', 0, 'Antimalario', 'Approved', NULL, NULL),
+(15, 'Periton	', '', 'Periton	', NULL, '900', '1600', '2600', 'Super Medic', 0, 200, 0, '2023-10-26', 'Periton	', 'Periton	', '188', 'cash', '2023-10-05', NULL, '700000', '9s', 100000, 'Head ache', 'Approved', 'B632', NULL),
+(16, 'Mabendozol', 'Mabendozol', 'Mabendozol', NULL, '150', '200', '5564', 'Super Medic', 0, 140, 0, '2023-11-03', 'Mabendozol', 'Mabendozol', '131', 'cash', '2023-10-05', NULL, '800000', '392', 200, 'Urinary affection', 'Approved', 'B6432', NULL),
+(17, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '12750', 'whitestar', 0, 50, 0, '2023-10-21', 'Asprine', 'Asprine', '3998', 'cash', '2023-10-05', NULL, '640000', 'fff-933', 0, 'PainKiller', 'Approved', 'B11873', NULL),
+(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '306', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Approved', 'RS2132', NULL),
+(19, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '6903', 'abacus pharmacy', 0, 89, 0, '2023-10-04', 'Ceptrine', 'Ceptrine', '8976', 'cash', '2023-10-05', NULL, '650000', 'HFFF43', 89, 'Painkiller', 'Approved', 'B987544', NULL),
+(20, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '9010', 'abacus pharmacy', 0, 78, 0, '2023-10-25', 'ArtEFAN', 'ArtEFAN', '70', 'cash', '2023-10-05', NULL, '890000', 'nn-303', 78, 'Antimalario', 'Approved', 'B87233', NULL),
+(21, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '304', 'Super Medic', 0, 44, 0, '2023-10-12', 'Capsul', 'Capsul', '90039', 'credit', '2023-10-05', NULL, '20000', 'f34', 44, 'Painkiller', 'Approved', 'B7201', NULL),
+(22, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '9600', 'Super Medic', 0, 34, 0, '2023-11-01', 'Ceptrine', 'Ceptrine', '123', 'credit', '2023-10-05', NULL, '340000', 'HFFF43', 34, 'Painkiller', 'Approved', 'B78532', NULL),
+(23, 'D-Artepp', 'D-Artepp', 'D-Artepp', '120', '120', '200', '80', 'None', 0, 20, 0, '2023-11-01', 'D-Artepp', 'D-Artepp', '20', 'Stp', '2023-10-06', NULL, '2400', 'D876', 0, 'Healer', 'Approved', NULL, NULL),
+(24, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '1050', 'Super Medic', 0, 4, 0, '2023-10-07', 'Painkiller', 'Painkiller', '4', 'cash', '2023-10-07', NULL, '5000', 'n-20', 4, 'Abdominal', 'Approved', 'b3', NULL),
+(25, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '800', 'Super Medic', 0, 5, 0, '2023-10-04', 'Painkiller', 'Painkiller', '2', 'cash', '2023-10-07', NULL, '5000', 'n-20', 5, 'Abdominal', 'Approved', 'b6', NULL),
+(26, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '600', 'Super Medic', 0, 2, 0, '2023-10-25', 'Ceptrine', 'Ceptrine', '2', 'cash', '2023-10-07', NULL, '2000', 'HFFF43', 2, 'Painkiller', 'Approved', 'B66', NULL),
+(27, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3850', 'Super Medic', 0, 3, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-07', NULL, '12000', '392', 3, 'Urinary affection', 'Approved', 'b4', NULL),
+(28, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '-20', 'abacus pharmacy', 0, 5, 0, '2023-10-07', 'Painkiller', 'Painkiller', '10', 'cash', '', NULL, '900', 'n-20', 5, 'Abdominal', 'Approved', 'B64', NULL),
+(29, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '-234', 'abacus pharmacy', 0, 6, 0, '2023-10-05', 'Ceptrine', 'Ceptrine', '90200', 'cash', '', NULL, '1000', 'HFFF43', 6, 'Painkiller', 'Approved', 'B88', NULL),
+(30, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3350', 'Guardian Pharmacy', 0, 2, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '2', 'cash', '2023-10-12', NULL, '7000', '392', 2, 'Urinary affection', 'Approved', 'B31', NULL),
+(31, 'Kuiris', 'Kuiris', 'Kuiris', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Kuiris', 'Kuiris', '0', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL, NULL),
+(32, 'Centaprintecil', 'Centaprintecil', 'Centaprintecil', '0', '0', '300', '300', 'None', 0, 4, 0, '', 'Centaprintecil', 'Centaprintecil', '4', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
+(33, 'Pensil', 'Pensil', 'Pensil', '0', '0', '300', '300', 'None', 0, 12, 0, '', 'Pensil', 'Pensil', '24', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL, NULL),
+(34, 'Muniscapuls', 'Munis capuls', 'Muniscapuls', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Muniscapuls', 'Muniscapuls', '', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
+(35, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '819', 'Super Medic', 0, 23, 0, '2023-10-11', 'Asprine', 'Asprine', '26', 'cash', '2023-10-11', NULL, '20000', 'fff-933', 23, 'PainKiller', 'Approved', 'B43', NULL),
+(36, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '-1538', 'Super Medic', 0, 522, 0, '2023-10-17', 'ArtEFAN', 'ArtEFAN', '522', 'cash', '2023-10-11', NULL, '450000', 'nn-303', 522, 'Antimalario', 'Approved', 'B722', NULL),
+(37, 'Amoin', 'Amoin', 'Amoin', '0', '0', '400', '40', 'None', 0, 0, 0, '', 'Amoin', 'Amoin', '8995', 'Gell', '+03002023-10-11T00:39:02+03:0031-11-2023', NULL, '0', 'D876', 0, 'Antiprotoazol', 'Approved', '', 'Consumable'),
+(38, 'REMOS', 'REMOS', 'REMOS', '0', '0', '500', '500', 'None', 0, 0, 0, '', 'REMOS', 'REMOS', '8995', 'Tabs', '10/11/23', NULL, '0', 'D876', 0, 'Anti-ulcers', 'Approved', '', 'Consumable'),
+(39, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(40, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(41, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(42, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(43, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(44, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(45, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 10000, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(46, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 40, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
+(47, 'Amoin', 'Amoin', 'Amoin', '0', '0', '400', '', 'None', 0, 6000, 0, '', 'Amoin', 'Amoin', '8995', 'Tabs', '10/12/23', NULL, '0', 'D876', 6000, 'Anti-spasmotic', 'Approved', '', 'Consumable'),
+(48, 'Periton	', '', 'Periton	', '900', '900', '1600', '-868', 'Guardian Pharmacy', 0, 8000, 0, '2023-10-26', 'Periton	', 'Periton	', '8003', 'cash', '2023-10-12', NULL, '260000', '9s', 8000, 'Head ache', 'Approved', 'B7777', NULL),
+(49, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '19850', 'Super Medic', 0, 3, 0, '2023-10-18', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-27', NULL, '60000', '392', 3, 'Urinary affection', 'Approved', 'B33', NULL),
+(50, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '14850', 'Super Medic', 0, 6, 0, '2023-10-31', 'Capsul', 'Capsul', '6', 'cash', '2023-10-27', NULL, '90000', 'f34', 6, 'Painkiller', 'Approved', 'B7322', NULL),
+(51, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '6616', 'dddd5', 0, 3, 0, '2023-10-28', 'Asprine', 'Asprine', '3', 'cash', '2023-10-28', NULL, '20000', 'fff-933', 3, 'PainKiller', 'Approved', 'B344', NULL),
+(52, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '124950', 'Hans kk2', 0, 2, 0, '2023-11-04', 'Asprine', 'Asprine', '0', 'cash', '2023-10-28', NULL, '250000', 'fff-933', 2, 'PainKiller', 'Approved', 'B544', NULL);
 
 -- --------------------------------------------------------
 
@@ -442,7 +463,18 @@ INSERT INTO `purchases_ret` (`transaction_id`, `invoice_number`, `cashier`, `cur
 (0, 'RS553', 'admin', NULL, 'cash', '30.00', '-120', '2023-10-07', 'Guardian Pharmacy', '0', NULL, NULL, '10:06:10', '2023-10-12', 'B88', '11', '6000', 'cash', '200', '2023-10-19', '6'),
 (0, 'RS553', 'admin', NULL, 'cash', '3500.00', '3350', '2023-10-07', 'Guardian Pharmacy', '0', NULL, NULL, '10:06:10', '2023-10-12', 'B31', '16', '7000', 'cash', '2', '2023-10-25', '6'),
 (0, 'RS3242251', 'admin', NULL, 'cash', '869.57', '819', '2023-10-07', 'Super Medic', '0', NULL, NULL, '16:24:43', '2023-10-11', 'B43', '10', '20000', 'cash', '23', '2023-10-11', '4'),
-(0, 'RS3242251', 'admin', NULL, 'cash', '862.07', '-1538', '2023-10-07', 'Super Medic', '0', NULL, NULL, '16:24:43', '2023-10-11', 'B722', '20', '450000', 'cash', '522', '2023-10-17', '4');
+(0, 'RS3242251', 'admin', NULL, 'cash', '862.07', '-1538', '2023-10-07', 'Super Medic', '0', NULL, NULL, '16:24:43', '2023-10-11', 'B722', '20', '450000', 'cash', '522', '2023-10-17', '4'),
+(0, 'RS341200', 'admin', NULL, 'cash', '32.50', '-868', '2023-10-12', 'Guardian Pharmacy', '0', NULL, NULL, '14:16:32', '2023-10-12', 'B7777', '4', '260000', 'cash', '8000', '2023-10-26', '6'),
+(0, 'RS341200', 'admin', NULL, 'cash', '32.50', '-868', '2023-10-12', 'Guardian Pharmacy', '0', NULL, NULL, '14:17:00', '2023-10-12', 'B7777', '4', '260000', 'cash', '8000', '2023-10-26', '6'),
+(0, 'RS920303', 'admin', NULL, 'cash', '20000.00', '19850', '2023-10-27', 'Super Medic', '0', NULL, NULL, '11:53:18', '2023-10-27', 'B33', '27', '60000', 'cash', '3', '2023-10-18', '4'),
+(0, 'RS920303', 'admin', NULL, 'cash', '15000.00', '14850', '2023-10-27', 'Super Medic', '0', NULL, NULL, '11:53:18', '2023-10-27', 'B7322', '11', '90000', 'cash', '6', '2023-10-31', '4'),
+(0, 'RS920303', 'admin', NULL, 'cash', '14285.71', '11885', '2023-10-27', 'Super Medic', '0', NULL, NULL, '11:53:19', '2023-10-27', 'B7322', '14', '100000', 'cash', '7', '2023-10-27', '4'),
+(0, 'RS30023', 'admin', NULL, 'cash', '6666.67', '6616', '2023-10-28', 'dddd5', '0', NULL, NULL, '17:07:58', '2023-10-28', 'B344', '35', '20000', 'cash', '3', '2023-10-28', '8'),
+(0, 'RS30023', 'admin', NULL, 'cash', '7500.00', '7300', '2023-10-28', 'dddd5', '0', NULL, NULL, '17:07:58', '2023-10-28', 'B33', '28', '30000', 'cash', '4', '2023-11-10', '8'),
+(0, 'RS30023', 'admin', NULL, 'cash', '6666.67', '6616', '2023-10-28', 'dddd5', '0', NULL, NULL, '17:08:22', '2023-10-28', 'B344', '35', '20000', 'cash', '3', '2023-10-28', '8'),
+(0, 'RS30023', 'admin', NULL, 'cash', '7500.00', '7300', '2023-10-28', 'dddd5', '0', NULL, NULL, '17:08:22', '2023-10-28', 'B33', '28', '30000', 'cash', '4', '2023-11-10', '8'),
+(0, 'RS11212', 'admin', NULL, 'cash', '50000.00', '49100', '2023-10-28', 'Hans kk2', '0', NULL, NULL, '17:11:12', '2023-10-28', 'B344', '48', '150000', 'cash', '3', '2023-10-26', '7'),
+(0, 'RS11212', 'admin', NULL, 'cash', '125000.00', '124950', '2023-10-28', 'Hans kk2', '0', NULL, NULL, '17:11:12', '2023-10-28', 'B544', '10', '250000', 'cash', '2', '2023-11-04', '7');
 
 -- --------------------------------------------------------
 
@@ -605,7 +637,18 @@ INSERT INTO `sales` (`transaction_id`, `invoice_number`, `cashier`, `curdate`, `
 (31, 'RS-27234', 'admin', NULL, 'cash', '1600', '700', '2023-10-07', 'Remmy', '0', NULL, NULL, '16:17:31', '10/07/23', NULL, '4', '8000.00', 'cash', '5', '7'),
 (32, 'RS-27234', 'admin', NULL, 'cash', '300', '100', '2023-10-07', 'Remmy', '0', NULL, NULL, '16:17:31', '10/07/23', NULL, '12', '600.00', 'cash', '2', '7'),
 (33, 'RS-5333392', 'admin', NULL, 'cash', '1000', '800', '2023-10-07', 'John', '0', NULL, NULL, '16:40:00', '2023-10-11', NULL, '5', '2000.00', 'cash', '2', '2'),
-(34, 'RS-5333392', 'admin', NULL, 'cash', '200', '111516', '2023-10-07', 'John', '0', NULL, NULL, '16:40:00', '2023-10-11', NULL, '18', '600.00', 'cash', '3', '2');
+(34, 'RS-5333392', 'admin', NULL, 'cash', '200', '111516', '2023-10-07', 'John', '0', NULL, NULL, '16:40:00', '2023-10-11', NULL, '18', '600.00', 'cash', '3', '2'),
+(35, 'RS-00332002', 'admin', NULL, 'cash', '1500', '600', '2023-10-11', 'kelvin', '0', NULL, NULL, '22:29:55', '2023-10-11', NULL, '3', '3000.00', 'cash', '2', '3'),
+(36, 'RS-00332002', 'admin', NULL, 'cash', '200', '50', '2023-10-11', 'kelvin', '0', NULL, NULL, '22:29:56', '2023-10-11', NULL, '9', '600.00', 'cash', '3', '3'),
+(37, 'RS-243329', 'admin', NULL, 'cash', '200', '50', '2023-10-11', 'Ruky Pharmacy', '0', NULL, NULL, '22:42:38', '2023-10-11', NULL, '9', '600.00', 'cash', '3', '5'),
+(38, 'RS-243329', 'admin', NULL, 'cash', '200', '5564', '2023-10-11', 'Ruky Pharmacy', '0', NULL, NULL, '22:42:38', '2023-10-11', NULL, '16', '400.00', 'cash', '2', '5'),
+(39, 'RS-32940', 'admin', NULL, 'cash', '200', '50', '2023-10-11', 'Remmy', '0', NULL, NULL, '22:44:04', '2023-10-11', NULL, '9', '800.00', 'cash', '4', '7'),
+(40, 'RS-32940', 'admin', NULL, 'cash', '1600', '2600', '2023-10-11', 'Remmy', '0', NULL, NULL, '22:44:05', '2023-10-11', NULL, '15', '3200.00', 'cash', '2', '7'),
+(41, 'RS-393302', 'admin', NULL, 'cash', '900', '6903', '2023-10-12', 'John', '0', NULL, NULL, '13:55:34', '2023-10-12', NULL, '19', '1800.00', 'cash', '2', '2'),
+(42, 'RS-2226333', 'admin', NULL, 'cash', '900', '6903', '2023-10-12', 'Ruky Pharmacy', '0', NULL, NULL, '14:01:51', '2023-10-12', NULL, '19', '6300.00', 'cash', '7', '5'),
+(43, 'RS-2462363', 'admin', NULL, 'cash', '900', '6903', '2023-10-12', 'Ruky Pharmacy', '0', NULL, NULL, '14:02:28', '2023-10-12', NULL, '19', '1800.00', 'cash', '2', '5'),
+(44, 'RS-3652339', 'admin', NULL, 'cash', '900', '6903', '2023-10-12', 'kelvin', '0', NULL, NULL, '14:03:21', '2023-10-12', NULL, '19', '1800.00', 'cash', '2', '3'),
+(45, 'RS-3652339', 'admin', NULL, 'cash', '4000', '9010', '2023-10-12', 'kelvin', '0', NULL, NULL, '14:03:21', '2023-10-12', NULL, '20', '32000.00', 'cash', '8', '3');
 
 -- --------------------------------------------------------
 
@@ -730,6 +773,50 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `position`) VALUES
 (6, 'guardian', 'guardian', 'Guardian Pharmacy', 'supplier'),
 (7, 'medic', 'medic', 'Super Medic', 'supplier');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wsales`
+--
+
+CREATE TABLE `wsales` (
+  `transaction_id` int DEFAULT NULL,
+  `invoice_number` varchar(100) NOT NULL,
+  `cashier` varchar(100) NOT NULL,
+  `curdate` varchar(255) DEFAULT NULL,
+  `type` varchar(100) NOT NULL,
+  `amount` varchar(100) NOT NULL,
+  `profit` varchar(100) NOT NULL,
+  `due_date` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `balance` varchar(100) NOT NULL DEFAULT '0',
+  `SalesOrderID` varchar(255) DEFAULT NULL,
+  `amt_paid` int DEFAULT NULL,
+  `tme` varchar(255) DEFAULT NULL,
+  `date` varchar(266) DEFAULT NULL,
+  `batch_no` varchar(266) DEFAULT NULL,
+  `productid` varchar(266) DEFAULT NULL,
+  `total` varchar(266) DEFAULT NULL,
+  `pay_type` varchar(266) DEFAULT NULL,
+  `quantity` varchar(266) DEFAULT NULL,
+  `customer_id` varchar(266) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `wsales`
+--
+
+INSERT INTO `wsales` (`transaction_id`, `invoice_number`, `cashier`, `curdate`, `type`, `amount`, `profit`, `due_date`, `name`, `balance`, `SalesOrderID`, `amt_paid`, `tme`, `date`, `batch_no`, `productid`, `total`, `pay_type`, `quantity`, `customer_id`) VALUES
+(NULL, 'RS-22823026', 'admin', NULL, 'cash', '1000.00', '850', '2023-10-12', 'kelvin', '0', NULL, NULL, '10:58:50', '2023-10-12', '', '9', '6000', 'cash', '6', '3'),
+(NULL, 'RS-22823026', 'admin', NULL, 'cash', '35000.00', '34100', '2023-10-12', 'kelvin', '0', NULL, NULL, '10:58:50', '2023-10-12', '', '15', '70000', 'cash', '2', '3'),
+(NULL, 'RS-3230023', 'admin', NULL, 'cash', '18000.00', '17600', '2023-10-12', 'Ruky Pharmacy', '0', NULL, NULL, '13:47:19', '2023-10-12', '', '19', '90000', 'cash', '5', '5'),
+(NULL, 'RS-2022027', 'admin', NULL, 'cash', '8333.33', '7933', '2023-10-12', '', '0', NULL, NULL, '13:53:09', '2023-10-12', '', '19', '25000', 'cash', '3', ''),
+(NULL, 'RS-333372', 'admin', NULL, 'cash', '16666.67', '16266', '2023-10-12', 'JJ Pharmacy', '0', NULL, NULL, '13:58:38', '2023-10-12', '', '19', '50000', 'cash', '3', '6'),
+(NULL, 'RS-6230372', 'admin', NULL, 'cash', '40000.00', '39950', '2023-10-29', 'JJ Pharmacy', '0', NULL, NULL, '08:23:17', '2023-10-29', 'B544', '52', '80000', 'cash', '2', '6'),
+(NULL, 'RS-6230372', 'admin', NULL, 'cash', '6666.67', '6466', '2023-10-29', 'JJ Pharmacy', '0', NULL, NULL, '08:23:18', '2023-10-29', 'b6', '25', '20000', 'cash', '3', '6'),
+(NULL, 'RS-23353', 'admin', NULL, 'cash', '150', '100', '2023-10-29', 'Ruky Pharmacy', '0', NULL, NULL, '08:51:17', '2023-10-29', 'B11873', '17', '', 'cash', '2', '5'),
+(NULL, 'RS-23353', 'admin', NULL, 'cash', '1000', '800', '2023-10-29', 'Ruky Pharmacy', '0', NULL, NULL, '08:51:17', '2023-10-29', 'B64', '28', '', 'cash', '3', '5');
+
 --
 -- Indexes for dumped tables
 --
@@ -832,7 +919,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `assets`
 --
 ALTER TABLE `assets`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `collection`
@@ -862,7 +949,7 @@ ALTER TABLE `expenses`
 -- AUTO_INCREMENT for table `liabilities`
 --
 ALTER TABLE `liabilities`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -874,7 +961,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `purchases`
@@ -898,7 +985,7 @@ ALTER TABLE `purchase_details`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `sales_order`

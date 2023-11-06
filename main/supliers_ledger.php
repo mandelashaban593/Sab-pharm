@@ -153,14 +153,12 @@ echo formatMoney($dsdsd, true);
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 	<thead>
 		<tr>
-	<th>Transaction Id</th>
-	<th>Date</th>
-	<th>Product</th>
-	<th>Supplier</th>
-	<th>Quantity</th>
-	<th>Debit</th>
-	<th>Credit</th>
-	<th>Action</th>
+<th>Invoice Number</th>
+<th>Date</th>
+<th>Quantity</th>
+<th>Name</th>
+<th>Debit</th>
+<th>Credit</th>
 			
 
 		</tr>
@@ -184,9 +182,9 @@ echo formatMoney($dsdsd, true);
 
 
 
-	
 
-    		$sql = "SELECT product_id, reg_date, med_name, supplier,quantity, NULL AS Amount, price AS Debit, NULL AS Credit FROM purchase_details WHERE  reg_date  BETWEEN :a AND :b";
+    		$sql = "SELECT invoice_number, date, name, quantity, NULL AS Amount, amount AS Debit, NULL AS Credit 
+                   FROM purchases_ret WHERE date BETWEEN :a AND :b";
     		$results = $db->prepare($sql);
     		$results->bindParam(':a', $d1);
 				$results->bindParam(':b', $d2);
@@ -202,15 +200,14 @@ echo formatMoney($dsdsd, true);
 			?>
 
     <tr>
-        <td><?php echo $row['product_id']; ?></td>
-        <td><?php echo $row['reg_date']; ?></td>
-        <td><?php echo $row['med_name']; ?></td>
-        <td><?php echo $row['supplier']; ?></td>
+        <td><?php echo $row['invoice_number']; ?></td>
+        <td><?php echo $row['date']; ?></td>
         <td><?php echo $row['quantity']; ?></td>
-        <td><?php echo $row['Debit']; ?></td>
+
+        <td><?php echo $row['name']; ?></td>
+                <td><?php echo $row['Debit']; ?></td>
         <td><?php echo $row['Credit']; ?></td>
-        	<td><a rel="facebox" href="view_purchases_list.php?id=<?php echo $row['product_id']; ?>"> <button class="btn btn-primary btn-mini"><i class="icon-search"></i> View </button></a> 
-			<a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click To Delete"><button class="btn btn-danger btn-mini"><i class="icon-trash"></i> Delete </button></a></td>
+
 
     </tr>
 <?php } ?>

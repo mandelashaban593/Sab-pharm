@@ -5,6 +5,7 @@ include('../connect.php');
 if(isset($_POST['name'])) $name=$_POST['name'];
 if(isset($_POST['address'])) $address = $_POST['address'];
 if(isset($_POST['contact'])) $contact = $_POST['contact'];
+if(isset($_POST['contact_person'])) $contact_person = $_POST['contact_person'];
 
 if(isset($_POST['note'])) $note = $_POST['note'];
 
@@ -37,7 +38,7 @@ try {
     // Create a PDO database connectio
     
     // SQL query with placeholders
-    $sql = "INSERT INTO customer (customer_name,address,contact,note) VALUES (:customer_name, :address, :contact, :note)";
+    $sql = "INSERT INTO customer (customer_name,address,contact,note,contact_person) VALUES (:customer_name, :address, :contact, :note, :contact_person)";
     
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
@@ -47,6 +48,7 @@ try {
     $stmt->bindParam(':address', $address);
     $stmt->bindParam(':contact', $contact);
     $stmt->bindParam(':note', $note);
+    $stmt->bindParam(':contact_person', $contact_person);
     
     // Execute the query
     $stmt->execute();

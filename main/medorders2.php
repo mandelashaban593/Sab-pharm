@@ -1,7 +1,7 @@
 <?php 
 include('../conn2.php');
 
-    ?>
+?>
 
 <!DOCTYPE html>
 <html>
@@ -64,31 +64,7 @@ select option {
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function addRow() {
-            var table = document.getElementById("productTable");
-            var row = table.insertRow(table.rows.length);
-
-            var productCell = row.insertCell(0);
-            var batchnoCell = row.insertCell(1);
-            var expdateCell = row.insertCell(2);
-            var quantityCell = row.insertCell(3);
-            var priceCell = row.insertCell(4);
-            var amountCell = row.insertCell(5);
-            var paytypeCell = row.insertCell(6);
-
-            productCell.innerHTML = '<select name="productid[]" onchange="getProductDetails(this)" style="width:120px"><option value="">Select Medicine</option><?php echo getProductOptions(); ?></select>';
-            batchnoCell.innerHTML = '<input type="text" name="batch_no[]" placeholder="Batch No" >';
-            expdateCell.innerHTML = '<input type="date" name="expiry_date[]" placeholder=""Expiry date">';
-            quantityCell.innerHTML = '<input type="number" name="quantity[]" placeholder="Quantity" >';
-            priceCell.innerHTML = '<input type="number" name="price[]" placeholder="Price" readonly>';
-            amountCell.innerHTML = '<input  name="amount[]" placeholder="Amount"  onchange="calculateRate(this)">';
-            paytypeCell.innerHTML = '<select name="pay_type[]"  style="width:90x"><option value="cash">Cash</option><option value="credit">Credit</option></select>';
-
-
-
-
-
-        }
+  
 
         function getProductDetails(select) {
             var row = select.closest("tr");
@@ -258,111 +234,148 @@ if($position=='admin') {
 <br />
 <br />
 
-<form id="productForm" method="post" action="savepurchases.php" style="width:250px;margin-top: 50px;">
+<form id="productForm" method="post" action="savepurchases.php" style="width:150px;margin-top: 50px;">
 
 
         <table id="productTable" border="1"  style="width:150px">
             <tr>
+                <thead>               
                 <th>Medicine</th>
                 <th>Batch No</th>
                 <th>Expiry date</th>
                 <th>Quantity</th>
                 <th>Rate</th>
                 <th>Amount</th>
-                <th>Type</th>
-            </tr>
-            <tr>
-                <td>
-                    <select name="productid[]" onchange="getProductDetails(this)" style="width:120px" id="prod">
-                        <option value="">Select Medicine</option>
-                        <?php echo getProductOptions(); ?>
-                    </select>
-                </td>
-                <td><input type="text" name="batch_no[]" placeholder="Batch No"></td>
-                <td><input type="date" name="expiry_date[]" placeholder="Expiry date"></td>
-                <td><input type="number" name="quantity[]" placeholder="Quantity" ></td>
-                <td><input type="number" name="price[]" placeholder="Rate" readonly></td>
-                <td><input type="number" name="amount[]" placeholder="Amount"  onchange="calculateRate(this);"></td>
-                 <td>
-                    <select name="pay_type[]"  >
-                       <option value="cash">Cash</option>
-                       <option value="credit">Credit</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
+                  </thead>
+                <tbody id="table-body">
+                    <tr>
+                        <td>
+                            <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                            <div class="med_name_suggestions"></div>
+                        </td>
+                        <td>
+                            <input type="text" name="batch_no[]" class="batch_no_input" placeholder='Batch No'>
+                        </td>
+                          <td>
+                            <input type="date" name="expiry_date[]" class="expiry_date_input"  placeholder='Expiry date'>
+                        </td>
+                          <td>
+                            <input type="number" name="quantity[]" class="quantity_input" placeholder='Quantity'>
+                        </td>
+                          <td>
+                            <input type="text" name="price[]" class="price_input" placeholder='Rate' style="width:90px">
+                        </td>
+                          <td>
+                            <input type="text" name="amount[]" class="amount_input" placeholder='Amount' onchange="calculateRate(this)">
+                        </td>
+                        
+                        <td>
+                            <input type="hidden" name="productid[]" class="productid_input" placeholder='Product id'>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+           
+            <button type="button" onclick="addRow()">Add Row</button>
+        
          <div id="totalDisplay" style="margin:10px">
             Total: <span id="totalAmount">0</span>
           </div>
-
-        <button type="button" onclick="addRow()" style="width: 120px;">Add</button>
         <br><br>
         <input type="hidden" name="cashier" value="<?php echo $_SESSION['SESS_LAST_NAME']; ?>" />
         	 	<table><tr><td>
        <input type="text" name="invoice" placeholder="Enter invoice Number" /></td><td>
-       <input type="date" name="date" placeholder="Date" /></td></tr></table>
-        <table><tr><td>
+       <input type="date" name="date" placeholder="Date" /></td><td>
         <select name="customer_name" style="widt;" class="chzn-seect" required>
         <option>Select Supplier</option>
-	       <?php
-	    	$position = "supplier";
-			$result = $db->prepare("SELECT * FROM supliers");
-			$result->execute();
-			for($i=0; $row = $result->fetch(); $i++){
-		?>
-			<option value="<?php echo $row['suplier_id']; ?>"><?php echo $row['suplier_name']; ?></option>
-		<?php
-		}
-		?>
-        </select></td></tr></table>
+           <?php
+            $position = "supplier";
+            $result = $db->prepare("SELECT * FROM supliers");
+            $result->execute();
+            for($i=0; $row = $result->fetch(); $i++){
+        ?>
+            <option value="<?php echo $row['suplier_id']; ?>"><?php echo $row['suplier_name']; ?></option>
+        <?php
+        }
+        ?>
+        </select></td>
+        <td>
+        <select  name='pay_type' style='width:90px'><option value='cash'>Cash</option><option value='credit'>Credit</option></select>
+    </td></tr></table>
+        
 
         <input type="submit" value="Save" style="width: 120px;">
     </form>
 
-    <?php
+
+
+
+    <script>
+        function updateDropdown(input) {
+            const suggestionBox = input.parentElement.querySelector('.med_name_suggestions');
+            const userInput = input.value; // Get user input
+            var row = input.closest("tr");
+
+            // Send the user input to the server to fetch suggestions
+            fetch('fetch_medicine_suggestions.php', {
+                method: 'POST',
+                body: JSON.stringify({ userInput: userInput }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                suggestionBox.innerHTML = ''; // Clear previous suggestions
+                data.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.classList.add('suggestion-item');
+                    console.log(suggestion.med_name)
+                    suggestionItem.innerText =  suggestion.med_name +  "Batch No: " + suggestion.batch_no + ", Quantity: " + suggestion.quantity; 
+                    suggestionItem.onclick = function() {
+                        console.log("Med Name:" + suggestion.med_name)
+                        console.log('Batch No' + suggestion.batch_no)
+                        input.value = suggestion.med_name; // Set the input value
+                        row.cells[6].getElementsByTagName("input")[0].value = suggestion.product_id;
+                        suggestionBox.innerHTML = ''; // Clear the suggestions
+                    };
+                    suggestionBox.appendChild(suggestionItem);
+                });
+            })
+            .catch(error => console.error(error));
+        }
+
+        function addRow() {
+            const tableBody = document.getElementById('table-body');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>
+                    <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                    <div class="med_name_suggestions"></div>
+                </td>
+                  <td>
+                    <input type="text" name="batch_no[]" class="batch_no_input" placeholder='Batch No'>
+                </td>
+                  <td>
+                    <input type="date" name="expiry_date[]" class="expiry_date_input"  placeholder='Expiry date'>
+                </td>
+                  <td>
+                    <input type="number" name="quantity[]" class="quantity_input" placeholder='Quantity'>
+                </td>
+                  <td>
+                    <input type="text" name="price[]" class="price_input" placeholder='Rate' style="width:90px">
+                </td>
+                  <td>
+                    <input type="text" name="amount[]" class="amount_input" placeholder='Amount' onchange="calculateRate(this)">
+                </td>
+                <td>
+                    <input type="hidden" name="productid[]" class="productid_input" placeholder='productid' ">
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+    </script>
   
-
-    function getProductOptions() {
-        // Create a PDO database connection (replace with your credentials)
-        $hostname = 'localhost';
-        $username = 'root';
-        $password = '';
-        $database = 'sales';
-
-
-        try {
-            $pdo = new PDO("mysql:host=$hostname;dbname=$database", $username, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-            die();
-        }
-
-        // Retrieve product data from the database
-        $productOptions = "";
-        $query = "SELECT product_id,batch_no,exp_date,quantity, med_name, price FROM products";
-        $stmt = $pdo->query($query);
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-            $productID = $row['product_id'];
-            $productName = $row['med_name'];
-            $productPrice = $row['price'];
-            $batchNo= $row['batch_no'];
-            $exp_date = $row['exp_date'];
-            $quantity = $row['quantity'];
-            $selectWidth = "400px";
-            // Create an option element
-            $productOptions .= "<option value=\"$productID\" >$productName</option>";
-        }
-
-        return $productOptions;
-    }
-    ?>
-
-
-  <script>
-   
-  </script>
 
 
 </div>

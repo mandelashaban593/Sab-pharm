@@ -31,7 +31,6 @@ foreach ($productid as $key => $pid) {
        $prodid = $productid[$key];
        $qty = $quantity[$key]; // Use a different variable for quantity
    	$pri = $price[$key];    // Use a different variable for price
-    	$pty = $ptype[$key];  // Use a different variable for product type
     	$amt = $amount[$key];  // Use a different variable for product type
     	$batchno = $batch_no[$key];  // Use a different variable for product type
     	$expirydate = $expiry_date[$key];  // Use a different variable for product type
@@ -40,7 +39,7 @@ foreach ($productid as $key => $pid) {
        echo "Product 2: $prodid<br>";
        echo "Quantity 2: $qty<br>";
        echo "Price 2: $pri<br>";
-       echo "Type: $pty<br>";
+       echo "Type: $ptype<br>";
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
 
@@ -69,29 +68,69 @@ foreach ($productid as $key => $pid) {
 	$row_batch=mysqli_fetch_array($query);
 	if($row_batch){
 		echo "Update worked";
-	$sql = "UPDATE products 
-	        SET quantity='$qtyleft'
-			WHERE batch_no='$batchno'";
-	$query2 = mysqli_query($con, $sql) or die(mysqli_error($con));
+
+	 try {
+	    // Create a PDO database connection
+	    // SQL query for update
+	    $sql = "UPDATE products  SET quantity = :quantity WHERE product_id= :product_id";
+	    
+	    // Prepare the SQL statement
+	    $stmt = $db->prepare($sql);
+	    
+	    // Bind parameters
+	    $stmt->bindParam(':quantity', $qtyleft);
+	    $stmt->bindParam(':product_id', $prodid);
+	    // Execute the query
+	    $stmt->execute();
+	    
+	    $rowCount = $stmt->rowCount(); // Get the number of rows affected
+	    
+	   
+	  if ($rowCount > 0)
+	  {
+	  	echo "Product successfully updated";
+	    ?>
+	    
+
+	    <?php 
+	  }
+	  else
+	  {
+	  	echo "Product update failed";
+	    ?>
+	   
+
+	    <?php 
+	  }
+
+
+
+
+	} catch (PDOException $e) {
+	    echo "Error: " . $e->getMessage();
+	}
+
+
+
 	}
 
 	if(!$row_batch){
 	$sql = "INSERT INTO products (product_code,category,med_name,price,supplier,quantity,o_price,profit,gen_name,product_name,cost,onhand_qty,qty,qty_sold,expiry_date,date_arrival,sell_type,reg_date,tot_buy,del_no,qty_left,status,batch_no) VALUES (:a,:b,:c,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:k,:r,:s,:t,:u,:v,:w, :x)";
 	$q = $db->prepare($sql);
-	$q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$cname,':g'=>$qty,':h'=>$o_price2,':i'=>$profit2,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price2,':m'=>$onhand_qty,':n'=>$qty,':o'=>$qty_sold,':p'=>$expirydate,':q'=>$date,':r'=>$pty,':s'=>$date
+	$q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$cname,':g'=>$qty,':h'=>$o_price2,':i'=>$profit2,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price2,':m'=>$onhand_qty,':n'=>$qty,':o'=>$qty_sold,':p'=>$expirydate,':q'=>$date,':r'=>$ptype,':s'=>$date
 	,':t'=>$amt,':u'=>$del_no,':v'=>$qty,':w'=>$status,':x'=>$batchno));
 	}
 
 
-	if($pty=='cash') {
+	if($ptype=='cash') {
 		echo "OOOK CASH";
-	$sql = "INSERT INTO purchases_ret (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,exp_date,batch_no,suplier_id) VALUES ('$invoice','$cashier','$date','$pty','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$pty', '$qty', '$expirydate', '$batchno', '$suplier_id')";
+	$sql = "INSERT INTO purchases_ret (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,exp_date,batch_no,suplier_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$expirydate', '$batchno', '$suplier_id')";
 	$q = mysqli_query($con, $sql) or die(mysqli_error($con));
 	}
 	
-	if($pty=='credit') {
+	if($ptype=='credit') {
 		echo "OOOK CASH";
-	$sql = "INSERT INTO purchases_ret (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,exp_date,batch_no,suplier_id) VALUES ('$invoice','$cashier','$date','$pty','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$pty', '$qty', '$expirydate', '$batchno', '$suplier_id')";
+	$sql = "INSERT INTO purchases_ret (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,exp_date,batch_no,suplier_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$expirydate', '$batchno', '$suplier_id')";
 	$q = mysqli_query($con, $sql) or die(mysqli_error($con));
 	}
 	
@@ -103,10 +142,102 @@ foreach ($productid as $key => $pid) {
  }
 
 
- 
+
+
+
+  // Initialize the total amount
+$totalAmount = 0;
+
+// Iterate through the 'amount' array
+foreach ($_POST['amount'] as $amount) {
+    // Ensure the value is numeric before adding it to the total
+    if (is_numeric($amount)) {
+        $totalAmount += floatval($amount);
+    }
+}
+
+
+echo "Total amount: " . $totalAmount;
+
+
+if($ptype == "credit" ) {
+
+    try {
+    // Check if the suplier_id exists in the database
+    $checkQuery = "SELECT * FROM  purch_revenue  WHERE suplier_id = :suplier_id";
+    $stmt = $db->prepare($checkQuery);
+    $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        // The suplier_id exists; update the amount
+        $updateQuery = "UPDATE purch_revenue SET credit = credit + :credit,suplier_name = :suplier_name WHERE suplier_id = :suplier_id";
+        $stmt = $db->prepare($updateQuery);
+        $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+         $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+        $stmt->bindParam(':credit', $totalAmount, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "Amount updated successfully.";
+    } else {
+        // The suplier_id doesn't exist; insert a new record
+        $insertQuery = "INSERT INTO purch_revenue (suplier_id,suplier_name, credit) VALUES (:suplier_id,:suplier_name, :credit)";
+        $stmt = $db->prepare($insertQuery);
+        $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+         $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+        $stmt->bindParam(':credit', $totalAmount, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "New record inserted successfully.";
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+
+
+}
+
+
+
+if($ptype == "cash" ) {
+
+    try {
+    // Check if the suplier_id exists in the database
+    $checkQuery = "SELECT * FROM purch_revenue WHERE suplier_id = :suplier_id";
+    $stmt = $db->prepare($checkQuery);
+    $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    if ($stmt->rowCount() > 0) {
+        // The suplier_id exists; update the amount
+        $updateQuery = "UPDATE purch_revenue SET cash = cash + :cash,suplier_name = :suplier_name WHERE suplier_id = :suplier_id";
+        $stmt = $db->prepare($updateQuery);
+        $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+         $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+        $stmt->bindParam(':cash', $totalAmount, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "Amount updated successfully.";
+    } else {
+        // The suplier_id doesn't exist; insert a new record
+        $insertQuery = "INSERT INTO purch_revenue (suplier_id,suplier_name, cash) VALUES (:suplier_id,:suplier_name, :cash)";
+        $stmt = $db->prepare($insertQuery);
+        $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
+         $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+        $stmt->bindParam(':cash', $totalAmount, PDO::PARAM_INT);
+        $stmt->execute();
+        echo "New record inserted successfully.";
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+
+
+}
+
+
+
 header("location: purchasepreview.php?invoice=$invoice");
 exit();
-
 
 
 

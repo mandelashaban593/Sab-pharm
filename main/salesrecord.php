@@ -240,14 +240,9 @@ window.onload=startclock;
 				$result = $db->prepare("SELECT * FROM  sales  ORDER BY invoice_number");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
-				$total=$row['tot_buy'];
-				$availableqty=$row['qty_left'];
-				if ($availableqty < 10) {
-				echo '<tr class="alert alert-warning record" style="color: #fff; background:rgb(255, 95, 66);">';
-				}
-				else {
-				echo '<tr class="record">';
-				}
+				//$total=$row['tot_buy'];
+			//	$availableqty=$row['qty_left'];
+				
 			?>
 		
 			<td><?php echo $row['transaction_id']; ?></td>

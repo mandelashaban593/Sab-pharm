@@ -142,8 +142,8 @@ if($position=="store"){?>
 <?php
 $position= $_SESSION['SESS_LAST_NAME'];
 if($position=="pharmacist"){?>
-<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
-
+<li><a rel="facebox"  href="saletype.php"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>   </li> 
+<li><a rel="facebox"  href="returntype.php"><i class="icon-shopping-cart icon-2x"></i><br> Credit Note</a>   </li> 
 
 <li><a href="ordermedicines.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
 </li>
@@ -164,8 +164,8 @@ if($position=="pharmacist"){?>
 <?php
 $position= $_SESSION['SESS_LAST_NAME'];
 if($position=="admin"){?>
-<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
-
+<li><a rel="facebox"  href="saletype.php"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>   </li> 
+<li><a rel="facebox"  href="returntype.php"><i class="icon-shopping-cart icon-2x"></i><br> Credit Note</a>   </li> 
 <li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
 </li>
 
@@ -212,7 +212,9 @@ if($position=="admin"){?>
 <?php            
 $position= $_SESSION['SESS_LAST_NAME'];
 if($position=="pharmacist"){?>
-<a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>  
+<a rel="facebox"  href="saletype.php"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>  
+<a rel="facebox"  href="returntype.php"><i class="icon-shopping-cart icon-2x"></i><br> Credit Note</a> 
+
 
 <a href="ordermedicines.php"><i class="icon-list-alt icon-2x"></i><br> Medicines</a>
 
@@ -221,11 +223,15 @@ if($position=="pharmacist"){?>
 
 
 <?php }   $position= $_SESSION['SESS_LAST_NAME'];
-if($position=="admin"){?>
-<a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>  
+if($position=="admin"){?><!-- 
+<a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a> --> 
+<a rel="facebox"  href="saletype.php"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>   
+<a rel="facebox"  href="returntype.php"><i class="icon-shopping-cart icon-2x"></i><br> Credit Note</a> 
 <a href="ordermedicines.php"><i class="icon-list-alt icon-2x"></i><br> Orders</a>
 <a href="products.php"><i class="icon-list-alt icon-2x"></i><br> Products</a>
 <a href="medorders2.php"><i class="icon-list-alt icon-2x"></i><br> Purchases</a> 
+<a rel="facebox" href="selectpaysupplier.php"><i class="icon-list-alt icon-2x"></i><br>Payment</a> 
+<a rel="facebox" href="selreceiptcust.php"><i class="icon-list-alt icon-2x"></i><br>Receipt</a> 
 <a href="salesrecord.php"><i class="icon-list-alt icon-2x"></i><br> Sales</a> 
 <!-- order-supplies.php -->
 
@@ -266,7 +272,10 @@ if($position=="admin"){?>
 <a href="customers_ledger.php"><i class="icon-group icon-2x"></i><br> Sales  Ledger </a>  
 <a href="balance_sheet.php"><i class="icon-group icon-2x"></i><br> Balance sheet </a>  
 <a href="profit_loss.php"><i class="icon-group icon-2x"></i><br> Profit and Loss Account </a>  
-<a href="salesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x"></i><br> Sales Report</a>
+<a rel="facebox"  href="sreporttype.php"><i class="icon-bar-chart icon-2x"></i><br> Sales Report</a>
+
+
+
 <a href="purchasesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x"></i><br> Purchases Report</a>
 <a href="users.php"><i class="icon-group icon-2x"></i><br> Users </a>  
 <a href="https://edoctorug.com/"><i  class="icon-group icon-2x"></i><br>  Edoctorug </a> 

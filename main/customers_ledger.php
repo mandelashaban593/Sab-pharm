@@ -124,16 +124,12 @@ window.onload=startclock;
 <table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
 	<thead>
 		<tr>
-			<th width="15%"> Date </th>	
-			<th width="15%"> Customer Name </th>
-			<th width="15%"> Transaction ID </th>
-			<th width="15%"> Invoice Number </th>
-			<th width="15%"> Type</th>
-			<th width="15%"> Amount </th>
-			<th width="15%"> Profit </th>
-			<th width="15%"> Amount Paid </th>
-			<th width="15%"> Balance </th>
-			<th width="15%"> Due date </th>
+	<th>Invoice Number</th>
+<th>Date</th>
+<th>Quantity</th>
+<th>Name</th>
+<th>Debit</th>
+<th>Credit</th>
 		
 		
 
@@ -146,7 +142,8 @@ window.onload=startclock;
 			if(isset($_POST['fdate'])) $d1=date($_POST['fdate']);
 			if(isset($_POST['tdate'])) $d2=date($_POST['tdate']);
 
-				$results = $db->prepare("SELECT * FROM sales WHERE curdate BETWEEN :a AND :b");
+				$results = $db->prepare("SELECT invoice_number, date, name, quantity,amount, NULL AS Debit, amount AS Credit
+               FROM  sales WHERE date BETWEEN :a AND :b");
 				$results->bindParam(':a', $d1);
 				$results->bindParam(':b', $d2);
 				$results->execute();
@@ -154,38 +151,30 @@ window.onload=startclock;
 				$result = $db->prepare("SELECT * FROM sales_order ORDER BY transaction_id DESC");
 				$result->execute();
 */
-				
-				$result1 = $db->prepare("SELECT * FROM products ORDER BY product_id DESC");
-				$result1->execute();
-
-			
-
+				/*	echo "OOOOOOK";
+				echo $d2;
+				*/
 
 				for($i=0; $row = $results->fetch(); $i++){
 
-					if($row['type']){
+		
 			?>
 			
 			<tr class="record">
-			<td><?php echo $row['date']; ?></td>
-			<td><?php echo $row['name']; ?></td>
-			<td><?php echo $row['transaction_id']; ?></td>
-			<td><?php echo $row['invoice_number']; ?></td>
-			<td><?php echo $row['type']; ?></td>
-			<td><?php echo $row['amount']; ?></td>
-			<td><?php echo $row['profit']; ?></td>
-			<td><?php echo $row['amt_paid']; ?></td>
-			<td><?php echo $row['balance']; ?></td>
-			<td><?php echo $row['due_date']; ?></td>
+			  <td><?php echo $row['invoice_number']; ?></td>
+        <td><?php echo $row['date']; ?></td>
+        <td><?php echo $row['quantity']; ?></td>
+
+        <td><?php echo $row['name']; ?></td>
+                <td><?php echo $row['Debit']; ?></td>
+        <td><?php echo $row['Credit']; ?></td>
 	
 			<td></td>
 
 
-			<td><a rel="facebox" href="view_purchases_list.php?iv=<?php echo $row['invoice_number']; ?>"> <button class="btn btn-primary btn-mini"><i class="icon-search"></i> View </button></a> 
-			<a href="#" id="<?php echo $row['transaction_id']; ?>" class="delbutton" title="Click To Delete"><button class="btn btn-danger btn-mini"><i class="icon-trash"></i> Delete </button></a></td>
 			</tr>
 			<?php 
-		}
+		
 
 	}
 			

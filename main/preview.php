@@ -50,7 +50,7 @@ $invoice=$row['invoice_number'];
 $date=$row['date'];
 $due_date=$row['due_date'];
 $cashier=$row['cashier'];
-$cash=$row['cash'];
+//$cash=$row['cash'];
 
 $pt=$row['type'];
 $am=$row['amount'];
@@ -212,7 +212,7 @@ if($position=="admin"){?>
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
 	<center><div style="font:bold 25px 'Aleo';">Sales Receipt</div>
-	Sab Pharmacy	<br>
+Ojinga Pharmacy	<br>
 	Jinja,Uganda	<br>	<br>
 	</center>
 	<div>
@@ -263,18 +263,32 @@ if($position=="admin"){?>
 			<td><?php echo $date ?></td>
 		</tr>
 	</table>
-	
+
+	<table style="margin-left:850px;">
+		<tr><td><?php
+	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
+	$result = $db->prepare("SELECT * FROM sales WHERE invoice_number= :userid LIMIT 1");
+	$result->bindParam(':userid', $id);
+	$result->execute();
+	for($i=0; $rowa = $result->fetch(); $i++){
+	$pay_type = $rowa['pay_type'];
+
+	echo $pay_type; echo"<br>";
+
+
+	}
+	?></td></tr></table>
+
 	</div>
 	<div class="clearfix"></div>
 	</div>
-	<div style="width: 100%; margin-top:-70px;">
+	<div style="width: 100%; margin-top:80px;">
 	<table border="1" cellpadding="4" cellspacing="0" style="font-family: arial; font-size: 12px;	text-align:left;" width="100%">
 		<thead>
 			<tr>
 				<th width="90"> Medicine</th>
 				<th> Invoice </th>
 				<th> Cashier </th>
-				<th> Customer</th>
 				<th> Amount</th>
 				<th> Qty </th>
 				<th> Total </th>
@@ -297,7 +311,6 @@ if($position=="admin"){?>
 			 		echo $row2['med_name']; ?></td>
 				<td><?php echo $row['invoice_number']; ?></td>
 				<td><?php echo $row['cashier']; ?></td>
-				<td><?php echo $row['name']; ?></td>
 				<td><?php echo $row['amount']; ?></td>
 				<td><?php echo $row['quantity']; ?></td>
 			
@@ -368,16 +381,54 @@ if($position=="admin"){?>
 						}
 						return $number;
 					}
-					if($pt=='credit'){
-					echo $am;
-					}
-					if($pt=='cash'){
-					echo formatMoney($cash, true);
-					}
+				
 					?>
 					</strong></td>
 				</tr>
 			
+					<table style="border: 8px; ">
+	<table style="margin-left:700px;margin-top:100px;border:none; border-collapse: collapse;">
+				<tr class="Sign" style="margin-right:800px;margin-padding: 100px;">
+         
+            <td class="bottom-right" style=" border: 0px solid #000;
+            padding: 10px; /* Adjust padding as needed */
+            text-align: left; ">For Ojinja Pharmacy</td>
+        </tr>
+        	
+			</table>
+			<table style="margin-left:700px;margin-top:50px;border:none; border-collapse: collapse;">
+			
+        		<tr style="margin-top: 40px;border: 0px ;">
+        
+            <td class="bottom-right">Authorized  Signatory </td>
+        </tr>
+			</table>
+</table>
+
+
+<table style="margin-right:700px;margin-bottom:800px;border:none; border-collapse: collapse;">
+	
+    		<tr style=";">
+    Declaration:<br/>
+        We declare that this invoice shows the actual price of the <br/>goods described and that all particulars are true and correct
+    </tr>
+
+    	<tr style="margin-top: 100px;"><br/><br/><br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is  a computer generated invoice 
+    </tr>
+
+    <div class="pull-right" style="margin-right:100px;">
+		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
+		</div>
+
+	</table>
+
+
+<table style="margin-right:400px;margin-bottom:200px;border:none; border-collapse: collapse;">
+	
+    	
+	</table>
+
 		</tbody>
 	</table>
 	
@@ -385,9 +436,7 @@ if($position=="admin"){?>
 	</div>
 	</div>
 	</div>
-<div class="pull-right" style="margin-right:100px;">
-		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
-		</div>	
+	
 </div>
 </div>
 

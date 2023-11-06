@@ -8,16 +8,16 @@ $quantity=0;
 
 if(isset($_POST['med_name'])) $med_name = $_POST['med_name'];
 if(isset($_POST['category'])) $category = $_POST['category'];
-if(isset($_POST['quantity'])){ $quantity = $_POST['quantity']; } else { $quantity=0; };
+if(isset($_POST['quantity'])){ $quantity = (int)$_POST['quantity']; } else { $quantity=0; };
 if(isset($_POST['sell_type'])) $sell_type = $_POST['sell_type'];
-if(isset($_POST['reg_date'])) $reg_date = date($_POST['reg_date']);
-if(isset($_POST['reg_date'])) $new_reg_date = date($_POST['reg_date']);
+if(isset($_POST['reg_date'])) $reg_date = date('m/d/y', strtotime($_POST['reg_date']));
+if(isset($_POST['reg_date'])) $new_reg_date = date('m/d/y', strtotime($_POST['reg_date']));
 if(isset($_POST['exp_date'])){ $exp_date=  date($_POST['exp_date']); } else { $exp_date=''; }; 
 if(isset($_POST['exp_date'])) $new_exp_date = date($_POST['exp_date']);
 $product_code=$med_name;
 $gen_name=$med_name;
 $onhand_qty=0;
-$qty=$quantity;
+$qty=(int)$quantity;
 $qty_sold=0;
 if(isset($_POST['price'])) $sell_price = $_POST['price'];
 if(isset($_POST['supplier'])) $supplier = $_POST['supplier'];
@@ -25,76 +25,91 @@ if(isset($_POST['o_price'])) { $o_price = $_POST['o_price']; } else { $o_price =
 if(isset($_POST['profit'])) $profit  = $_POST['profit'];
 if(isset($_POST['date_arrival'])) $date_arrival = $_POST['date_arrival'];
 if(isset($_POST['del_no'])) $del_no = $_POST['del_no'];
+if(isset($_POST['batch_no'])) $batch_no = $_POST['batch_no'];
+if(isset($_POST['inventory'])) $inventory = $_POST['inventory'];
+
 $tot_buy_price = (int)$o_price*(int)$quantity;
 $qty = empty($qty) ? 0 : $qty;
 
 
-$med_name = str_replace(' ', '', "$med_name");
+$batch_no = str_replace(' ', '', "$batch_no");
 
-$q = mysqli_query($con, "SELECT * FROM products WHERE med_name ='$med_name' ") or die(mysqli_error($con));
+$q = mysqli_query($con, "SELECT * FROM products WHERE batch_no ='$batch_no' ") or die(mysqli_error($con));
 $rowcount_prod=mysqli_num_rows($q);
 
 
-/*purchase_details*/
-
-echo $rowcount_prod;
-if($rowcount_prod == 1){
-
-/*$q = mysqli_query($con, "SELECT * FROM products WHERE product_name ='$med_name' ") or die(mysqli_error($con));
-$row = mysqli_fetch_assoc($q);*/
-
-
-$result = $db->prepare("SELECT * FROM products WHERE med_name= :product_name");
-$result->bindParam(':product_name', $med_name);
+$result = $db->prepare("SELECT * FROM products WHERE batch_no= :batch_no");
+$result->bindParam(':batch_no', $batch_no);
 $result->execute();
 for($i=0; $row = $result->fetch(); $i++){
-$qty=(int)$row['quantity'];
+$qty=$row['quantity'];
 $product_id=$row['product_id'];
-$qty = empty($qty) ? 0 : $qty;
+echo "Product id<br/>";
 echo $product_id;
-echo "Quantity 1\n";
+echo "<br/>Quantity 1\n";
 echo $qty;
-echo "Quantity 2\n";
-echo $quantity;
-echo "\n";
-echo "Total 2\n";
-$tot=(int)$qty+(int)$quantity;
-
-echo $tot;
-
-echo "\n";
 
 }
 
 
-/*$qty =$row['qty'];
-$product_id=$row['product_id'];
-echo "Product id \n";
-echo $product_id;
-echo "Quantity 1\n";
-echo $qty;
-echo "Quantity 2\n";
+
+
+echo "<br/>Quantity 1 maan <br/>";
 echo $quantity;
-echo "\n";
-echo "Total 2\n";
-$qty=$qty+$quantity;
 
-echo $qty;
+echo "<br/>Batch no 1 maan <br/>";
+echo $batch_no;
+/*purchase_details*/
+echo "<br/>No of records<br/>";
 
-echo "\n";
-*/
+echo $rowcount_prod;
+echo "<br/>";
+if($rowcount_prod == 1){
+
+echo "<br/>Update product<br/>";
 
 
-/*
-$sql = "UPDATE customer SET name='Lucas', age='42', email='newmail@xyz.com' WHERE id=3";
-mysqli_query($conn, $sql)
-*/
+  try {
+    // Create a PDO database connection
+    // SQL query for update
+    $sql = "UPDATE products  SET quantity = :quantity WHERE product_id= :product_id";
+    
+    // Prepare the SQL statement
+    $stmt = $db->prepare($sql);
+    
+    // Bind parameters
+    $stmt->bindParam(':quantity', $quantity);
+    $stmt->bindParam(':product_id', $product_id);
+    // Execute the query
+    $stmt->execute();
+    
+    $rowCount = $stmt->rowCount(); // Get the number of rows affected
+    
+   
+  if ($rowCount > 0)
+  {
+  	echo "Product successfully updated";
+    ?>
+    
 
-$sql = "UPDATE products 
-        SET quantity=?
-		WHERE product_id=?";
-$q = $db->prepare($sql);
-$q->execute(array($tot,$product_id));
+    <?php 
+  }
+  else
+  {
+  	echo "Product update failed";
+    ?>
+   
+
+    <?php 
+  }
+
+
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
 
 
 
@@ -155,10 +170,10 @@ echo $exp_date;
 $q = mysqli_query($con, $sql) or die(mysqli_error($con));*/
 
 
-$sql = "INSERT INTO products (product_code,category,med_name,price,supplier,quantity,o_price,profit,gen_name,product_name,cost,onhand_qty,qty,qty_sold,expiry_date,date_arrival,sell_type,reg_date,tot_buy,del_no,qty_left,status) VALUES (:a,:b,:c,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:k,:r,:s,:t,:u,:v,:w)";
+$sql = "INSERT INTO products (product_code,category,med_name,price,supplier,quantity,o_price,profit,gen_name,product_name,cost,onhand_qty,qty,qty_sold,expiry_date,date_arrival,sell_type,reg_date,tot_buy,del_no,qty_left,status,batch_no,inventory) VALUES (:a,:b,:c,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:k,:r,:s,:t,:u,:v,:w, :x, :y)";
 $q = $db->prepare($sql);
-$q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$supplier,':g'=>$quantity,':h'=>$o_price,':i'=>$profit,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price,':m'=>$onhand_qty,':n'=>$qty,':o'=>$qty_sold,':p'=>$exp_date,':q'=>$date_arrival,':r'=>$sell_type,':s'=>$reg_date
-	,':t'=>$tot_buy_price,':u'=>$del_no,':v'=>$qty_left,':w'=>$status));
+$q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$supplier,':g'=>$quantity,':h'=>$o_price,':i'=>$profit,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price,':m'=>$onhand_qty,':n'=>$quantity,':o'=>$qty_sold,':p'=>$exp_date,':q'=>$date_arrival,':r'=>$sell_type,':s'=>$reg_date
+	,':t'=>$tot_buy_price,':u'=>$del_no,':v'=>$quantity,':w'=>$status,':x'=>$batch_no,':y'=>$inventory));
 
 }
 

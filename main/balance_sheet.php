@@ -18,10 +18,38 @@ POS
       body {
         padding-top: 60px;
         padding-bottom: 40px;
+
+    font-family: Arial, sans-serif;
       }
       .sidebar-nav {
         padding: 9px 0;
       }
+
+
+   
+.balance-sheet {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px;
+}
+
+.balance-sheet-section {
+    width: 30%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin: 5px 0;
+}
+
+
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -40,7 +68,6 @@ POS
     })
   })
 </script>
-
 <link rel="stylesheet" type="text/css" href="tcal.css" />
 <script type="text/javascript" src="tcal.js"></script>
  <script language="javascript" type="text/javascript">
@@ -76,7 +103,6 @@ window.onload=startclock;
 // End -->
 </SCRIPT>
 
-
 </head>
 <body>
 <?php include('navfixed.php');?>
@@ -86,55 +112,18 @@ window.onload=startclock;
       <div class="row-fluid">
 	
 	<div class="span10">
-	
+	<div class="contentheader">
+			<i class="icon-dashboard"></i> Dashboard
+			</div>
+			<ul class="breadcrumb">
+			<a href="dashboard.php"><li>Dashboard</li></a> /
+			<li class="active">Customer's Ledger</li>
+			</ul>
 <div id="maintable">
 <div style="margin-top: -19px; margin-bottom: 21px;">
 <a  href="index.php"><button class="btn btn-default btn-large" style="float: none;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
-<input type="button"  class="btn btn-info icon-print icon-large" onclick="printDiv('printableArea')" value="print balance sheet!"  style="margin-left:800px;"/>
-<script type="text/javascript">
-function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-</script>
+<a href="#" onclick="window.print()" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
 </div>
-
-<br><br/>
-
-
-<?php
-function formatMoney($number, $fractional=false) {
-if ($fractional) {
-$number = sprintf('%.2f', $number);
-}
-while (true) {
-$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-if ($replaced != $number) {
-$number = $replaced;
-} else {
-break;
-}
-}
-return $number;
-}
-/*$d1=$_GET['d1'];
-$d2=$_GET['d2']; */
-$results = $db->prepare("SELECT sum(amount) FROM sales WHERE curdate BETWEEN :a AND :b");
-$results->bindParam(':a', $d1);
-$results->bindParam(':b', $d2);
-$results->execute();
-for($i=0; $rows = $results->fetch(); $i++){
-$dsdsd=$rows['sum(amount)'];
-echo formatMoney($dsdsd, true);
-}
-?>
-
 
 <form name="bwdatesdata" action="" method="post" action="">
 <table width="100%" height="117"  border="0">
@@ -157,180 +146,101 @@ echo formatMoney($dsdsd, true);
 </table>
 </form>
 
-<div id="printableArea">
 <p style="text-align:center">Ojinga Pharmacy</p>
 <p style="text-align:center">Kutch road ,West,plot No:95e, Jinja</p>
 <p style="text-align:center">Tel: 0704694467</p>
-<table class="table table-bordered" id="resultTable" data-responsive="table" style="text-align: left;">
-	<thead>
-		<tr>
-			
-			<th width="15%">Current Assets  </th>
-			<th width="15%">Long Term Assets  </th>
-			<th width="15%"> shs</th>
-			<th width="15%"> </th>
-			<th width="15%">  Current Liabilities </th>
-			<th width="15%">  Long Term Liabilities </th>
-			<th width="15%"> shs</th>
-			
+ <h1>Balance Sheet</h1>
 
-		</tr>
-		
-	</thead>
-	<tbody>
-		
-			<?php
-			 if(isset($_GET['fdate'])) $d1=date($_POST['fdate']);
-			 if(isset($_GET['tdate'])) $d2=date($_POST['tdate']);;
+ <?php
 
-			  echo "<br/>From date:". $d1;
-				echo "<br/>To date:". $d2;
-
-		/*		$result = $db->prepare("SELECT * FROM assets ORDER BY transaction_id DESC");
-				$result->execute();*/
-
-				$result = $db->prepare("SELECT * FROM sales WHERE curdate BETWEEN :a AND :b");
-				$result->bindParam(':a', $d1);
-				$result->bindParam(':b', $d2);
-				$result->execute();
-
-				
-
-
-				/*$result1 = $db->prepare("SELECT * FROM liabilities ORDER BY transaction_id DESC");
-				$result1->execute();
-*/
-				$result1 = $db->prepare("SELECT * FROM liabilities  WHERE entry_date BETWEEN :a AND :b");
-				$result1->bindParam(':a', $d1);
-				$result1->bindParam(':b', $d2);
-				$result1->execute();
-
-
-				for($i=0; $row = $result->fetch(); $i++){
-
-					if($row['asset_cat']=='current'){
-			?>
-		
-			<tr class="record">
-			<td><?php echo $row['name']; ?></td>
-			<td></td>
-			<td><?php echo $row['amount']; ?></td>
-	
-			</tr>
-
-			<?php
-			}
-
-					if($row['asset_cat']=='long'){
-			?>
-		   </tbody>
-		  
-
-			<tbody>
-			<tr class="record">
-			<td></td>
-			<td><?php echo $row['name']; ?></td>
-			<td><?php echo formatMoney($row['amount'], true); ?></td>
-	
-			</tr>
-			</tbody>
-			<?php
-
-			}
-
-				}
-
-				for($i=0; $row = $result1->fetch(); $i++){
-
-						if($row['liab_cat']=='current'){
-			?>
+ if(isset($_POST['fdate'])) $d1=date('m/d/y', strtotime($_POST['fdate'])); 
+ if(isset($_POST['tdate'])) $d2=date('m/d/y', strtotime($_POST['tdate']));
 
 
 
-			<tbody>
-		
-			<tr class="record">
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			
-			<td><?php echo $row['name']; ?></td>
-			<td></td>
-			<td><?php  echo formatMoney($row['amount'], true); ?></td>
-	
-			</tr>
+    echo "From Date: ";
+    echo $d1;
 
-			<?php
-		}
-
-					if($row['liab_cat']=='long'){
-			?>
-		   </tbody>
-		  
-
-			<tbody>
-			<tr class="record">
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td><?php echo $row['name']; ?></td>
-			<td><?php echo formatMoney($row['amount'], true); ?></td>
-	
-			</tr>
-			</tbody>
-			<?php
-
-			}
-
-				}
-			?>
+	echo "Date To: ";
+	echo $d2;
 
 
-			<tbody>
-			<tr class="record">
-			<td>Total</td>
-			<td></td>
-			<td><?php 
+try {
+    // Create a PDO instance
 
-			$resulta = mysqli_query($con,"SELECT sum(amount) as value_sum FROM assets  where entry_date BETWEEN '$d1' AND '$d2'  ") or die(mysqli_error($resulta));
-			$row_sum = mysqli_fetch_assoc($resulta);
-			$sum = $row_sum['value_sum'];
-			echo formatMoney($sum, true);
-				
-				?></td>
-				<td></td>
-				<td></td>
-				<td></td>
-			<td><?php 
+    // Query to retrieve balance sheet data within the date range
+    $query_assets = "SELECT name, SUM(amount) as total FROM assets WHERE entry_date  BETWEEN :start_date AND :end_date GROUP BY name";
+    $query_liabilities = "SELECT name, SUM(amount) as total FROM liabilities WHERE entry_date BETWEEN :start_date AND :end_date GROUP BY name";
+    $query_equity = "SELECT name, SUM(amount) as total FROM equity WHERE entry_date  BETWEEN :start_date AND :end_date GROUP BY name";
 
-			$resulta = mysqli_query($con,"SELECT sum(amount) as value_sum FROM liabilities  where entry_date BETWEEN '$d1' AND '$d2'  ") or die(mysqli_error($resulta));
-			$row_sum = mysqli_fetch_assoc($resulta);
-			$sum = $row_sum['value_sum'];
+    // Prepare and execute the queries
+    $stmt_assets = $db->prepare($query_assets);
+    $stmt_assets->bindParam(':start_date', $d1);
+    $stmt_assets->bindParam(':end_date', $d2);
+    $stmt_assets->execute();
 
-			
-				echo formatMoney($sum, true);
-				
-				?></td>
+    $stmt_liabilities = $db->prepare($query_liabilities);
+    $stmt_liabilities->bindParam(':start_date', $d1);
+    $stmt_liabilities->bindParam(':end_date', $d2);
+    $stmt_liabilities->execute();
 
-			<td></td>
-			</tr>
-			<?php
-			
+    $stmt_equity = $db->prepare($query_equity);
+    $stmt_equity->bindParam(':start_date', $d1);
+    $stmt_equity->bindParam(':end_date', $d2);
+    $stmt_equity->execute();
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
 
 
-			?>
-
-
-
-
-
-		
-	</tbody>
-</table>
-</div>
+ ?>
+<div class="balance-sheet">
+        <div class="balance-sheet-section">
+            <h2>Assets</h2>
+            <ul>
+                <?php
+                $total_assets = 0;
+                while ($row = $stmt_assets->fetch(PDO::FETCH_ASSOC)) {
+                    $total_assets += $row['total'];
+                ?>
+                    <li><?php echo $row['name'] . ': UGX ' . $row['total']; ?></li>
+                <?php
+                }
+                ?>
+                <li>Total Assets: UGX <?php echo $total_assets; ?></li>
+            </ul>
+        </div>
+        <div class="balance-sheet-section">
+            <h2>Liabilities</h2>
+            <ul>
+                <?php
+                $total_liabilities = 0;
+                while ($row = $stmt_liabilities->fetch(PDO::FETCH_ASSOC)) {
+                    $total_liabilities += $row['total'];
+                ?>
+                    <li><?php echo $row['name'] . ': UGX ' . $row['total']; ?></li>
+                <?php
+                }
+                ?>
+               <li>Total Liabilities: UGX <?php echo $total_liabilities; ?></li>
+            </ul>
+        </div>
+        <div class="balance-sheet-section">
+            <h2>Equity</h2>
+            <ul>
+                <?php
+                $total_equity = 0;
+                while ($row = $stmt_equity->fetch(PDO::FETCH_ASSOC)) {
+                    $total_equity += $row['total'];
+                ?>
+                    <li><?php echo $row['name'] . ': UGX ' . $row['total']; ?></li>
+                <?php
+                }
+                ?>
+                <li>Total Equity: UGX <?php echo $total_equity; ?></li>
+            </ul>
+        </div>
+    </div>
 <div class="clearfix"></div>
 </div>
 <script src="js/jquery.js"></script>

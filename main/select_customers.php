@@ -137,6 +137,7 @@ $finalcode='RS-'.createRandomPassword();
 	<thead>
 		<tr>
 			<th> Name </th>
+			<th> Contact person.</th>
 			<th> Address</th>
 			<th> Contact No.</th>
 			<th> Note</th>
@@ -152,6 +153,7 @@ $finalcode='RS-'.createRandomPassword();
 			?>
 			<tr class="record">
 			<td><?php echo $row['customer_name']; ?></td>
+			<td><?php echo $row['contact_person']; ?></td>
 			<td><?php echo $row['address']; ?></td>
 			<td><?php echo $row['contact']; ?></td>
 			<td><?php echo $row['note']; ?></td>
