@@ -1,5 +1,3 @@
-
-$other = '**This needs to be field 1**';
 <?php
 session_start();
 require '../conn2.php';

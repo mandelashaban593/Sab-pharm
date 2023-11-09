@@ -11,7 +11,7 @@
 	<tbody>
 		
 			<?php
-				include('../connect.php');
+				require '../conn2.php';
 				
 				if(isset($_GET['expense_id'])) $id=$_GET['expense_id'];
 				$result = $db->prepare("SELECT * FROM expenses  WHERE expense_id= :userid");
@@ -34,7 +34,7 @@
 			echo formatMoney($dfdf, true);
 			?>
 			</td>
-			</tr
+			</tr>
 			<?php
 				}
 			?>

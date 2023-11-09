@@ -160,6 +160,10 @@ foreach ($_POST['amount'] as $amount) {
 echo "Total amount: " . $totalAmount;
 
 
+
+echo "<br/>suplier_id: " . $suplier_id;
+
+
 if($ptype == "credit" ) {
 
     try {
@@ -171,19 +175,23 @@ if($ptype == "credit" ) {
 
     if ($stmt->rowCount() > 0) {
         // The suplier_id exists; update the amount
-        $updateQuery = "UPDATE purch_revenue SET credit = credit + :credit,suplier_name = :suplier_name WHERE suplier_id = :suplier_id";
+        $updateQuery = "UPDATE purch_revenue SET credit = credit + :credit,suplier_name = :suplier_name,pay_type = :pay_type,date = :date WHERE suplier_id = :suplier_id";
         $stmt = $db->prepare($updateQuery);
         $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
          $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+         $stmt->bindParam(':pay_type', $ptype, PDO::PARAM_STR);
+         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->bindParam(':credit', $totalAmount, PDO::PARAM_INT);
         $stmt->execute();
         echo "Amount updated successfully.";
     } else {
         // The suplier_id doesn't exist; insert a new record
-        $insertQuery = "INSERT INTO purch_revenue (suplier_id,suplier_name, credit) VALUES (:suplier_id,:suplier_name, :credit)";
+        $insertQuery = "INSERT INTO purch_revenue (suplier_id,suplier_name, credit,pay_type, date) VALUES (:suplier_id,:suplier_name, :credit, :pay_type, :date)";
         $stmt = $db->prepare($insertQuery);
         $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
          $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+         $stmt->bindParam(':pay_type', $ptype, PDO::PARAM_STR);
+         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->bindParam(':credit', $totalAmount, PDO::PARAM_INT);
         $stmt->execute();
         echo "New record inserted successfully.";
@@ -209,22 +217,27 @@ if($ptype == "cash" ) {
 
     if ($stmt->rowCount() > 0) {
         // The suplier_id exists; update the amount
-        $updateQuery = "UPDATE purch_revenue SET cash = cash + :cash,suplier_name = :suplier_name WHERE suplier_id = :suplier_id";
+        $updateQuery = "UPDATE purch_revenue SET cash = cash + :cash,suplier_name = :suplier_name,pay_type = :pay_type,date = :date WHERE suplier_id = :suplier_id";
         $stmt = $db->prepare($updateQuery);
         $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
          $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
+         $stmt->bindParam(':pay_type', $ptype, PDO::PARAM_STR);
+         $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         $stmt->bindParam(':cash', $totalAmount, PDO::PARAM_INT);
         $stmt->execute();
         echo "Amount updated successfully.";
     } else {
-        // The suplier_id doesn't exist; insert a new record
-        $insertQuery = "INSERT INTO purch_revenue (suplier_id,suplier_name, cash) VALUES (:suplier_id,:suplier_name, :cash)";
-        $stmt = $db->prepare($insertQuery);
-        $stmt->bindParam(':suplier_id', $suplier_id, PDO::PARAM_INT);
-         $stmt->bindParam(':suplier_name', $cname, PDO::PARAM_STR);
-        $stmt->bindParam(':cash', $totalAmount, PDO::PARAM_INT);
-        $stmt->execute();
+
+         $sql = "INSERT INTO purch_revenue (suplier_id,suplier_name,cash, pay_type,date)  VALUES (?, ?, ?, ?, ?)";
+    
+	    // Use prepared statement
+	    $stmt = $db->prepare($sql);
+	    
+	    // Execute the statement with the values
+	    $stmt->execute([ $suplier_id, $cname,  $totalAmount,  $ptype,  $date]);
+
         echo "New record inserted successfully.";
+
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -233,6 +246,80 @@ if($ptype == "cash" ) {
 
 
 }
+
+
+
+
+
+if($ptype == "credit" ) {  //Start if statement
+
+try {
+    // Create a PDO database connectio
+    
+    // SQL query with placeholders
+    $sql = "INSERT INTO  credit_payhist (suplier_id,suplier_name,credit,pay_type,date) VALUES (:suplier_id, :suplier_name, :credit, :pay_type, :date)";
+    
+    // Prepare the SQL statement
+    $stmt = $db->prepare($sql);
+    
+    // Bind parameters
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->bindParam(':suplier_name', $cname);
+    $stmt->bindParam(':credit', $totalAmount);
+    $stmt->bindParam(':pay_type', $ptype);
+    $stmt->bindParam(':date', $date);
+  
+    
+    // Execute the query
+    $stmt->execute();
+    
+    echo "Data inserted successfully!";
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+} // End if statement*/
+
+
+
+if($ptype == "cash" ) {  //Start if statement
+
+try {
+    // Create a PDO database connectio
+    
+    // SQL query with placeholders
+    
+    $sql = "INSERT INTO  credit_payhist (suplier_id,suplier_name,cash,pay_type,date) VALUES (:suplier_id, :suplier_name, :cash, :pay_type, :date)";
+    
+    // Prepare the SQL statement
+    $stmt = $db->prepare($sql);
+    
+    // Bind parameters
+    $stmt->bindParam(':suplier_id', $suplier_id);
+    $stmt->bindParam(':suplier_name', $cname);
+    $stmt->bindParam(':cash', $totalAmount);
+    $stmt->bindParam(':pay_type', $ptype);
+    $stmt->bindParam(':date', $date);
+  
+    
+    // Execute the query
+    $stmt->execute();
+
+
+    
+    echo "Data inserted successfully!";
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+} // End if statement
+
+
+
 
 
 

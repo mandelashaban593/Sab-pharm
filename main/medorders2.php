@@ -6,7 +6,7 @@ include('../conn2.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Product Price Calculator</title>
+    <title>POS</title>
   
 <!DOCTYPE html>
 <html>

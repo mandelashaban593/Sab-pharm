@@ -116,13 +116,13 @@ foreach ($productid as $key => $pid) {
 
    if($ptype=='cash') {
         echo "OOOK CASH";
-    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id')";
+    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
     $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     }
     
     if($ptype=='credit') {
         echo "OOOK CASH";
-    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id')";
+    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
     $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     }
     

@@ -75,7 +75,7 @@ closeImage   : 'src/closelabel.png'
 <a  href="index.php"><button class="btn btn-default btn-large" style="float: none;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
 </div>
 <?php
-include('../connect.php');
+require '../conn2.php';
 $tftft=$_GET['cname'];
 $resulta = $db->prepare("SELECT * FROM sales WHERE invoice_number= :a");
 $resulta->bindParam(':a', $tftft);

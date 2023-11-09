@@ -86,7 +86,7 @@ function printDiv(divName) {
 	<tbody>
 		
 			<?php
-				include('../connect.php');
+				require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM purchases ORDER BY transaction_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){

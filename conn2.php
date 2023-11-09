@@ -2,10 +2,13 @@
 /* Database config */
 
 $host ="localhost";
-$user ="root";
-$password= "";
+$user ="pmauser";
+$password= "root";
 $dbname = "sales";
 
+#local machine credentials for phpmyadmin login
+#username = pmauser
+#password = root
 
 $con =mysqli_connect($host,$user,$password,$dbname);
 
@@ -17,8 +20,8 @@ if(!$con){
 
 
 $db_host		= 'localhost';
-$db_user		= 'root';
-$db_pass		= '';
+$db_user		= 'pmauser';
+$db_pass		= 'root';
 $db_database	= 'sales'; 
 
 /* End config */
@@ -30,8 +33,4 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 ?> 
-
-
-
-
 

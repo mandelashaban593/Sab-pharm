@@ -1,5 +1,5 @@
 <?php
-	include('../connect.php');
+	require '../conn2.php';
 	if(isset($_GET['id'])) $id=$_GET['id'];
 	$result = $db->prepare("SELECT * FROM supplies WHERE product_id= :userid");
 	$result->bindParam(':userid', $id);
@@ -45,7 +45,6 @@
 <select name="supplier" style="width:265px; height:30px; margin-left:-5px;" >
 	<option value="<?php echo $row['supplier']; ?>"><?php echo $row['supplier']; ?></option>
 	<?php
-	include('../connect.php');
 	$result = $db->prepare("SELECT * FROM user where position='supplier' ");
 		$result->bindParam(':userid', $res);
 		$result->execute();

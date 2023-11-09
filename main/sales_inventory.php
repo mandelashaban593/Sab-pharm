@@ -195,7 +195,8 @@ window.onload=startclock;
 					}
 					return $number;
 				}
-				include('../connect.php');
+			
+				require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM sales_order ORDER BY transaction_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){

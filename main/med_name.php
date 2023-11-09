@@ -1,4 +1,3 @@
-
 <?php
 require '../conn2.php';
 

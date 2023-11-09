@@ -34,7 +34,7 @@
 <select name="supplier"  style="width:265px; height:30px; margin-left:-5px;" >
 <option></option>
 	<?php
-	include('../connect.php');
+	require '../conn2.php';
 	$result = $db->prepare("SELECT * FROM user where position='supplier' ");
 		$result->bindParam(':userid', $res);
 		$result->execute();

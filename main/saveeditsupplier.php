@@ -1,6 +1,6 @@
 <?php
 // configuration
-include('../connect.php');
+require '../conn2.php';
 
 // new data
 

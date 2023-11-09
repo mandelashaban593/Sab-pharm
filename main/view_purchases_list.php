@@ -11,7 +11,8 @@
 		
 
 			<?php
-				include('../connect.php');
+				require '../conn2.php';
+				
 				$id=$_GET['product_id'];
 				if(isset($_GET['product_id'])) $id=$_GET['product_id'];
 				$result = $db->prepare("SELECT * FROM  products WHERE product_id= :userid");

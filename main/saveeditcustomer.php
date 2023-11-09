@@ -1,6 +1,6 @@
 <?php
 // configuration
-include('../connect.php');
+require '../conn2.php';
 
 // new data
 if(isset($_POST['memi'])) $id = $_POST['memi'];

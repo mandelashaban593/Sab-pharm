@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('../connect.php');
+require '../conn2.php';
 
 if(isset($_POST['invoice'])) $a = $_POST['invoice'];
 if(isset($_POST['product'])) $b = $_POST['product'];

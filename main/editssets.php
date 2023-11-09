@@ -1,5 +1,5 @@
 <?php
-	include('../connect.php');
+	require '../conn2.php';
 	if(isset($_GET['transaction_id'])) $id=$_GET['transaction_id'];
 	$result = $db->prepare("SELECT * FROM assets  WHERE transaction_id= :userid");
 	$result->bindParam(':userid', $id);

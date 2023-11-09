@@ -1,5 +1,5 @@
 <?php
-	include('../connect.php');
+	require '../conn2.php';
 	
 	if(isset($_GET['equity_id'])) $id=$_GET['equity_id'];
 	$result = $db->prepare("SELECT * FROM equity WHERE equity_id= :userid");

@@ -250,7 +250,6 @@ if($position=='admin') {
                 <th>Quantity</th>
                 <th>Rate</th>
                 <th>Amount</th>
-                <th>Type</th>
                 <th></th>
                 <th>Batch No</th>
             </tr>
@@ -264,12 +263,7 @@ if($position=='admin') {
                 <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" ></td>
                 <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
                 <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  onchange="calculateRate(this);"></td>
-                 <td>
-                    <select name="pay_type[]"  >
-                       <option value="cash">Cash</option>
-                       <option value="credit">Credit</option>
-                    </select>
-                </td>
+               
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
             </tr>
@@ -299,7 +293,13 @@ if($position=='admin') {
         <?php
         }
         ?>
-        </select></td><td><input type="date" name="date" placeholder="Date" /></td></tr></table>
+        </select></td><td><input type="date" name="date" placeholder="Date" /></td>
+        <td>
+        <select name="pay_type"  >
+           <option value="cash">Cash</option>
+           <option value="credit">Credit</option>
+        </select>
+        </td></tr></table>
 
         <input type="submit" value="Save" style="width: 120px;">
     </form>
@@ -333,8 +333,8 @@ if($position=='admin') {
                         console.log("Med Name:" + suggestion.med_name)
                         console.log('Batch No' + suggestion.batch_no)
                         input.value = suggestion.med_name; // Set the input value
-                        row.cells[5].getElementsByTagName("input")[0].value = suggestion.product_id;
-                        row.cells[6].getElementsByTagName("input")[0].value = suggestion.batch_no;
+                        row.cells[4].getElementsByTagName("input")[0].value = suggestion.product_id;
+                        row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
                         suggestionBox.innerHTML = ''; // Clear the suggestions
                     };
                     suggestionBox.appendChild(suggestionItem);
@@ -355,12 +355,6 @@ if($position=='admin') {
                 <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" ></td>
                 <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
                 <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  onchange="calculateRate(this);"></td>
-                 <td>
-                    <select name="pay_type[]"  >
-                       <option value="cash">Cash</option>
-                       <option value="credit">Credit</option>
-                    </select>
-                </td>
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
             `;

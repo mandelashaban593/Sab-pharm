@@ -229,7 +229,7 @@ Ojinga Pharmacy	<br>
 
 		<?php
 	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-	$result = $db->prepare("SELECT * FROM retcreditnote  WHERE invoice_number= :userid LIMIT 1");
+	$result = $db->prepare("SELECT * FROM sales  WHERE invoice_number= :userid LIMIT 1");
 	$result->bindParam(':userid', $id);
 	$result->execute();
 	for($i=0; $rowa = $result->fetch(); $i++){
@@ -267,7 +267,7 @@ Ojinga Pharmacy	<br>
 	<table style="margin-left:850px;">
 		<tr><td><?php
 	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-	$result = $db->prepare("SELECT * FROM retcreditnote  WHERE invoice_number= :userid LIMIT 1");
+	$result = $db->prepare("SELECT * FROM sales  WHERE invoice_number= :userid LIMIT 1");
 	$result->bindParam(':userid', $id);
 	$result->execute();
 	for($i=0; $rowa = $result->fetch(); $i++){
@@ -300,7 +300,7 @@ Ojinga Pharmacy	<br>
 				<?php
 					
 				  if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-					$result = $db->prepare("SELECT * FROM retcreditnote WHERE invoice_number= :userid");
+					$result = $db->prepare("SELECT * FROM sales WHERE invoice_number= :userid");
 					$result->bindParam(':userid', $id);
 					$result->execute();
 					for($i=0; $row = $result->fetch(); $i++){
@@ -330,7 +330,7 @@ Ojinga Pharmacy	<br>
 					<td colspan="2"><strong style="font-size: 12px;">
 					<?php
 					if(isset($_GET['invoice'])) $sdsd=$_GET['invoice'];
-					$resultas = $db->prepare("SELECT sum(amount) FROM retcreditnote  WHERE invoice_number= :a");
+					$resultas = $db->prepare("SELECT sum(amount) FROM sales  WHERE invoice_number= :a");
 					$resultas->bindParam(':a', $sdsd);
 					$resultas->execute();
 					for($i=0; $rowas = $resultas->fetch(); $i++){

@@ -99,7 +99,7 @@ Collection Report from&nbsp;<?php echo $_GET['d1'] ?>&nbsp;to&nbsp;<?php echo $_
 	<tbody>
 		
 			<?php
-				include('../connect.php');
+				require '../conn2.php';
 				if(isset($_GET['d1'])) $d1=$_GET['d1'];
 				if(isset($_GET['d2'])) $d2=$_GET['d2'];
 				

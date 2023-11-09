@@ -9,7 +9,7 @@
 <span>Supplier : </span>
 <select name="supplier" style="width:265px; height:30px;">
 	<?php
-	include('../connect.php');
+	require '../conn2.php';
 	$result = $db->prepare("SELECT * FROM user where position='supplier' ");
 		$result->bindParam(':userid', $res);
 		$result->execute();

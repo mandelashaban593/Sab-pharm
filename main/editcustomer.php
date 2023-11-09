@@ -1,5 +1,5 @@
 <?php
-	include('../connect.php');
+	require '../conn2.php';
 	
 	if(isset($_GET['id'])) $id=$_GET['id'];
 	$result = $db->prepare("SELECT * FROM customer WHERE customer_id= :userid");

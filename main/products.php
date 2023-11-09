@@ -169,7 +169,7 @@ window.onload=startclock;
 <a href="#" onclick="printPage('prodlist');" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Medicine List</a>
 
 <?php 
-include('../conn2.php');
+require '../conn2.php';
 $result = $db->prepare("SELECT * FROM products ORDER BY quantity DESC");
 $result->execute();
 $rowcount = $result->rowcount();	

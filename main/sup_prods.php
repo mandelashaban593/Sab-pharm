@@ -163,14 +163,14 @@ window.onload=startclock;
 <a href="#" onclick="printPage('prodlist');" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
 
 <?php 
-include('../connect.php');
+require '../conn2.php';
 $result = $db->prepare("SELECT * FROM products ORDER BY qty_sold DESC");
 $result->execute();
 $rowcount = $result->rowcount();
 ?>
 
 <?php 
-include('../connect.php');
+
 $result = $db->prepare("SELECT * FROM products where qty < 10 ORDER BY product_id DESC");
 $result->execute();
 $rowcount123 = $result->rowcount();
@@ -242,7 +242,7 @@ break;
 }
 return $number;
 }
-include('../connect.php');
+
 $result = $db->prepare("SELECT *, price * qty as total FROM products ORDER BY product_id DESC");
 $result->execute();
 for($i=0; $row = $result->fetch(); $i++){

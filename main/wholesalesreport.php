@@ -250,7 +250,9 @@ $finalcode='RS-'.createRandomPassword();
 <thead>
 <tr>
 <th> Date </th>
-<th> Invoice number </th>
+<th> Particulars </th>
+<th> Voucher Type </th>
+<th> Invoice Number </th>
 <th> Total</th>
 
 </tr>
@@ -266,7 +268,7 @@ $suplier_id =  $_POST['suplier_id'];
     $date = date('m/d/y', strtotime($_POST['daily_date']));
     echo "DATE<br/>";
     echo $date;
-    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM wsales WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND customer_id = :suplier_id GROUP BY invoice_number,date";
+    $sql = "SELECT date, pay_type, vouch_type,invoice_number, SUM(amount) AS total FROM wsales WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND customer_id = :suplier_id GROUP BY pay_type, vouch_type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':date', $date);
     $stmt->bindParam(':suplier_id', $suplier_id);
@@ -274,7 +276,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'weekly') {
     $startDate = date('m/d/y', strtotime($_POST['weekly_start_date']));
     $endDate = date('m/d/y', strtotime($_POST['weekly_end_date']));
-    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM wsales WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY invoice_number,date";
+    $sql = "SELECT date,pay_type, vouch_type, invoice_number, SUM(amount) AS total FROM wsales WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY pay_type, vouch_type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $startDate);
     $stmt->bindParam(':end',  $endDate);
@@ -283,7 +285,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'monthly') {
     $year =$_POST['monthly_year'];
     $month  = $_POST['monthly_month'];
-    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM wsales WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND customer_id = :suplier_id GROUP BY invoice_number,date";
+    $sql = "SELECT date, pay_type, vouch_type,invoice_number, SUM(amount) AS total FROM wsales WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND customer_id = :suplier_id GROUP BY pay_type, vouch_type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':year', $year);
     $stmt->bindParam(':month', $month);
@@ -292,7 +294,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'range') {
     $rangeStartDate =date("m/d/y", strtotime($_POST['range_start_date']));
     $rangeEndDate = date("m/d/y", strtotime($_POST['range_end_date'])); 
-    $sql = "SELECT date, invoice_number, SUM(amount) AS total FROM wsales WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY invoice_number,date";
+    $sql = "SELECT date,pay_type, vouch_type, invoice_number, SUM(amount) AS total FROM wsales WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND customer_id = :suplier_id GROUP BY pay_type, vouch_type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $rangeStartDate);
     $stmt->bindParam(':end', $rangeEndDate);
@@ -300,15 +302,19 @@ $suplier_id =  $_POST['suplier_id'];
     $stmt->execute();
 }
 
+$salesTotal = 0;
 
+$credNoteTotal = 0;
 
 foreach ($stmt as $row) { 
 ?>
 
 <tr  class='record clickable-row' data-href='wsalesinvsumm.php?invoice_number=<?php echo $row['invoice_number']; ?>'>
 <td><?php echo $row['date']; ?> </td>
+<td><?php echo $row['pay_type']; ?> </td>
+<td><?php echo $row['vouch_type']; ?> </td>
 <td><?php echo $row['invoice_number']; ?> </td>
-<td><?php echo  $row['total']; ?> </td>
+<td><?php echo  $row['total']; if($row['vouch_type']=='Sales') $salesTotal += $row['total']; else $credNoteTotal += $row['total'];  ?> </td>
 </tr>
 <?php
 }
@@ -317,6 +323,35 @@ foreach ($stmt as $row) {
 }
 ?>
 <tr>
+
+
+<tr>
+<td colspan="2"><strong style="font-size: 12px; color: #222222;">   <?php
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
+}
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
+}
+return $number;
+}
+
+echo "Sales Total:   ";
+echo formatMoney($salesTotal, true);
+echo "<br/> <br/> ";
+echo "Credit Note Total:  ";
+echo formatMoney($credNoteTotal, true);
+
+?>
+
+</strong></td>
+</tr>
 
 </tbody>
 </table><br>

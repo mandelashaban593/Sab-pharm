@@ -18,6 +18,7 @@ if(isset($_POST['productid'])) $productid = $_POST['productid'];
 if(isset($_POST['batch_no'])) $batch_no=  $_POST['batch_no']; 
 if(isset($_POST['amount'])) $amount=  $_POST['amount']; 
 if(isset($_POST['expiry_date'])) $expiry_date=  $_POST['expiry_date'];
+$vouch_type = "Credit Note";
 
 $query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$suplier_id'") or die(mysqli_error($con));
 $row=mysqli_fetch_array($query);
@@ -31,7 +32,7 @@ foreach ($productid as $key => $pid) {
        $prodid = $productid[$key];
        $qty = $quantity[$key]; // Use a different variable for quantity
        $pri = $price[$key];    // Use a different variable for price
-        $amt = $amount[$key];  // Use a different variable for product type
+        $amt = $total[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
         $expirydate = $expiry_date[$key];  // Use a different variable for product type
 
@@ -49,7 +50,7 @@ foreach ($productid as $key => $pid) {
         $stmt = $db->prepare("UPDATE sales SET quantity = quantity - :quantity,amount = amount - :amount WHERE invoice_number = :invoice_number AND batch_no = :batch_no");
 
         $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-        $stmt->bindParam(':amount', $amt, PDO::PARAM_INT);
+        $stmt->bindParam(':amount', $total, PDO::PARAM_INT);
         $stmt->bindParam(':invoice_number', $invoice, PDO::PARAM_STR);
         $stmt->bindParam(':batch_no', $batchno, PDO::PARAM_STR);
 
@@ -137,19 +138,19 @@ foreach ($productid as $key => $pid) {
 
    if($ptype=='cash') {
         echo "OOOK CASH";
-    $sql = "INSERT INTO retcreditnote (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id')";
+    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,vouch_type,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id', '$vouch_type', '$expirydate')";
     $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     }
     
     if($ptype=='credit') {
         echo "OOOK CASH";
-    $sql = "INSERT INTO retcreditnote  (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id')";
+    $sql = "INSERT INTO sales  (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,vouch_type,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id', '$vouch_type', '$expirydate')";
     $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     }
     
     
 
-    
+
 
 
  }

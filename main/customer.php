@@ -111,7 +111,7 @@ $finalcode='RS-'.createRandomPassword();
 <a href="#" onclick="window.print()" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Print List</a>
 </div>
 <?php 
-			include('../connect.php');
+			require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM customer ORDER BY customer_id DESC");
 				$result->execute();
 				$rowcount = $result->rowcount();
@@ -136,7 +136,6 @@ $finalcode='RS-'.createRandomPassword();
 	<tbody>
 		
 			<?php
-				include('../connect.php');
 				$result = $db->prepare("SELECT * FROM customer ORDER BY customer_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){

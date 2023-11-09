@@ -147,14 +147,14 @@ window.onload=startclock;
 <div style="margin-top: -19px; margin-bottom: 21px; margin-left:330px;">
 <a  href="index.php"><button class="btn btn-default btn-large" style="float: left;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
 			<?php 
-			include('../connect.php');
+			require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM products ORDER BY qty_sold DESC");
 				$result->execute();
 				$rowcount = $result->rowcount();
 			?>
 			
 			<?php 
-			include('../connect.php');
+
 				$result = $db->prepare("SELECT * FROM products where qty < 10 ORDER BY product_id DESC");
 				$result->execute();
 				$rowcount123 = $result->rowcount();
@@ -187,7 +187,7 @@ window.onload=startclock;
 <span>Supplier : </span>
 <select name="supplier" style="width:265px; height:30px;">
 	<?php
-	include('../connect.php');
+
 	$result = $db->prepare("SELECT * FROM supliers");
 		$result->bindParam(':userid', $res);
 		$result->execute();

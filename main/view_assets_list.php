@@ -11,7 +11,7 @@
 	<tbody>
 		
 			<?php
-				include('../connect.php');
+				require '../conn2.php';
 
 				if(isset($_GET['transaction_id'])) $id=$_GET['transaction_id'];
 
@@ -34,7 +34,7 @@
 			echo formatMoney($dfdf, true);
 			?>
 			</td>
-			</tr
+			</tr>
 			<?php
 				}
 			?>

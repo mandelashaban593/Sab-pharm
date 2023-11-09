@@ -1,5 +1,5 @@
 <?php
-	include('../connect.php');
+	require '../conn2.php';
 	
 	if(isset($_GET['expense_id'])) $id=$_GET['expense_id'];
 

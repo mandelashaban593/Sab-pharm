@@ -209,7 +209,7 @@ window.onload=startclock;
 					}
 					return $number;
 				}
-				include('../connect.php');
+				require '../conn2.php';
 				$result = $db->prepare("SELECT * FROM user");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){

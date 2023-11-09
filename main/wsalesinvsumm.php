@@ -140,7 +140,11 @@ if(isset($_GET['invoice_number'])) {
 <tr>
 <th> ID</th>
 <th> Date </th>
+<th> Particulars </th>
+<th> Voucher Type </th>
 <th> Invoice number </th>
+<th> Name </th>
+<th> Expiry Date </th>
 <th> Cashier </th>
 <th> Batch Number </th>
 <th> Quantity </th>
@@ -170,7 +174,19 @@ foreach ($stmt as $row) {
 <tr class="record" >
 	<td><?php echo $row['transaction_id']; ?></td>
 <td><?php echo $row['date']; ?> </td>
+<td><?php echo $row['pay_type']; ?> </td>
+<td><?php echo $row['vouch_type']; ?> </td>
 <td><?php echo $row['invoice_number']; ?> </td>
+<td><?php $stmt = $db->prepare("SELECT med_name FROM products WHERE product_id = ?");
+    $stmt->execute([$row['productid']]);
+    // Fetch the result
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Check if a product was found
+    if ($result) {
+        $productName = $result['med_name'];
+        echo  $productName;
+    }  ?> </td>
+<td> <?php echo $row['expiry_date']; ?> </td>
 <td> <?php echo $row['cashier']; ?> </td>
 <td> <?php echo $row['batch_no']; ?> </td>
 <td> <?php echo $row['quantity']; ?> </td>
@@ -222,6 +238,8 @@ echo formatMoney($fgfg, true);
 
 </tbody>
 </table><br>
+
+
 </div>
 <div class="clearfix"></div>
 </div>
