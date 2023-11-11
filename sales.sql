@@ -2,8 +2,8 @@
 -- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 09, 2023 at 02:20 PM
+-- Host: localhost:3306
+-- Generation Time: Nov 11, 2023 at 12:51 PM
 -- Server version: 8.0.35-0ubuntu0.22.04.1
 -- PHP Version: 8.1.24
 
@@ -112,6 +112,7 @@ INSERT INTO `creditnote` (`invoice_number`, `cashier`, `curdate`, `type`, `amoun
 --
 
 CREATE TABLE `credit_payhist` (
+  `transaction_id` int NOT NULL,
   `suplier_id` int NOT NULL,
   `suplier_name` varchar(100) NOT NULL,
   `credit` int DEFAULT '0',
@@ -124,29 +125,39 @@ CREATE TABLE `credit_payhist` (
 -- Dumping data for table `credit_payhist`
 --
 
-INSERT INTO `credit_payhist` (`suplier_id`, `suplier_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
-(3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
-(3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
-(3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
-(3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
-(3, 'whitestar', 0, 23000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 112000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 3352000, 0, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 815000, 0, 'credit', '2023-11-09'),
-(6, 'Guardian Pharmacy', 815000, 0, 'credit', '2023-11-09'),
-(5, 'abacus pharmacy', 0, 30000, 'cash', '2023-02-04');
+INSERT INTO `credit_payhist` (`transaction_id`, `suplier_id`, `suplier_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
+(1, 3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
+(2, 3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
+(3, 3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
+(4, 3, 'whitestar', 41000, 0, 'credit', '2023-11-09'),
+(5, 3, 'whitestar', 0, 23000, 'cash', '2023-11-09'),
+(6, 5, 'abacus pharmacy', 0, 112000, 'cash', '2023-11-09'),
+(7, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(8, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(9, 5, 'abacus pharmacy', 3352000, 0, 'cash', '2023-11-09'),
+(10, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(11, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(12, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(13, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(14, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(15, 5, 'abacus pharmacy', 0, 3352000, 'cash', '2023-11-09'),
+(16, 6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
+(17, 6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
+(18, 6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
+(19, 6, 'Guardian Pharmacy', 0, 342000, 'cash', '2023-11-09'),
+(20, 6, 'Guardian Pharmacy', 815000, 0, 'credit', '2023-11-09'),
+(21, 6, 'Guardian Pharmacy', 815000, 0, 'credit', '2023-11-09'),
+(22, 5, 'abacus pharmacy', 0, 30000, 'cash', '2023-02-04'),
+(23, 6, 'Guardian Pharmacy', 0, 500, 'cash', '2023-11-09'),
+(24, 3, 'whitestar', 0, 200, 'cash', '2023-11-09'),
+(25, 3, 'whitestar', 0, 200, 'cash', '2023-11-09'),
+(26, 3, 'whitestar', 0, 200, 'cash', '2023-11-09'),
+(27, 3, 'whitestar', 0, 200, 'cash', '2023-11-09'),
+(28, 3, 'whitestar', 0, 300, 'bank', '2023-11-09'),
+(29, 4, 'Super Medic', 0, 124000, 'cash', '2023-11-11'),
+(30, 6, 'Guardian Pharmacy', 5000, 0, 'credit', '2023-11-11'),
+(31, 6, 'Guardian Pharmacy', 0, 200000, 'cash', '2023-11-11'),
+(32, 6, 'Guardian Pharmacy', 0, 34500, 'cash', '2023-11-11');
 
 -- --------------------------------------------------------
 
@@ -198,10 +209,12 @@ CREATE TABLE `customer_credit` (
 --
 
 INSERT INTO `customer_credit` (`customer_id`, `customer_name`, `credit`, `cash`) VALUES
-(10, 'Karem3', 69000, 15000),
-(7, 'Remmy', NULL, 202000),
+(10, 'Karem3', 68600, 38400),
+(7, 'Remmy', NULL, 207800),
 (6, 'JJ Pharmacy', 6000, 0),
-(11, 'Mandela Shab', 0, 3600);
+(11, 'Mandela Shab', 0, 3600),
+(2, 'John', 10000, 20000),
+(3, 'kelvin', 6400, 0);
 
 -- --------------------------------------------------------
 
@@ -210,6 +223,7 @@ INSERT INTO `customer_credit` (`customer_id`, `customer_name`, `credit`, `cash`)
 --
 
 CREATE TABLE `cust_payhist` (
+  `transaction_id` int NOT NULL,
   `customer_id` int NOT NULL,
   `customer_name` varchar(100) NOT NULL,
   `credit` int DEFAULT '0',
@@ -222,18 +236,37 @@ CREATE TABLE `cust_payhist` (
 -- Dumping data for table `cust_payhist`
 --
 
-INSERT INTO `cust_payhist` (`customer_id`, `customer_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
-(7, 'Remmy', 0, 15000, 'cash', '2023-11-09'),
-(7, 'Remmy', 0, 15000, 'cash', '2023-11-09'),
-(10, 'Karem3', 0, 15000, 'cash', '2023-11-09'),
-(10, 'Karem3', 69000, 0, 'credit', '2023-11-09'),
-(7, 'Remmy', 136000, 0, 'credit', '2023-11-09'),
-(7, 'Remmy', 56000, 0, 'credit', '2023-11-09'),
-(7, 'Remmy', 56000, 0, 'credit', '2023-11-09'),
-(7, 'Remmy', 0, 75000, 'cash', '2023-11-09'),
-(7, 'Remmy', 0, 75000, 'cash', '2023-11-09'),
-(7, 'Remmy', 27000, 0, 'credit', '2023-11-09'),
-(7, 'Remmy', 0, 22000, 'cash', '2023-11-09');
+INSERT INTO `cust_payhist` (`transaction_id`, `customer_id`, `customer_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
+(1, 7, 'Remmy', 0, 15000, 'cash', '2023-11-09'),
+(2, 7, 'Remmy', 0, 15000, 'cash', '2023-11-09'),
+(3, 10, 'Karem3', 0, 15000, 'cash', '2023-11-09'),
+(4, 10, 'Karem3', 69000, 0, 'credit', '2023-11-09'),
+(5, 7, 'Remmy', 136000, 0, 'credit', '2023-11-09'),
+(6, 7, 'Remmy', 56000, 0, 'credit', '2023-11-09'),
+(7, 7, 'Remmy', 56000, 0, 'credit', '2023-11-09'),
+(8, 7, 'Remmy', 0, 75000, 'cash', '2023-11-09'),
+(9, 7, 'Remmy', 0, 75000, 'cash', '2023-11-09'),
+(10, 7, 'Remmy', 27000, 0, 'credit', '2023-11-09'),
+(11, 7, 'Remmy', 0, 22000, 'cash', '2023-11-09'),
+(12, 10, 'Karem3', 150, 0, 'cash', '2023-11-10'),
+(13, 10, 'Karem3', 150, 0, 'cash', '2023-11-10'),
+(14, 10, 'Karem3', 0, 100, 'cash', '2023-11-10'),
+(15, 7, 'Remmy', 2200, 0, 'credit', '2023-11-11'),
+(16, 7, 'Remmy', 2200, 0, 'credit', '2023-11-11'),
+(17, 7, 'Remmy', 2200, 0, 'credit', '2023-11-11'),
+(18, 7, 'Remmy', 0, 2400, 'cash', '2023-11-11'),
+(19, 7, 'Remmy', 0, 2400, 'cash', '2023-11-11'),
+(20, 10, 'Karem3', 0, 23000, 'cash', '2023-11-11'),
+(21, 7, 'Remmy', 4100, 0, 'credit', '2023-11-11'),
+(22, 7, 'Remmy', 3000, 0, 'credit', '2023-11-11'),
+(23, 7, 'Remmy', 1500, 0, 'credit', '2023-11-11'),
+(24, 2, 'John', 30000, 0, 'credit', '2023-11-11'),
+(25, 2, 'John', 0, 15000, 'cash', '2023-11-11'),
+(26, 3, 'kelvin', 6400, 0, 'credit', '2023-11-11'),
+(27, 7, 'Remmy', 0, 1000, 'cash', '2023-11-11'),
+(28, 7, 'Remmy', 2000, 0, 'credit', '2023-11-11'),
+(29, 7, 'Remmy', 2000, 0, 'credit', '2023-11-11'),
+(30, 2, 'John', 0, 5000, 'cash', '2023-11-11');
 
 -- --------------------------------------------------------
 
@@ -242,6 +275,7 @@ INSERT INTO `cust_payhist` (`customer_id`, `customer_name`, `credit`, `cash`, `p
 --
 
 CREATE TABLE `cust_retpayhist` (
+  `transaction_id` int NOT NULL,
   `customer_id` int NOT NULL,
   `customer_name` varchar(100) NOT NULL,
   `credit` int DEFAULT '0',
@@ -254,20 +288,33 @@ CREATE TABLE `cust_retpayhist` (
 -- Dumping data for table `cust_retpayhist`
 --
 
-INSERT INTO `cust_retpayhist` (`customer_id`, `customer_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
-(10, 'Karem3', 0, 3200, 'cash', ''),
-(10, 'Karem3', 750, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 750, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 0, 5800, 'cash', '2023-11-09'),
-(7, 'Remmy', 0, 1200, 'cash', '2023-11-09'),
-(7, 'Remmy', 1100, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 0, 600, 'cash', '2023-11-09'),
-(10, 'Karem3', 0, 600, 'cash', '2023-11-09'),
-(10, 'Karem3', 1300, 0, 'credit', '2023-11-09'),
-(10, 'Karem3', 0, 1000, 'cash', '2023-11-09');
+INSERT INTO `cust_retpayhist` (`transaction_id`, `customer_id`, `customer_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
+(1, 10, 'Karem3', 0, 3200, 'cash', ''),
+(2, 10, 'Karem3', 750, 0, 'credit', '2023-11-09'),
+(3, 10, 'Karem3', 750, 0, 'credit', '2023-11-09'),
+(4, 10, 'Karem3', 0, 5800, 'cash', '2023-11-09'),
+(5, 7, 'Remmy', 0, 1200, 'cash', '2023-11-09'),
+(6, 7, 'Remmy', 1100, 0, 'credit', '2023-11-09'),
+(7, 10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
+(8, 10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
+(9, 10, 'Karem3', 1400, 0, 'credit', '2023-11-09'),
+(10, 10, 'Karem3', 0, 600, 'cash', '2023-11-09'),
+(11, 10, 'Karem3', 0, 600, 'cash', '2023-11-09'),
+(12, 10, 'Karem3', 1300, 0, 'credit', '2023-11-09'),
+(13, 10, 'Karem3', 0, 1000, 'cash', '2023-11-09'),
+(14, 6, 'JJ Pharmacy', 0, 100, 'cash', '2023-11-10'),
+(15, 6, 'JJ Pharmacy', 0, 100, 'cash', '2023-11-10'),
+(16, 6, 'JJ Pharmacy', 0, 100, 'cash', '2023-11-10'),
+(17, 10, 'Karem3', 900, 0, 'credit', '2023-11-11'),
+(18, 10, 'Karem3', 900, 0, 'credit', '2023-11-11'),
+(19, 10, 'Karem3', 0, 400, 'cash', '2023-11-11'),
+(20, 10, 'Karem3', 900, 0, 'credit', '2023-11-11'),
+(21, 10, 'Karem3', 900, 0, 'credit', '2023-11-11'),
+(22, 10, 'Karem3', 0, 1300, 'cash', '2023-11-11'),
+(23, 10, 'Karem3', 3450, 0, 'credit', '2023-11-11'),
+(24, 10, 'Karem3', 0, 3150, 'cash', '2023-11-11'),
+(25, 5, 'Ruky Pharmacy', 0, 150, 'cash', '2023-11-11'),
+(26, 10, 'Karem3', 0, 50, 'bank', '2023-11-11');
 
 -- --------------------------------------------------------
 
@@ -433,23 +480,22 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`, `inventory`) VALUES
-(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '109995', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B211', NULL),
+(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '109991', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B211', NULL),
 (4, '', '', '', '', '900', '1600', '700', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton	', '109920', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B111', NULL),
 (5, '', '', '', '', '200', '1000', '800', 'Tech Ltd', 0, 0, 0, '', '2044-11-16', 'Painkiller', '267', 'Bot', '11/15/20', '07/13/22', '32000', 'n-20', 160, 'Abdominal', 'Approved', NULL, NULL),
-(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '100676', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Approved', NULL, NULL),
-(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '295', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Approved', NULL, NULL),
-(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1167', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Approved', NULL, NULL),
-(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9405', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Approved', NULL, NULL),
-(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '89996', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Approved', NULL, NULL),
+(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '100676', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Approved', 'BK9201', NULL),
+(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '311', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Approved', 'BR732', NULL),
+(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1171', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Approved', 'BN021', NULL),
+(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9401', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Approved', 'BH892', NULL),
+(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '89996', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Approved', 'BC721', NULL),
 (12, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '100', 'Guardian Pharmacy', 0, 9000, 0, '2027-10-07', 'Quatem', 'Quatem', '18904', 'Tab', '2023-10-02', NULL, NULL, 'DD093', 0, 'Painkiller', 'Approved', NULL, NULL),
 (13, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '500', 'Super Medic', 0, 10000, 0, '2055-10-05', 'Ceptrine', 'Ceptrine', '10021', 'Tab', '2023-10-01', NULL, '4000000', 'HFFF43', 0, 'Painkiller', 'Approved', NULL, NULL),
 (14, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '1600', 'Super Medic', 0, 9000, 0, '2033-06-02', 'ArtEFAN', 'ArtEFAN', '8988', 'Tab', '2023-10-02', NULL, '21600000', 'nn-303', 0, 'Antimalario', 'Approved', NULL, NULL),
 (15, 'Periton	', '', 'Periton	', NULL, '900', '1600', '2600', 'Super Medic', 0, 200, 0, '2023-10-26', 'Periton	', 'Periton	', '184', 'cash', '2023-10-05', NULL, '700000', '9s', 100000, 'Head ache', 'Approved', 'B632', NULL),
 (16, 'Mabendozol', 'Mabendozol', 'Mabendozol', NULL, '150', '200', '5564', 'Super Medic', 0, 140, 0, '2023-11-03', 'Mabendozol', 'Mabendozol', '143', 'cash', '2023-10-05', NULL, '800000', '392', 200, 'Urinary affection', 'Approved', 'B6432', NULL),
-(17, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '12750', 'whitestar', 0, 50, 0, '2023-10-21', 'Asprine', 'Asprine', '3995', 'cash', '2023-10-05', NULL, '640000', 'fff-933', 0, 'PainKiller', 'Approved', 'B11873', NULL),
-(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '296', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Approved', 'RS2132', NULL),
+(17, 'Asprin 75MG UK', 'Asprin 75MG UK', 'Asprin 75MG UK', '0', '0', '150', '', 'None', 0, 3993, 0, '', 'Nov-11-2023', 'Asprin 75MG UK', '3992', 'Tabs', '11/11/23', NULL, '0', 'D876', 3993, 'Anti-spasmotic', 'Approved', 'B11873', 'Consumable'),
+(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '310', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Approved', 'RS2132', NULL),
 (19, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '6903', 'abacus pharmacy', 0, 89, 0, '2023-10-04', 'Ceptrine', 'Ceptrine', '8975', 'cash', '2023-10-05', NULL, '650000', 'HFFF43', 89, 'Painkiller', 'Approved', 'B987544', NULL),
-(20, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '9010', 'abacus pharmacy', 0, 78, 0, '2023-10-25', 'ArtEFAN', 'ArtEFAN', '70', 'cash', '2023-10-05', NULL, '890000', 'nn-303', 78, 'Antimalario', 'Approved', 'B87233', NULL),
 (21, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '304', 'Super Medic', 0, 44, 0, '2023-10-12', 'Capsul', 'Capsul', '90037', 'credit', '2023-10-05', NULL, '20000', 'f34', 44, 'Painkiller', 'Approved', 'B7201', NULL),
 (22, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '9600', 'Super Medic', 0, 34, 0, '2023-11-01', 'Ceptrine', 'Ceptrine', '123', 'credit', '2023-10-05', NULL, '340000', 'HFFF43', 34, 'Painkiller', 'Approved', 'B78532', NULL),
 (23, 'D-Artepp', 'D-Artepp', 'D-Artepp', '120', '120', '200', '80', 'None', 0, 20, 0, '2023-11-01', 'D-Artepp', 'D-Artepp', '16', 'Stp', '2023-10-06', NULL, '2400', 'D876', 0, 'Healer', 'Approved', NULL, NULL),
@@ -464,9 +510,8 @@ INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`
 (32, 'Centaprintecil', 'Centaprintecil', 'Centaprintecil', '0', '0', '300', '300', 'None', 0, 4, 0, '', 'Centaprintecil', 'Centaprintecil', '4', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
 (33, 'Pensil', 'Pensil', 'Pensil', '0', '0', '300', '300', 'None', 0, 12, 0, '', 'Pensil', 'Pensil', '24', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL, NULL),
 (34, 'Muniscapuls', 'Munis capuls', 'Muniscapuls', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Muniscapuls', 'Muniscapuls', '', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
-(35, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '819', 'Super Medic', 0, 23, 0, '2023-10-11', 'Asprine', 'Asprine', '26', 'cash', '2023-10-11', NULL, '20000', 'fff-933', 23, 'PainKiller', 'Approved', 'B43', NULL),
-(36, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '-1538', 'Super Medic', 0, 522, 0, '2023-10-17', 'ArtEFAN', 'ArtEFAN', '522', 'cash', '2023-10-11', NULL, '450000', 'nn-303', 522, 'Antimalario', 'Approved', 'B722', NULL),
-(37, 'Amoin', 'Amoin', 'Amoin', '0', '0', '400', '40', 'None', 0, 0, 0, '', 'Amoin', 'Amoin', '8995', 'Gell', '+03002023-10-11T00:39:02+03:0031-11-2023', NULL, '0', 'D876', 0, 'Antiprotoazol', 'Approved', '', 'Consumable'),
+(35, 'Asprine99', 'Asprine99', 'Asprine99', '0', '0', '150', '', 'None', 0, 0, 0, '2023-10-11', 'Nov-10-2023', 'Asprine99', '91', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B43', 'Consumable'),
+(36, 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', '0', '0', '4000', '', 'None', 0, 0, 0, '2023-10-17', 'Nov-11-2023', 'ARTEFAN 20/120MG', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B722', 'Consumable'),
 (38, 'REMOS', 'REMOS', 'REMOS', '0', '0', '500', '500', 'None', 0, 0, 0, '', 'REMOS', 'REMOS', '8994', 'Tabs', '10/11/23', NULL, '0', 'D876', 0, 'Anti-ulcers', 'Approved', '', 'Consumable'),
 (39, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
 (40, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
@@ -475,24 +520,26 @@ INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`
 (43, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
 (44, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
 (45, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 10000, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(46, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 40, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(47, 'Amoin', 'Amoin', 'Amoin', '0', '0', '400', '', 'None', 0, 6000, 0, '', 'Amoin', 'Amoin', '8995', 'Tabs', '10/12/23', NULL, '0', 'D876', 6000, 'Anti-spasmotic', 'Approved', '', 'Consumable'),
+(46, 'PIRITON', 'PIRITON', 'PIRITON', '0', '0', '1600', '', 'None', 0, 109920, 0, '', 'Nov-11-2023', 'PIRITON', '109720', 'Tabs', '11/11/23', NULL, '0', 'D876', 109920, 'NA', 'Approved', 'B111', 'Consumable'),
+(47, 'Amoin88', 'Amoin88', 'Amoin88', '0', '0', '400', '', 'None', 0, 0, 0, '', 'Nov-10-2023', 'Amoin88', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', '', 'Consumable'),
 (48, 'Periton	', '', 'Periton	', '900', '900', '1600', '-868', 'Guardian Pharmacy', 0, 8000, 0, '2023-10-26', 'Periton	', 'Periton	', '8003', 'cash', '2023-10-12', NULL, '260000', '9s', 8000, 'Head ache', 'Approved', 'B7777', NULL),
 (49, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '19850', 'Super Medic', 0, 3, 0, '2023-10-18', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-27', NULL, '60000', '392', 3, 'Urinary affection', 'Approved', 'B33', NULL),
 (50, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '14850', 'Super Medic', 0, 6, 0, '2023-10-31', 'Capsul', 'Capsul', '6', 'cash', '2023-10-27', NULL, '90000', 'f34', 6, 'Painkiller', 'Approved', 'B7322', NULL),
 (51, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '6616', 'dddd5', 0, 3, 0, '2023-10-28', 'Asprine', 'Asprine', '1', 'cash', '2023-10-28', NULL, '20000', 'fff-933', 3, 'PainKiller', 'Approved', 'B344', NULL),
 (52, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '124950', 'Hans kk2', 0, 2, 0, '2023-11-04', 'Asprine', 'Asprine', '0', 'cash', '2023-10-28', NULL, '250000', 'fff-933', 2, 'PainKiller', 'Approved', 'B544', NULL),
-(53, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '19950', 'whitestar', 0, 1, 0, '2023-11-02', 'Asprine', 'Asprine', '0', 'credit', '2023-11-09', NULL, '20000', 'fff-933', 1, 'PainKiller', 'Approved', 'B123', NULL),
+(53, 'Asprine44', 'Asprine44', 'Asprine44', '0', '0', '150', '', 'None', 0, 0, 0, '2023-11-02', 'Nov-10-2023', 'Asprine44', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B123', 'Consumable'),
 (54, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '6800', 'whitestar', 0, 3, 0, '2023-11-09', 'Painkiller', 'Painkiller', '2', 'credit', '2023-11-09', NULL, '21000', 'n-20', 3, 'Abdominal', 'Approved', 'B023', NULL),
 (55, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '5950', 'whitestar', 0, 2, 0, '2023-11-09', 'Asprine', 'Asprine', '2', 'cash', '2023-11-09', NULL, '12000', 'fff-933', 2, 'PainKiller', 'Approved', 'B233', NULL),
 (56, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '10800', 'whitestar', 0, 1, 0, '2023-11-09', 'Painkiller', 'Painkiller', '1', 'cash', '2023-11-09', NULL, '11000', 'n-20', 1, 'Abdominal', 'Approved', 'B883', NULL),
 (57, 'Periton ', '', 'Periton ', '900', '900', '1500', '10100', 'abacus pharmacy', 0, 2, 0, '2023-11-09', 'Periton ', 'Periton ', '2', 'cash', '2023-11-09', NULL, '22000', '9s', 2, 'Head ache', 'Approved', 'B83992', NULL),
-(58, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '89800', 'abacus pharmacy', 0, 1, 0, '2023-11-09', 'Quatem', 'Quatem', '-1', 'cash', '2023-11-09', NULL, '90000', 'DD093', 1, 'Painkiller', 'Approved', 'B533', NULL),
+(58, 'Quatem7', 'Quatem7', 'Quatem7', '0', '0', '300', '', 'None', 0, -1, 0, '', 'Nov-10-2023', 'Quatem7', '-1', 'Tabs', '11/10/23', NULL, '0', 'D876', -1, 'Anti-spasmotic', 'Approved', 'B533', 'Consumable'),
 (59, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '21850', 'abacus pharmacy', 0, 1, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '1', 'cash', '2023-11-09', NULL, '22000', '124', 1, 'Painkillers', 'Approved', 'B8293', NULL),
-(60, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '1109850', 'abacus pharmacy', 0, 3, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '3', 'cash', '2023-11-09', NULL, '3330000', '124', 3, 'Painkillers', 'Approved', 'B332', NULL),
+(60, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '1109850', 'abacus pharmacy', 0, 3, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '3330000', '124', 3, 'Painkillers', 'Approved', 'B332', NULL),
 (61, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '169850', 'Guardian Pharmacy', 0, 2, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '340000', '124', 2, 'Painkillers', 'Approved', 'b532', NULL),
 (62, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '7450', 'Guardian Pharmacy', 0, 2, 0, '2023-12-09', 'Asprine', 'Asprine', '2', 'credit', '2023-11-09', NULL, '15000', 'fff-933', 2, 'PainKiller', 'Approved', 'B23', NULL),
-(63, 'Painv', 'Painv', 'Painv', '150', '150', '200', '266516', 'Guardian Pharmacy', 0, 3, 0, '2023-12-08', 'Painv', 'Painv', '0', 'credit', '2023-11-09', NULL, '800000', '203', 3, 'Painkillers', 'Approved', 'B434', NULL);
+(63, 'Painv', 'Painv', 'Painv', '150', '150', '200', '266516', 'Guardian Pharmacy', 0, 3, 0, '2023-12-08', 'Painv', 'Painv', '0', 'credit', '2023-11-09', NULL, '800000', '203', 3, 'Painkillers', 'Approved', 'B434', NULL),
+(64, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '350', 'Super Medic', 0, 10, 0, '2023-11-11', 'Asprine', 'Asprine', '10', 'cash', '2023-11-11', NULL, '4000', 'fff-933', 10, 'PainKiller', 'Approved', 'B992', NULL),
+(65, 'PIRITON  INDIA', 'PIRITON  INDIA', 'PIRITON  INDIA', '0', '0', '1600', '', 'None', 0, 0, 0, '2026-11-30', 'Nov-11-2023', 'PIRITON  INDIA', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', '10345', 'Consumable');
 
 -- --------------------------------------------------------
 
@@ -806,7 +853,10 @@ INSERT INTO `purchases_ret` (`transaction_id`, `invoice_number`, `cashier`, `cur
 (0, 'RS422', 'admin', NULL, 'credit', '7500.00', '7450', '2023-11-09', 'Guardian Pharmacy', '0', NULL, NULL, '11:14:15', '2023-11-09', 'B23', '17', '15000', 'credit', '2', '2023-12-09', '6'),
 (0, 'RS422', 'admin', NULL, 'credit', '266666.67', '266516', '2023-11-09', 'Guardian Pharmacy', '0', NULL, NULL, '11:14:15', '2023-11-09', 'B434', '8', '800000', 'credit', '3', '2023-12-08', '6'),
 (0, 'RS422', 'admin', NULL, 'credit', '7500.00', '7450', '2023-11-09', 'Guardian Pharmacy', '0', NULL, NULL, '11:14:53', '2023-11-09', 'B23', '17', '15000', 'credit', '2', '2023-12-09', '6'),
-(0, 'RS422', 'admin', NULL, 'credit', '266666.67', '266516', '2023-11-09', 'Guardian Pharmacy', '0', NULL, NULL, '11:14:54', '2023-11-09', 'B434', '8', '800000', 'credit', '3', '2023-12-08', '6');
+(0, 'RS422', 'admin', NULL, 'credit', '266666.67', '266516', '2023-11-09', 'Guardian Pharmacy', '0', NULL, NULL, '11:14:54', '2023-11-09', 'B434', '8', '800000', 'credit', '3', '2023-12-08', '6'),
+(0, 'RS4213', 'admin', NULL, 'cash', '400.00', '350', '2023-11-11', 'Super Medic', '0', NULL, NULL, '10:55:03', '2023-11-11', 'B992', '17', '4000', 'cash', '10', '2023-11-11', '4'),
+(0, 'RS4213', 'admin', NULL, 'cash', '2400.00', '2400', '2023-11-11', 'Super Medic', '0', NULL, NULL, '10:55:04', '2023-11-11', 'B43', '35', '120000', 'cash', '50', '2023-12-09', '4'),
+(0, '123', 'admin', NULL, 'credit', '50.00', '50', '2023-11-11', 'Guardian Pharmacy', '0', NULL, NULL, '11:45:54', '2023-11-11', '10345', '46', '5000', 'credit', '100', '2026-11-30', '6');
 
 -- --------------------------------------------------------
 
@@ -922,9 +972,10 @@ CREATE TABLE `purch_revenue` (
 --
 
 INSERT INTO `purch_revenue` (`suplier_id`, `suplier_name`, `credit`, `cash`, `pay_type`, `date`) VALUES
-(3, 'whitestar', 82000, 23000, 'cash', '2023-11-09'),
+(3, 'whitestar', 80700, 23000, 'cash', '2023-11-09'),
 (5, 'abacus pharmacy', -30000, 3352000, 'cash', '2023-11-09'),
-(6, 'Guardian Pharmacy', 1630000, 1368000, 'credit', '2023-11-09');
+(6, 'Guardian Pharmacy', 1400000, 1368000, 'credit', '2023-11-11'),
+(4, 'Super Medic', 0, 124000, 'cash', '2023-11-11');
 
 -- --------------------------------------------------------
 
@@ -986,10 +1037,11 @@ CREATE TABLE `retcustomer_credit` (
 --
 
 INSERT INTO `retcustomer_credit` (`customer_id`, `customer_name`, `credit`, `cash`) VALUES
-(10, 'Karem3', 7000, 11200),
+(10, 'Karem3', 14000, 16100),
 (7, 'Remmy', NULL, 1200),
-(6, 'JJ Pharmacy', 6000, 0),
-(11, 'Mandela Shab', 0, 3600);
+(6, 'JJ Pharmacy', 5700, 300),
+(11, 'Mandela Shab', 0, 3600),
+(5, 'Ruky Pharmacy', 0, 150);
 
 -- --------------------------------------------------------
 
@@ -1091,7 +1143,23 @@ INSERT INTO `sales` (`transaction_id`, `invoice_number`, `cashier`, `curdate`, `
 (62, 'RS-3039222', 'admin', NULL, 'credit', '200', '50', '2023-11-09', 'Karem3', '0', NULL, NULL, '13:30:34', '2023-11-09', 'B7201', '21', '', 'credit', '2', '10', '2023-10-12', 'Sales'),
 (63, 'RS-3039222', 'admin', NULL, 'credit', '900', '500', '2023-11-09', 'Karem3', '0', NULL, NULL, '13:30:34', '2023-11-09', 'B987544', '19', '', 'credit', '1', '10', '2023-10-04', 'Sales'),
 (64, 'RS-82738', 'admin', NULL, 'cash', '200', '50', '2023-11-09', 'Karem3', '0', NULL, NULL, '13:31:32', '2023-11-09', '', '7', '', 'cash', '2', '10', '2022-07-12', 'Sales'),
-(65, 'RS-82738', 'admin', NULL, 'cash', '200', '50', '2023-11-09', 'Karem3', '0', NULL, NULL, '13:31:33', '2023-11-09', 'RS2132', '18', '', 'cash', '3', '10', '2023-10-05', 'Sales');
+(65, 'RS-82738', 'admin', NULL, 'cash', '200', '50', '2023-11-09', 'Karem3', '0', NULL, NULL, '13:31:33', '2023-11-09', 'RS2132', '18', '', 'cash', '3', '10', '2023-10-05', 'Sales'),
+(66, 'RS-60067', 'admin', NULL, 'credit', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:37:13', '2023-11-11', 'B43', '35', '', 'credit', '2', '10', '', 'Credit Note'),
+(67, 'RS-60067', 'admin', NULL, 'credit', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:37:14', '2023-11-11', 'RS2132', '18', '', 'credit', '3', '10', '', 'Credit Note'),
+(68, 'RS-60067', 'admin', NULL, 'credit', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:38:04', '2023-11-11', 'B43', '35', '', 'credit', '2', '10', '', 'Credit Note'),
+(69, 'RS-60067', 'admin', NULL, 'credit', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:38:04', '2023-11-11', 'RS2132', '18', '', 'credit', '3', '10', '', 'Credit Note'),
+(70, 'RS-26520', 'admin', NULL, 'cash', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:38:57', '2023-11-11', 'BR732', '8', '', 'cash', '2', '10', '07/13/22', 'Credit Note'),
+(71, 'RS-309372', 'admin', NULL, 'credit', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:41:15', '2023-11-11', 'B43', '35', '', 'credit', '2', '10', '', 'Credit Note'),
+(72, 'RS-309372', 'admin', NULL, 'credit', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:41:15', '2023-11-11', 'BR732', '8', '', 'credit', '3', '10', '07/13/22', 'Credit Note'),
+(73, 'RS-309372', 'admin', NULL, 'credit', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:43:25', '2023-11-11', 'B43', '35', '', 'credit', '2', '10', '', 'Credit Note'),
+(74, 'RS-309372', 'admin', NULL, 'credit', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:43:25', '2023-11-11', 'BR732', '8', '', 'credit', '3', '10', '07/13/22', 'Credit Note'),
+(75, 'RS-29272220', 'admin', NULL, 'cash', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:48:41', '2023-11-11', 'B43', '35', '', 'cash', '2', '10', '2023-10-11', 'Credit Note'),
+(76, 'RS-29272220', 'admin', NULL, 'cash', '200', '50', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:48:41', '2023-11-11', 'BN021', '9', '', 'cash', '5', '10', '07/16/22', 'Credit Note'),
+(77, 'RS-30330', 'admin', NULL, 'credit', '150', '100', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:52:17', '2023-11-11', 'BH892', '10', '', 'credit', '3', '10', '2023-09-28', 'Sales'),
+(78, 'RS-30330', 'admin', NULL, 'credit', '1500', '600', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:52:19', '2023-11-11', 'B211', '3', '', 'credit', '2', '10', '', 'Sales'),
+(79, 'RS-5236222', 'admin', NULL, 'cash', '1500', '600', '2023-11-11', 'Karem3', '0', NULL, NULL, '12:16:29', '2023-11-11', 'B211', '3', '', 'cash', '2', '10', '', 'Sales'),
+(80, 'RS-5236222', 'admin', NULL, 'cash', '150', '150', '2023-11-11', 'Karem3', '0', NULL, NULL, '12:16:30', '2023-11-11', 'B11873', '17', '', 'cash', '1', '10', '', 'Sales'),
+(81, 'RS-235233', 'admin', NULL, 'cash', '150', '150', '2023-11-11', 'Ruky Pharmacy', '0', NULL, NULL, '12:19:41', '2023-11-11', 'B43', '35', '', 'cash', '1', '5', '2023-10-11', 'Credit Note');
 
 -- --------------------------------------------------------
 
@@ -1290,7 +1358,29 @@ INSERT INTO `wsales` (`transaction_id`, `invoice_number`, `cashier`, `curdate`, 
 (NULL, 'RS-232233', 'admin', NULL, 'credit', '7500.00', '7450', '2023-11-09', 'Remmy', '0', NULL, NULL, '13:28:08', '2023-11-09', '', '10', '15000', 'credit', '2', '7', '2023-09-28', 'Sales'),
 (NULL, 'RS-232233', 'admin', NULL, 'credit', '4000.00', '3850', '2023-11-09', 'Remmy', '0', NULL, NULL, '13:28:08', '2023-11-09', 'B434', '63', '12000', 'credit', '3', '7', '2023-12-08', 'Sales'),
 (NULL, 'RS-303222', 'admin', NULL, 'cash', '5000.00', '4800', '2023-11-09', 'Remmy', '0', NULL, NULL, '13:29:46', '2023-11-09', 'B533', '58', '10000', 'cash', '2', '7', '2023-11-09', 'Sales'),
-(NULL, 'RS-303222', 'admin', NULL, 'cash', '12000.00', '12000', '2023-11-09', 'Remmy', '0', NULL, NULL, '13:29:46', '2023-11-09', '', '38', '12000', 'cash', '1', '7', '', 'Sales');
+(NULL, 'RS-303222', 'admin', NULL, 'cash', '12000.00', '12000', '2023-11-09', 'Remmy', '0', NULL, NULL, '13:29:46', '2023-11-09', '', '38', '12000', 'cash', '1', '7', '', 'Sales'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '500.00', '350', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:05:15', '2023-11-11', 'RS2132', '18', '1000', 'credit', '2', '7', '', 'Credit Note'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '240.00', '240', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:05:15', '2023-11-11', 'B43', '35', '1200', 'credit', '5', '7', '', 'Credit Note'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '500.00', '350', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:11:04', '2023-11-11', 'RS2132', '18', '1000', 'credit', '2', '7', '', 'Credit Note'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '240.00', '240', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:11:05', '2023-11-11', 'B43', '35', '1200', 'credit', '5', '7', '', 'Credit Note'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '500.00', '350', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:13:14', '2023-11-11', 'RS2132', '18', '1000', 'credit', '2', '7', '', 'Credit Note'),
+(NULL, 'RS-22993223', 'admin', NULL, 'credit', '240.00', '240', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:13:14', '2023-11-11', 'B43', '35', '1200', 'credit', '5', '7', '', 'Credit Note'),
+(NULL, 'RS-0330229', 'admin', NULL, 'cash', '650.00', '650', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:22:00', '2023-11-11', 'B43', '35', '1300', 'cash', '2', '7', '', 'Credit Note'),
+(NULL, 'RS-0330229', 'admin', NULL, 'cash', '366.67', '216', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:22:01', '2023-11-11', 'BR732', '8', '1100', 'cash', '3', '7', '07/13/22', 'Credit Note'),
+(NULL, 'RS-0330229', 'admin', NULL, 'cash', '650.00', '650', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:22:59', '2023-11-11', 'B43', '35', '1300', 'cash', '2', '7', '', 'Credit Note'),
+(NULL, 'RS-0330229', 'admin', NULL, 'cash', '366.67', '216', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:22:59', '2023-11-11', 'BR732', '8', '1100', 'cash', '3', '7', '07/13/22', 'Credit Note'),
+(NULL, 'RS-220224', 'admin', NULL, 'cash', '5500.00', '5500', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:46:34', '2023-11-11', 'B43', '35', '11000', 'cash', '2', '10', '2023-10-11', 'Credit Note'),
+(NULL, 'RS-220224', 'admin', NULL, 'cash', '', '-150', '2023-11-11', 'Karem3', '0', NULL, NULL, '10:46:34', '2023-11-11', 'BR732', '8', '12000', 'cash', '0', '10', '07/14/22', 'Credit Note'),
+(NULL, 'RS-2202036', 'admin', NULL, 'credit', '2000.00', '1950', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:50:04', '2023-11-11', 'B11873', '17', '4000', 'credit', '2', '7', '2023-10-21', 'Sales'),
+(NULL, 'RS-2202036', 'admin', NULL, 'credit', '100.00', '-50', '2023-11-11', 'Remmy', '0', NULL, NULL, '10:50:04', '2023-11-11', 'BR732', '8', '100', 'credit', '1', '7', '07/14/22', 'Sales'),
+(NULL, 'RS-050300', 'admin', NULL, 'credit', '1500.00', '1350', '2023-11-11', 'Remmy', '0', NULL, NULL, '11:40:07', '2023-11-11', 'B332', '60', '3000', 'credit', '2', '7', '2023-11-09', 'Sales'),
+(NULL, 'RS-2623530', 'admin', NULL, 'credit', '1500.00', '1350', '2023-11-11', 'Remmy', '0', NULL, NULL, '11:42:08', '2023-11-11', 'B332', '60', '1500', 'credit', '1', '7', '2023-11-09', 'Credit Note'),
+(NULL, 'RS-303328', 'admin', NULL, 'credit', '150.00', '150', '2023-11-11', 'John', '0', NULL, NULL, '11:51:20', '2023-11-11', 'B111', '46', '30000', 'credit', '200', '2', '', 'Sales'),
+(NULL, 'RS-22223320', 'admin', NULL, 'credit', '700.00', '650', '2023-11-11', 'kelvin', '0', NULL, NULL, '12:10:59', '2023-11-11', 'BH892', '10', '1400', 'credit', '2', '3', '2023-09-28', 'Sales'),
+(NULL, 'RS-22223320', 'admin', NULL, 'credit', '5000.00', '4850', '2023-11-11', 'kelvin', '0', NULL, NULL, '12:11:00', '2023-11-11', 'BN021', '9', '5000', 'credit', '1', '3', '07/16/22', 'Sales'),
+(NULL, 'RS-2332003', 'admin', NULL, 'cash', '1000.00', '950', '2023-11-11', 'Remmy', '0', NULL, NULL, '12:18:46', '2023-11-11', 'BH892', '10', '1000', 'cash', '1', '7', '2023-09-28', 'Credit Note'),
+(NULL, 'RS-8380076', 'admin', NULL, 'credit', '40.00', '40', '2023-11-11', 'Remmy', '0', NULL, NULL, '12:40:31', '2023-11-11', '10345', '65', '2000', 'credit', '50', '7', '2026-11-30', 'Sales'),
+(NULL, 'RS-30203369', 'admin', NULL, 'credit', '40.00', '40', '2023-11-11', 'Remmy', '0', NULL, NULL, '12:41:47', '2023-11-11', '10345', '65', '2000', 'credit', '50', '7', '2026-11-30', 'Credit Note');
 
 --
 -- Indexes for dumped tables
@@ -1309,10 +1399,28 @@ ALTER TABLE `collection`
   ADD PRIMARY KEY (`transaction_id`);
 
 --
+-- Indexes for table `credit_payhist`
+--
+ALTER TABLE `credit_payhist`
+  ADD PRIMARY KEY (`transaction_id`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `cust_payhist`
+--
+ALTER TABLE `cust_payhist`
+  ADD PRIMARY KEY (`transaction_id`);
+
+--
+-- Indexes for table `cust_retpayhist`
+--
+ALTER TABLE `cust_retpayhist`
+  ADD PRIMARY KEY (`transaction_id`);
 
 --
 -- Indexes for table `equity`
@@ -1403,10 +1511,28 @@ ALTER TABLE `collection`
   MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `credit_payhist`
+--
+ALTER TABLE `credit_payhist`
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
   MODIFY `customer_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `cust_payhist`
+--
+ALTER TABLE `cust_payhist`
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `cust_retpayhist`
+--
+ALTER TABLE `cust_retpayhist`
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `equity`
@@ -1436,7 +1562,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `purchases`
@@ -1460,7 +1586,7 @@ ALTER TABLE `purchase_details`
 -- AUTO_INCREMENT for table `sales`
 --
 ALTER TABLE `sales`
-  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `sales_order`
