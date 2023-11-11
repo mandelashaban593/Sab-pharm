@@ -135,18 +135,9 @@ $finalcode='RS-'.createRandomPassword();
 	$resulta->execute();
 	for($i=0; $rowa = $resulta->fetch(); $i++){
 	$total=$rowa['total'];
-
-	if($total > 0){
 	echo $total;
 
 	}
-
-if($total < 0){
-	echo 0;
-
-	}
-
-}
 	?>
 
 </div>
@@ -177,19 +168,18 @@ if($total < 0){
 	<tbody>
 		
 				<?php
-				$resulta = $db->prepare("SELECT * FROM cust_retpayhist WHERE customer_id= :customer_id");
+				$resulta = $db->prepare("SELECT * FROM cust_retpayhist  WHERE customer_id= :customer_id");
 				$resulta->bindParam(':customer_id',  $_SESSION['customer_id']);
 				$resulta->execute();
 				for($i=0; $rowa = $resulta->fetch(); $i++){
 				$total=$rowa['total'];
-	
+				echo $total;
 				?>
 				<tr class="record">
 			<td><?php echo $rowa['date']; ?></td>
 			<td><?php echo $rowa['customer_name']; ?></td>
 			<td><?php echo $rowa['cash']; ?></td>
 			<td><?php echo $rowa['pay_type']; ?></td>
-
 			</tr>
 
 

@@ -337,7 +337,7 @@ if($position=='admin') {
                         input.value = suggestion.med_name; // Set the input value
                         row.cells[4].getElementsByTagName("input")[0].value = suggestion.product_id;
                         row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
-                        row.cells[6].getElementsByTagName("input")[0].value = suggestion.exp_date;
+                        row.cells[6].getElementsByTagName("input")[0].value = suggestion.expiry_date;
                         suggestionBox.innerHTML = ''; // Clear the suggestions
                     };
                     suggestionBox.appendChild(suggestionItem);

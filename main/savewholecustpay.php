@@ -83,33 +83,42 @@ try {
 
 
 
+
 try {
     // Create a PDO database connectio
     
     // SQL query with placeholders
-    $sql = "INSERT INTO  cust_payhist (customer_id,customer_name,credit,pay_type,date) VALUES (:customer_id, :customer_name, :credit, :pay_type, :date)";
+
+    $sql = "INSERT INTO cust_payhist (customer_id,customer_name,cash,pay_type,date) VALUES (?, ?, ?, ?, ?)";
     
-    // Prepare the SQL statement
+    // Values to insert
+
+    // Use prepared statement
     $stmt = $db->prepare($sql);
     
-    // Bind parameters
-    $stmt->bindParam(':customer_id', $customer_id);
-    $stmt->bindParam(':customer_name', $customer_name);
-    $stmt->bindParam(':credit', $amount);
-    $stmt->bindParam(':pay_type', $pay_type);
-    $stmt->bindParam(':date', $date);
-  
-    
-    // Execute the query
-    $stmt->execute();
+    // Execute the statement with the values
+    $stmt->execute([$customer_id, $customer_name, $amount, $pay_type, $date]);
+
+    // Retrieve the ID of the inserted record
+
+    $lastInsertedId = $db->lastInsertId();
+    echo "The ID of the currently inserted record is: " . $lastInsertedId;
+    echo "<br/>";
     
     echo "Data inserted successfully!";
 
-    header("location: wcustpayment.php?customer_id=$customer_id");
+
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
+
+
+
+header("location: custpreview.php?id=$lastInsertedId&customer_id=$customer_id");
+exit();
+
 
 
 ?>

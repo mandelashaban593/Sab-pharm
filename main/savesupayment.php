@@ -64,29 +64,37 @@ try {
     // Create a PDO database connectio
     
     // SQL query with placeholders
-    $sql = "INSERT INTO  credit_payhist (suplier_id,suplier_name,cash,pay_type,date) VALUES (:suplier_id, :suplier_name, :cash, :pay_type, :date)";
+
+    $sql = "INSERT INTO credit_payhist (suplier_id,suplier_name,cash,pay_type,date) VALUES (?, ?, ?, ?, ?)";
     
-    // Prepare the SQL statement
+    // Values to insert
+
+    // Use prepared statement
     $stmt = $db->prepare($sql);
     
-    // Bind parameters
-    $stmt->bindParam(':suplier_id', $suplier_id);
-    $stmt->bindParam(':suplier_name', $suplier_name);
-    $stmt->bindParam(':cash', $amount);
-    $stmt->bindParam(':pay_type', $pay_type);
-    $stmt->bindParam(':date', $date);
-  
-    
-    // Execute the query
-    $stmt->execute();
+    // Execute the statement with the values
+    $stmt->execute([$suplier_id, $suplier_name, $amount, $pay_type, $date]);
+
+    // Retrieve the ID of the inserted record
+
+    $lastInsertedId = $db->lastInsertId();
+    echo "The ID of the currently inserted record is: " . $lastInsertedId;
+    echo "<br/>";
     
     echo "Data inserted successfully!";
 
-    header("location: creditpayment.php?suplier_id=$suplier_id");
+   // header("location: creditpayment.php?suplier_id=$suplier_id");
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
+
+
+
+
+header("location: paypreview.php?id=$lastInsertedId&suplier_id=$suplier_id");
+exit();
+
 
 
 ?>

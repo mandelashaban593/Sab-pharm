@@ -18,14 +18,6 @@ POS
       .sidebar-nav {
         padding: 9px 0;
       }
-     /*  .bottom-left {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-        }*/
-
-
-       
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
@@ -58,7 +50,7 @@ $invoice=$row['invoice_number'];
 $date=$row['date'];
 $due_date=$row['due_date'];
 $cashier=$row['cashier'];
-$cash=$row['cash'];
+//$cash=$row['cash'];
 
 $pt=$row['type'];
 $am=$row['amount'];
@@ -131,7 +123,7 @@ window.onload=startclock;
       <div class="row-fluid">
 	<div class="span2">
           <div class="well sidebar-nav">
-      <ul class="nav nav-list">
+     <ul class="nav nav-list">
 <li class="active"><a href="#"><i class="icon-dashboard icon-2x"></i> Dashboard </a></li> 
 
 
@@ -219,34 +211,44 @@ if($position=="admin"){?>
 <div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';">Credit Note</div>
+	<center><div style="font:bold 25px 'Aleo';">Payment Receipt</div>
 Ojinga Pharmacy	<br>
 	Jinja,Uganda	<br>	<br>
 	</center>
 	<div>
 	<?php
-	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-	$result = $db->prepare("SELECT * FROM wsales WHERE invoice_number= :userid LIMIT 1");
+	$resulta = $db->prepare("SELECT * FROM customer WHERE customer_name= :a");
+	$resulta->bindParam(':a', $cname);
+	$resulta->execute();
+	for($i=0; $rowa = $resulta->fetch(); $i++){
+	$address=$rowa['address'];
+	$contact=$rowa['contact'];
+	}
+	?>
+
+
+		<?php
+	if(isset($_GET['id'])) $id=$_GET['id'];
+	$result = $db->prepare("SELECT * FROM credit_payhist WHERE transaction_id	= :userid LIMIT 1");
 	$result->bindParam(':userid', $id);
 	$result->execute();
 	for($i=0; $rowa = $result->fetch(); $i++){
-	$suplier_id = $rowa['customer_id'];
+	$suplier_id = $rowa['suplier_id'];
 	$date = $rowa['date'];	
 
-	$query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$suplier_id'") or die(mysqli_error($con));
+	$query = mysqli_query($con, "SELECT * FROM supliers WHERE suplier_id='$suplier_id'") or die(mysqli_error($con));
 	$row=mysqli_fetch_array($query);
-	$customer_name=$row['customer_name'];
-	$customer_contact=$row['contact'];
-	$address=$row['address'];
+	$suplier_name=$row['suplier_name'];
+	$suplier_contact=$row['suplier_contact'];
+	$suplier_address=$row['suplier_address'];
+	
+	echo $suplier_name; echo"<br>";
 
-	echo $customer_name; echo"<br>";
-
-	echo $address; echo "<br>";
-
-
+	echo $suplier_address; echo "<br>";
 
 	}
 	?>
+
 	</div>
 	</div>
 	<div style="width: 136px; float: left; height: 70px;">
@@ -261,11 +263,11 @@ Ojinga Pharmacy	<br>
 			<td><?php echo $date ?></td>
 		</tr>
 	</table>
-	
-<table style="margin-left:850px;">
+
+	<table style="margin-left:850px;">
 		<tr><td><?php
-	if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-	$result = $db->prepare("SELECT * FROM wsales  WHERE invoice_number= :userid LIMIT 1");
+	if(isset($_GET['id'])) $id=$_GET['id'];
+	$result = $db->prepare("SELECT * FROM credit_payhist WHERE transaction_id= :userid LIMIT 1");
 	$result->bindParam(':userid', $id);
 	$result->execute();
 	for($i=0; $rowa = $result->fetch(); $i++){
@@ -284,14 +286,8 @@ Ojinga Pharmacy	<br>
 	<table border="1" cellpadding="4" cellspacing="0" style="font-family: arial; font-size: 12px;	text-align:left;" width="100%">
 		<thead>
 			<tr>
-				<th width="90"> Medicine</th>
-				<th> Invoice </th>
-				<th> Expiry date </th>
-				<th>Batch No</th>
-				<th> Cashier </th>
-				<th> Rate</th>
-				<th> Qty </th>
-				<th> Total </th>
+				<th width="90"> Date</th>
+				<th> Amount</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -299,29 +295,18 @@ Ojinga Pharmacy	<br>
 
 				<?php
 					
-				  if(isset($_GET['invoice'])) $id=$_GET['invoice'];
-					$result = $db->prepare("SELECT * FROM wsales WHERE invoice_number= :userid");
+				  
+					$result = $db->prepare("SELECT * FROM  credit_payhist WHERE transaction_id= :userid");
 					$result->bindParam(':userid', $id);
 					$result->execute();
 					for($i=0; $row = $result->fetch(); $i++){
 				?>
 				<tr class="record">
-				<td><?php  $productid = $row['productid']; $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity,expiry_date FROM products WHERE product_id= '$productid' ") or die(mysqli_error($con));
-					$row2=mysqli_fetch_array($query);
-			 		echo $row2['med_name']; ?></td>
-				<td><?php echo $row['invoice_number']; ?></td>
-				<td><?php echo $row2['expiry_date']; ?></td>
-				<td><?php echo $row['batch_no']; ?></td>
-				<td><?php echo $row['cashier']; ?></td>
-				<td><?php echo $row['amount']; ?></td>
-				<td><?php echo $row['quantity']; ?></td>
+	
+				<td><?php echo $row['date']; ?></td>
+				<td><?php echo $row['cash']; ?></td>
 			
-				<td>
-				<?php
-				$dfdf=$row['total'];
-				echo formatMoney($dfdf, true);
-				?>
-				</td>
+			
 				</tr>
 				<?php
 					}
@@ -331,22 +316,41 @@ Ojinga Pharmacy	<br>
 					<td colspan="5" style=" text-align:right;"><strong style="font-size: 12px;">Total: &nbsp;</strong></td>
 					<td colspan="2"><strong style="font-size: 12px;">
 					<?php
-					if(isset($_GET['invoice'])) $sdsd=$_GET['invoice'];
-					$resultas = $db->prepare("SELECT sum(total) FROM wsales  WHERE invoice_number= :a");
-					$resultas->bindParam(':a', $sdsd);
+
+					$resultas = $db->prepare("SELECT sum(cash) FROM credit_payhist WHERE transaction_id= :a");
+					$resultas->bindParam(':a', $id);
 					$resultas->execute();
 					for($i=0; $rowas = $resultas->fetch(); $i++){
-					$fgfg=$rowas['sum(total)'];
+					$fgfg=$rowas['sum(cash)'];
 					echo formatMoney($fgfg, true);
 					}
 					?>
 					</strong></td>
 				</tr>
-			
+				<?php if($pt=='cash'){
+				?>
+				<tr>
+					<td colspan="5"style=" text-align:right;"><strong style="font-size: 12px; color: #222222;">Cash Tendered:&nbsp;</strong></td>
+					<td colspan="2"><strong style="font-size: 12px; color: #222222;">
+					<?php
+					echo formatMoney($am, true);
+					?>
+					</strong></td>
+				</tr>
+				<?php
+				}
+				?>
 				<tr>
 					<td colspan="5" style=" text-align:right;"><strong style="font-size: 12px; color: #222222;">
 					<font style="font-size:20px;">
-				
+					<?php
+					if($pt=='cash'){
+					echo 'Change:';
+					}
+					if($pt=='credit'){
+					echo 'Due Date:';
+					}
+					?>&nbsp;
 					</strong></td>
 					<td colspan="2"><strong style="font-size: 15px; color: #222222;">
 					<?php
@@ -364,15 +368,12 @@ Ojinga Pharmacy	<br>
 						}
 						return $number;
 					}
-					
+				
 					?>
 					</strong></td>
 				</tr>
-				
-
-
-
-				<table style="border: 8px; ">
+			
+					<table style="border: 8px; ">
 	<table style="margin-left:700px;margin-top:100px;border:none; border-collapse: collapse;">
 				<tr class="Sign" style="margin-right:800px;margin-padding: 100px;">
          
@@ -402,23 +403,27 @@ Ojinga Pharmacy	<br>
     	<tr style="margin-top: 100px;"><br/><br/><br/>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is  a computer generated invoice 
     </tr>
-<tr><td><a href="javascript:Clickheretoprint()" style="font-size:20px;margin-left:800px"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a></td></tr>
+
+    <div class="pull-right" style="margin-right:100px;">
+		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
+		</div>
+
 	</table>
 
 
+<table style="margin-right:400px;margin-bottom:200px;border:none; border-collapse: collapse;">
+	
+    	
+	</table>
 
 		</tbody>
 	</table>
 	
-
-
-
 	</div>
 	</div>
 	</div>
 	</div>
-
-
+	
 </div>
 </div>
 

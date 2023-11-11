@@ -185,6 +185,8 @@ $finalcode='RS-'.createRandomPassword();
 				$total=$rowa['total'];
 				echo $total;
 				?>
+
+				<?php if ($rowa['pay_type'] == 'cash' || $rowa['pay_type'] == 'bank'){ ?>
 				<tr class="record">
 			<td><?php echo $rowa['date']; ?></td>
 			<td><?php echo $rowa['suplier_name']; ?></td>
@@ -192,6 +194,8 @@ $finalcode='RS-'.createRandomPassword();
 			<td><?php echo $rowa['pay_type']; ?></td>
 
 			</tr>
+
+			<?php  }?>
 
 
 				<?php

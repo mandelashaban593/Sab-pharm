@@ -204,16 +204,15 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 <table class="hoverTable" id="resultTable" data-responsive="table" style="text-align: left;">
 <thead>
 <tr>
-<th width="7%"> Supplier </th>
 <th width="12%"> Medicine</th>
 <th width="14%"> Quantity</th>
 <th width="13%"> Date </th>
+<th width="13%"> Batch No</th>
+<th width="13%"> Category</th>
+<th width="13%"> Inventory</th>
+<th width="13%"> Particulars</th>
 <th width="13%"> Expiry Date  </th>
 <th width="13%"> Selling price </th>
-<th width="6%"> Buying price </th>
-<th width="6%"> Profit </th>
-<th width="5%"> Qty Left </th>
-<th width="6%"> Total Buying price</th>
 <th width="8%"> Action </th>
 
 
@@ -251,33 +250,18 @@ else {
 echo '<tr class="record">';
 }
 ?>
-
-<td><?php echo $row['supplier']; ?></td>
 <td><?php echo $row['med_name']; ?></td>
 <td><?php echo $row['quantity']; ?></td>
 <td><?php echo $row['reg_date']; ?></td>
+<td><?php echo $row['batch_no']; ?></td>
+<td><?php echo $row['category']; ?></td>
+<td><?php echo $row['inventory']; ?></td>
+<td><?php echo $row['sell_type']; ?></td>
 <td><?php echo $row['expiry_date']; ?></td>
 <td><?php
 $pprice=$row['price'];
 echo formatMoney($pprice, true);
 ?></td>
-
-<td><?php
-$oprice=$row['o_price'];
-echo formatMoney($oprice, true);
-?></td>
-
-<td><?php echo $row['profit']; ?></td>
-
-<td><?php if(!$row['qty_left'] ) {echo $row['quantity']; } else {echo $row['qty_left'];  } ?></td>
-
-<td>
-<?php
-$total=$row['tot_buy'];
-echo formatMoney($total, true);
-?>
-</td>	
-
 
 
 <td><a rel="facebox" title="Click to edit the product" href="editproduct.php?id=<?php echo $row['product_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>

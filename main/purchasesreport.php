@@ -267,7 +267,7 @@ $suplier_id =  $_POST['suplier_id'];
     $date = date('m/d/y', strtotime($_POST['daily_date']));
     echo "DATE<br/>";
     echo $date;
-    $sql = "SELECT date, type, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
+    $sql = "SELECT date, type, invoice_number, SUM(amount*quantity) AS total FROM purchases_ret WHERE   DATE_FORMAT(date, '%m/%d/%y') = :date AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':date', $date);
     $stmt->bindParam(':suplier_id', $suplier_id);
@@ -275,7 +275,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'weekly') {
     $startDate = date('m/d/y', strtotime($_POST['weekly_start_date']));
     $endDate = date('m/d/y', strtotime($_POST['weekly_end_date']));
-    $sql = "SELECT date,type, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
+    $sql = "SELECT date,type, invoice_number, SUM(amount*quantity) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $startDate);
     $stmt->bindParam(':end',  $endDate);
@@ -284,7 +284,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'monthly') {
     $year =$_POST['monthly_year'];
     $month  = $_POST['monthly_month'];
-    $sql = "SELECT date,type, invoice_number, SUM(amount) AS total FROM purchases_ret WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
+    $sql = "SELECT date,type, invoice_number, SUM(amount*quantity) AS total FROM purchases_ret WHERE RIGHT(DATE_FORMAT(date, '%m/%d/%y'), 2) = :year AND SUBSTRING(DATE_FORMAT(date, '%m/%d/%y'), 1, 2) = :month AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':year', $year);
     $stmt->bindParam(':month', $month);
@@ -293,7 +293,7 @@ $suplier_id =  $_POST['suplier_id'];
 } elseif ($reportType === 'range') {
     $rangeStartDate =date("m/d/y", strtotime($_POST['range_start_date']));
     $rangeEndDate = date("m/d/y", strtotime($_POST['range_end_date'])); 
-    $sql = "SELECT date,type,invoice_number, SUM(amount) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
+    $sql = "SELECT date,type,invoice_number, SUM(amount*quantity) AS total FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y')  BETWEEN :start AND :end AND suplier_id = :suplier_id GROUP BY type,invoice_number,date";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':start', $rangeStartDate);
     $stmt->bindParam(':end', $rangeEndDate);

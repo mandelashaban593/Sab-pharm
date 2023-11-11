@@ -42,7 +42,7 @@
  <div class="input-container">
 <span>Name : </span><input type="text" id="med_name" name="med_name" style="width:265px; height:30px;" autocomplete="off">
 
-<select id="search_results" style="width:265px; height:30px; border-color: #000080"  name="search_results">
+<select id="search_results" style="width:265px; height:30px; border-color: #000080"  name="search_results" autocomplete="off">
     <!-- Populate this dropdown with search results using AJAX -->
 </select>
 
@@ -118,8 +118,7 @@
 <span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="profit" readonly><br>
 <span></span>
 <span></span><input type="hidden" id="txt3" style="width:265px; height:30px;" name="supplier" value="None" readonly><br><br>
-
-
+<span></span><input type="hidden" id="product_id" style="width:265px; height:30px;" name="product_id" value="None" readonly><br><br>
 
 <!-- <span>Gross Quantity : </span><input type="number" style="width:265px; height:30px;" min="0" id="txt11" onkeyup="sum();" name="qty" Required ><br> -->
 <!-- <span></span><input type="hidden" style="width:265px; height:30px;" id="txt22" name="qty_sold" Required ><br> -->
@@ -217,6 +216,16 @@
 					    // Access the 'face' property of the 'result' object
 					    console.log(result.price);
 					    $('#txt1').val(result.price);
+					} else {
+					    // Handle the case where 'result' is undefined or does not have a 'face' property
+					    console.log('Result is undefined or does not have a "price" property.');
+					}
+                    // Populate other form fields as needed
+
+                    if (result && result.product_id) {
+					    // Access the 'face' property of the 'result' object
+					    console.log(result.product_id);
+					    $('#product_id').val(result.product_id);
 					} else {
 					    // Handle the case where 'result' is undefined or does not have a 'face' property
 					    console.log('Result is undefined or does not have a "price" property.');

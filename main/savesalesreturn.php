@@ -30,7 +30,7 @@ $total = 0;
 foreach ($productid as $key => $pid) {
 
        $prodid = $productid[$key];
-       $qty = $quantity[$key]; // Use a different variable for quantity
+       $qtytot = $quantity[$key]; // Use a different variable for quantity
        $pri = $price[$key];    // Use a different variable for price
         $amt = $total[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
@@ -38,68 +38,28 @@ foreach ($productid as $key => $pid) {
 
 
        echo "Product 2: $prodid<br>";
-       echo "Quantity 2: $qty<br>";
+       echo "Quantity 2: $qtytot<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
 
 
   
-      try {
-    
-        $stmt = $db->prepare("UPDATE sales SET quantity = quantity - :quantity,amount = amount - :amount WHERE invoice_number = :invoice_number AND batch_no = :batch_no");
-
-        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
-        $stmt->bindParam(':amount', $total, PDO::PARAM_INT);
-        $stmt->bindParam(':invoice_number', $invoice, PDO::PARAM_STR);
-        $stmt->bindParam(':batch_no', $batchno, PDO::PARAM_STR);
-
-        if($stmt->execute()){
-            echo "Update Successfull";
-        }
-
-    } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-    }
 
 
 
-    $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
-    $row=mysqli_fetch_array($query);
-    $price2=$row['price'];
-    $category2=$row['category'];
-    $med_name3=$row['med_name'];
-    $profit3=$row['profit'];
-    $qty_left2=$row['quantity'];
-    $o_price2=$row['o_price'];
-    //Retrive other values for insertion into product table
-    $med_name=$row['med_name'];
-    $category=$row['category'];
-    $sell_price=$row['price'];
-    $supplier=$row['supplier'];
-    $gen_name=$row['gen_name'];
-    $onhand_qty=$row['onhand_qty'];
-    $qty_sold=$row['qty_sold'];
-    $del_no=$row['del_no'];
-    $status=$row['status'];
-    $profit2 = (int)$pri - (int)$o_price2;
-    $qtyleft=(int)$qty_left2 - (int)$qty;
-    //Check if product batch number exists
-    $query = mysqli_query($con, "SELECT * FROM products WHERE batch_no= '$batchno'") or die(mysqli_error($con));
-    $row_batch=mysqli_fetch_array($query);
-    if($row_batch){
-        echo "Update worked";
+  $qty =(int)$qtytot;
 
-  try {
+try {
     // Create a PDO database connection
     // SQL query for update
-    $sql = "UPDATE products  SET quantity = :quantity WHERE product_id= :product_id";
+    $sql = "UPDATE products  SET quantity = quantity + :quantity WHERE product_id= :product_id";
     
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
-    
+    $qty = (int)$qtytot;
     // Bind parameters
-    $stmt->bindParam(':quantity', $qtyleft);
+    $stmt->bindParam(':quantity', $qty);
     $stmt->bindParam(':product_id', $prodid);
     // Execute the query
     $stmt->execute();
@@ -133,7 +93,29 @@ foreach ($productid as $key => $pid) {
 
 
 
-    }
+
+    $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
+    $row=mysqli_fetch_array($query);
+    $price2=$row['price'];
+    $category2=$row['category'];
+    $med_name3=$row['med_name'];
+    $profit3=$row['profit'];
+    $qty_left2=$row['quantity'];
+    $o_price2=$row['o_price'];
+    //Retrive other values for insertion into product table
+    $med_name=$row['med_name'];
+    $category=$row['category'];
+    $sell_price=$row['price'];
+    $supplier=$row['supplier'];
+    $gen_name=$row['gen_name'];
+    $onhand_qty=$row['onhand_qty'];
+    $qty_sold=$row['qty_sold'];
+    $del_no=$row['del_no'];
+    $status=$row['status'];
+    $profit2 = (int)$pri - (int)$o_price2;
+    $qtyleft=(int)$qty_left2 - (int)$qty;
+    //Check if product batch number exists
+    
 
 
    if($ptype=='cash') {

@@ -288,6 +288,8 @@ Ojinga Pharmacy	<br>
 			<tr>
 				<th width="90"> Medicine</th>
 				<th> Invoice </th>
+				<th> Expiry Date </th>
+				<th>Batch No</th>
 				<th> Cashier </th>
 				<th> Amount</th>
 				<th> Qty </th>
@@ -306,10 +308,13 @@ Ojinga Pharmacy	<br>
 					for($i=0; $row = $result->fetch(); $i++){
 				?>
 				<tr class="record">
-				<td><?php  $productid = $row['productid']; $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity FROM products WHERE product_id= '$productid' ") or die(mysqli_error($con));
+				<td><?php  $productid = $row['productid']; $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity,expiry_date FROM products WHERE product_id= '$productid' ") or die(mysqli_error($con));
 					$row2=mysqli_fetch_array($query);
 			 		echo $row2['med_name']; ?></td>
 				<td><?php echo $row['invoice_number']; ?></td>
+				<td><?php 
+			 		echo $row2['expiry_date']; ?></td>
+			 	<td><?php echo $row['batch_no']; ?></td>
 				<td><?php echo $row['cashier']; ?></td>
 				<td><?php echo $row['amount']; ?></td>
 				<td><?php echo $row['quantity']; ?></td>

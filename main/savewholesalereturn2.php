@@ -30,7 +30,7 @@ $total = 0;
 foreach ($productid as $key => $pid) {
 
        $prodid = $productid[$key];
-       $qtytot = $quantity[$key]; // Use a different variable for quantity
+       $qty = $quantity[$key]; // Use a different variable for quantity
         $pri = $price[$key];    // Use a different variable for price
         $amt = $amount[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
@@ -38,7 +38,7 @@ foreach ($productid as $key => $pid) {
 
 
        echo "Product 2: $prodid<br>";
-       echo "Quantity 2: $qtytot<br>";
+       echo "Quantity 2: $qty<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
@@ -53,7 +53,7 @@ foreach ($productid as $key => $pid) {
     
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
-    $qty = (int)$qtytot;
+    $qty = (int)$qty;
     // Bind parameters
     $stmt->bindParam(':quantity', $qty);
     $stmt->bindParam(':product_id', $prodid);
@@ -89,7 +89,7 @@ foreach ($productid as $key => $pid) {
 
 
     
-    
+
 
 $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
 $row=mysqli_fetch_array($query);
@@ -127,15 +127,12 @@ $qtyleft=(int)$qty_left2 - (int)$qty;
     $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     }
     
+    
 
-
+    
 
 
  }
-
-
-
-
 
 
 
@@ -299,14 +296,12 @@ try {
 } // End if statement
 
 
-
-
-
+/*
 
 header("location: wholesalesreturnpreview.php?invoice=$invoice");
 exit();
 
 
-
+*/
 
 ?>

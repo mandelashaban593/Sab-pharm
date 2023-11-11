@@ -178,7 +178,7 @@ $finalcode='RS-'.createRandomPassword();
 	<tbody>
 		
 				<?php
-				$resulta = $db->prepare("SELECT * FROM cust_payhist WHERE customer_id= :customer_id");
+				$resulta = $db->prepare("SELECT * FROM cust_payhist  WHERE customer_id= :customer_id");
 				$resulta->bindParam(':customer_id',  $_SESSION['customer_id']);
 				$resulta->execute();
 				for($i=0; $rowa = $resulta->fetch(); $i++){
