@@ -2,10 +2,10 @@
 -- version 5.1.1deb5ubuntu1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Nov 11, 2023 at 12:51 PM
+-- Host: localhost
+-- Generation Time: Nov 15, 2023 at 12:46 PM
 -- Server version: 8.0.35-0ubuntu0.22.04.1
--- PHP Version: 8.1.24
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `sales`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advanced_payment`
+--
+
+CREATE TABLE `advanced_payment` (
+  `payment_id` int NOT NULL,
+  `emp_id` int NOT NULL,
+  `payment_date` date NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `fname` varchar(255) DEFAULT NULL,
+  `lname` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `advanced_payment`
+--
+
+INSERT INTO `advanced_payment` (`payment_id`, `emp_id`, `payment_date`, `amount`, `fname`, `lname`) VALUES
+(1, 7, '2023-11-13', '11000.00', 'Mins', 'Mins'),
+(2, 7, '2023-11-13', '13000.00', 'Mins', 'Mins'),
+(3, 8, '2023-11-13', '15000.00', 'Mins3', 'Mins3');
 
 -- --------------------------------------------------------
 
@@ -319,6 +343,38 @@ INSERT INTO `cust_retpayhist` (`transaction_id`, `customer_id`, `customer_name`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `employee`
+--
+
+CREATE TABLE `employee` (
+  `emp_id` int NOT NULL,
+  `username` varchar(200) DEFAULT NULL,
+  `fname` varchar(200) DEFAULT NULL,
+  `lname` varchar(200) DEFAULT NULL,
+  `gender` varchar(200) DEFAULT NULL,
+  `emp_type` varchar(200) DEFAULT NULL,
+  `jobtitle` varchar(200) DEFAULT NULL,
+  `department` varchar(200) DEFAULT NULL,
+  `higheduc` varchar(200) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `sal` int DEFAULT '0',
+  `hallowance` int DEFAULT '0',
+  `transpallowance` int DEFAULT '0',
+  `tin` varchar(255) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`emp_id`, `username`, `fname`, `lname`, `gender`, `emp_type`, `jobtitle`, `department`, `higheduc`, `phone`, `sal`, `hallowance`, `transpallowance`, `tin`) VALUES
+(7, 'mins', 'Mins', 'Mins', 'Male', 'Regular', 'Cashier', 'Sales', 'Nurse cert', NULL, 350000, 0, 0, '3453322688'),
+(8, 'mins3', 'Mins3', 'Mins3', 'store', 'Job Order', 'Cashier', 'procure', 'Degree', NULL, 400000, 0, 0, '930329993'),
+(9, 'admin', 'sab', 'sab', 'Male', 'Regular', 'CEO', 'Management', 'Degree', NULL, 4000000, 0, 0, '1993233');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `equity`
 --
 
@@ -401,6 +457,30 @@ INSERT INTO `liabilities` (`transaction_id`, `entry_date`, `name`, `amount`, `su
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `medical_allowance`
+--
+
+CREATE TABLE `medical_allowance` (
+  `allowance_id` int NOT NULL,
+  `emp_id` int NOT NULL,
+  `allowance_date` date NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `fname` varchar(100) DEFAULT NULL,
+  `lname` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `medical_allowance`
+--
+
+INSERT INTO `medical_allowance` (`allowance_id`, `emp_id`, `allowance_date`, `amount`, `fname`, `lname`) VALUES
+(1, 9, '2023-11-13', '20000.00', 'sab', 'sab'),
+(2, 9, '2023-11-13', '20000.00', 'sab', 'sab'),
+(3, 7, '2023-11-13', '45000.00', 'Mins', 'Mins');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `orders`
 --
 
@@ -443,24 +523,89 @@ INSERT INTO `orders` (`product_id`, `product_code`, `gen_name`, `product_name`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `overtime`
+--
+
+CREATE TABLE `overtime` (
+  `overtime_id` int NOT NULL,
+  `emp_id` int DEFAULT NULL,
+  `fname` varchar(255) DEFAULT NULL,
+  `lname` varchar(255) DEFAULT NULL,
+  `amount` int DEFAULT '0',
+  `overtime_date` date DEFAULT NULL,
+  `hours_worked` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `overtime`
+--
+
+INSERT INTO `overtime` (`overtime_id`, `emp_id`, `fname`, `lname`, `amount`, `overtime_date`, `hours_worked`) VALUES
+(1, 9, 'sab', 'sab', 20000, '2023-11-13', '2.00'),
+(2, 7, 'Mins', 'Mins', 20000, '2023-11-13', '2.00'),
+(3, 8, 'Mins3', 'Mins3', 10000, '2023-11-13', '1.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payroll`
+--
+
+CREATE TABLE `payroll` (
+  `transaction_id` int NOT NULL DEFAULT '0',
+  `invoice_number` varchar(100) NOT NULL,
+  `cashier` varchar(100) NOT NULL,
+  `fname` varchar(100) NOT NULL,
+  `tin` varchar(255) DEFAULT NULL,
+  `salary` varchar(266) DEFAULT NULL,
+  `bsalary` varchar(266) DEFAULT NULL,
+  `overtime` varchar(266) DEFAULT NULL,
+  `bonus` varchar(266) DEFAULT NULL,
+  `hllowance` varchar(266) DEFAULT NULL,
+  `tllowance` varchar(266) DEFAULT NULL,
+  `advpayment` varchar(266) DEFAULT NULL,
+  `payee` varchar(266) DEFAULT NULL,
+  `nssf` varchar(266) DEFAULT NULL,
+  `nsalary` varchar(266) DEFAULT NULL,
+  `empid` varchar(266) DEFAULT NULL,
+  `date` varchar(266) DEFAULT NULL,
+  `month` varchar(266) DEFAULT NULL,
+  `pay_type` varchar(266) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `payroll`
+--
+
+INSERT INTO `payroll` (`transaction_id`, `invoice_number`, `cashier`, `fname`, `tin`, `salary`, `bsalary`, `overtime`, `bonus`, `hllowance`, `tllowance`, `advpayment`, `payee`, `nssf`, `nsalary`, `empid`, `date`, `month`, `pay_type`) VALUES
+(0, 'RS-5303243', 'admin', 'Mins', '3453322688', '350000', '24000', '20000', '0', '0', '0', '24000', '12200', '51900', '281900', '', '2023-11-15', NULL, 'cash'),
+(0, 'RS-5303243', 'admin', 'Mins3', '930329993', '400000', '15000', '10000', '0', '0', '0', '15000', '22000', '59250', '313750', '', '2023-11-15', NULL, 'cash'),
+(0, 'RS-5303243', 'admin', 'Mins', '3453322688', '350000', '24000', '20000', '0', '0', '0', '24000', '12200', '51900', '281900', '', '2023-11-15', NULL, 'cash'),
+(0, 'RS-5303243', 'admin', 'Mins3', '930329993', '400000', '15000', '10000', '0', '0', '0', '15000', '22000', '59250', '313750', '', '2023-11-15', NULL, 'cash'),
+(0, 'RS-530420', 'admin', 'Mins', '3453322688', '350000', '24000', '20000', '0', '0', '0', '24000', '12200', '51900', '281900', '7', '2023-11-15', NULL, 'Bank'),
+(0, 'RS-530420', 'admin', 'Mins3', '930329993', '400000', '15000', '10000', '0', '0', '0', '15000', '22000', '59250', '313750', '8', '2023-11-15', NULL, 'Bank');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
   `product_id` int NOT NULL,
-  `product_code` varchar(200) NOT NULL,
-  `gen_name` varchar(200) NOT NULL,
+  `product_code` varchar(200) NOT NULL DEFAULT '',
+  `gen_name` varchar(200) NOT NULL DEFAULT '',
   `product_name` varchar(200) NOT NULL DEFAULT 'None',
   `cost` varchar(255) DEFAULT NULL,
-  `o_price` varchar(100) NOT NULL,
-  `price` varchar(100) NOT NULL DEFAULT 'None',
-  `profit` varchar(100) NOT NULL,
-  `supplier` varchar(100) NOT NULL,
-  `onhand_qty` int NOT NULL,
-  `qty` int NOT NULL,
-  `qty_sold` int NOT NULL,
-  `expiry_date` varchar(500) NOT NULL,
-  `date_arrival` varchar(500) NOT NULL,
+  `o_price` varchar(100) NOT NULL DEFAULT '0',
+  `price` varchar(266) DEFAULT NULL,
+  `profit` varchar(100) NOT NULL DEFAULT '0',
+  `supplier` varchar(100) NOT NULL DEFAULT '',
+  `onhand_qty` int NOT NULL DEFAULT '0',
+  `qty` int NOT NULL DEFAULT '0',
+  `qty_sold` int NOT NULL DEFAULT '0',
+  `expiry_date` varchar(266) DEFAULT NULL,
+  `date_arrival` varchar(500) NOT NULL DEFAULT '',
   `med_name` varchar(255) DEFAULT NULL,
   `quantity` varchar(255) DEFAULT NULL,
   `sell_type` varchar(255) DEFAULT NULL,
@@ -472,74 +617,362 @@ CREATE TABLE `products` (
   `category` varchar(266) DEFAULT NULL,
   `status` varchar(266) DEFAULT NULL,
   `batch_no` varchar(255) DEFAULT NULL,
-  `inventory` varchar(300) DEFAULT NULL
+  `inventory` varchar(300) DEFAULT NULL,
+  `stockval` int DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`, `inventory`) VALUES
-(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '109991', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B211', NULL),
-(4, '', '', '', '', '900', '1600', '700', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton	', '109920', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Approved', 'B111', NULL),
-(5, '', '', '', '', '200', '1000', '800', 'Tech Ltd', 0, 0, 0, '', '2044-11-16', 'Painkiller', '267', 'Bot', '11/15/20', '07/13/22', '32000', 'n-20', 160, 'Abdominal', 'Approved', NULL, NULL),
-(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '100676', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Approved', 'BK9201', NULL),
-(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '311', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Approved', 'BR732', NULL),
-(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1171', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Approved', 'BN021', NULL),
-(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9401', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Approved', 'BH892', NULL),
-(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '89996', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Approved', 'BC721', NULL),
-(12, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '100', 'Guardian Pharmacy', 0, 9000, 0, '2027-10-07', 'Quatem', 'Quatem', '18904', 'Tab', '2023-10-02', NULL, NULL, 'DD093', 0, 'Painkiller', 'Approved', NULL, NULL),
-(13, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '500', 'Super Medic', 0, 10000, 0, '2055-10-05', 'Ceptrine', 'Ceptrine', '10021', 'Tab', '2023-10-01', NULL, '4000000', 'HFFF43', 0, 'Painkiller', 'Approved', NULL, NULL),
-(14, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '1600', 'Super Medic', 0, 9000, 0, '2033-06-02', 'ArtEFAN', 'ArtEFAN', '8988', 'Tab', '2023-10-02', NULL, '21600000', 'nn-303', 0, 'Antimalario', 'Approved', NULL, NULL),
-(15, 'Periton	', '', 'Periton	', NULL, '900', '1600', '2600', 'Super Medic', 0, 200, 0, '2023-10-26', 'Periton	', 'Periton	', '184', 'cash', '2023-10-05', NULL, '700000', '9s', 100000, 'Head ache', 'Approved', 'B632', NULL),
-(16, 'Mabendozol', 'Mabendozol', 'Mabendozol', NULL, '150', '200', '5564', 'Super Medic', 0, 140, 0, '2023-11-03', 'Mabendozol', 'Mabendozol', '143', 'cash', '2023-10-05', NULL, '800000', '392', 200, 'Urinary affection', 'Approved', 'B6432', NULL),
-(17, 'Asprin 75MG UK', 'Asprin 75MG UK', 'Asprin 75MG UK', '0', '0', '150', '', 'None', 0, 3993, 0, '', 'Nov-11-2023', 'Asprin 75MG UK', '3992', 'Tabs', '11/11/23', NULL, '0', 'D876', 3993, 'Anti-spasmotic', 'Approved', 'B11873', 'Consumable'),
-(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '310', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Approved', 'RS2132', NULL),
-(19, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '6903', 'abacus pharmacy', 0, 89, 0, '2023-10-04', 'Ceptrine', 'Ceptrine', '8975', 'cash', '2023-10-05', NULL, '650000', 'HFFF43', 89, 'Painkiller', 'Approved', 'B987544', NULL),
-(21, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '304', 'Super Medic', 0, 44, 0, '2023-10-12', 'Capsul', 'Capsul', '90037', 'credit', '2023-10-05', NULL, '20000', 'f34', 44, 'Painkiller', 'Approved', 'B7201', NULL),
-(22, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '9600', 'Super Medic', 0, 34, 0, '2023-11-01', 'Ceptrine', 'Ceptrine', '123', 'credit', '2023-10-05', NULL, '340000', 'HFFF43', 34, 'Painkiller', 'Approved', 'B78532', NULL),
-(23, 'D-Artepp', 'D-Artepp', 'D-Artepp', '120', '120', '200', '80', 'None', 0, 20, 0, '2023-11-01', 'D-Artepp', 'D-Artepp', '16', 'Stp', '2023-10-06', NULL, '2400', 'D876', 0, 'Healer', 'Approved', NULL, NULL),
-(24, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '1050', 'Super Medic', 0, 4, 0, '2023-10-07', 'Painkiller', 'Painkiller', '2', 'cash', '2023-10-07', NULL, '5000', 'n-20', 4, 'Abdominal', 'Approved', 'b3', NULL),
-(25, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '800', 'Super Medic', 0, 5, 0, '2023-10-04', 'Painkiller', 'Painkiller', '2', 'cash', '2023-10-07', NULL, '5000', 'n-20', 5, 'Abdominal', 'Approved', 'b6', NULL),
-(26, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '600', 'Super Medic', 0, 2, 0, '2023-10-25', 'Ceptrine', 'Ceptrine', '2', 'cash', '2023-10-07', NULL, '2000', 'HFFF43', 2, 'Painkiller', 'Approved', 'B66', NULL),
-(27, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3850', 'Super Medic', 0, 3, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-07', NULL, '12000', '392', 3, 'Urinary affection', 'Approved', 'b4', NULL),
-(28, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '-20', 'abacus pharmacy', 0, 5, 0, '2023-10-07', 'Painkiller', 'Painkiller', '0', 'cash', '', NULL, '900', 'n-20', 5, 'Abdominal', 'Approved', 'B64', NULL),
-(29, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '-234', 'abacus pharmacy', 0, 6, 0, '2023-10-05', 'Ceptrine', 'Ceptrine', '90200', 'cash', '', NULL, '1000', 'HFFF43', 6, 'Painkiller', 'Approved', 'B88', NULL),
-(30, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3350', 'Guardian Pharmacy', 0, 2, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '2', 'cash', '2023-10-12', NULL, '7000', '392', 2, 'Urinary affection', 'Approved', 'B31', NULL),
-(31, 'Kuiris', 'Kuiris', 'Kuiris', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Kuiris', 'Kuiris', '0', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL, NULL),
-(32, 'Centaprintecil', 'Centaprintecil', 'Centaprintecil', '0', '0', '300', '300', 'None', 0, 4, 0, '', 'Centaprintecil', 'Centaprintecil', '4', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
-(33, 'Pensil', 'Pensil', 'Pensil', '0', '0', '300', '300', 'None', 0, 12, 0, '', 'Pensil', 'Pensil', '24', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Approved', NULL, NULL),
-(34, 'Muniscapuls', 'Munis capuls', 'Muniscapuls', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Muniscapuls', 'Muniscapuls', '', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Approved', NULL, NULL),
-(35, 'Asprine99', 'Asprine99', 'Asprine99', '0', '0', '150', '', 'None', 0, 0, 0, '2023-10-11', 'Nov-10-2023', 'Asprine99', '91', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B43', 'Consumable'),
-(36, 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', '0', '0', '4000', '', 'None', 0, 0, 0, '2023-10-17', 'Nov-11-2023', 'ARTEFAN 20/120MG', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B722', 'Consumable'),
-(38, 'REMOS', 'REMOS', 'REMOS', '0', '0', '500', '500', 'None', 0, 0, 0, '', 'REMOS', 'REMOS', '8994', 'Tabs', '10/11/23', NULL, '0', 'D876', 0, 'Anti-ulcers', 'Approved', '', 'Consumable'),
-(39, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(40, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(41, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(42, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(43, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(44, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(45, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 10000, 'Anti-spasmotic', 'Approved', 'B111', 'Consumable'),
-(46, 'PIRITON', 'PIRITON', 'PIRITON', '0', '0', '1600', '', 'None', 0, 109920, 0, '', 'Nov-11-2023', 'PIRITON', '109720', 'Tabs', '11/11/23', NULL, '0', 'D876', 109920, 'NA', 'Approved', 'B111', 'Consumable'),
-(47, 'Amoin88', 'Amoin88', 'Amoin88', '0', '0', '400', '', 'None', 0, 0, 0, '', 'Nov-10-2023', 'Amoin88', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', '', 'Consumable'),
-(48, 'Periton	', '', 'Periton	', '900', '900', '1600', '-868', 'Guardian Pharmacy', 0, 8000, 0, '2023-10-26', 'Periton	', 'Periton	', '8003', 'cash', '2023-10-12', NULL, '260000', '9s', 8000, 'Head ache', 'Approved', 'B7777', NULL),
-(49, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '19850', 'Super Medic', 0, 3, 0, '2023-10-18', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-27', NULL, '60000', '392', 3, 'Urinary affection', 'Approved', 'B33', NULL),
-(50, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '14850', 'Super Medic', 0, 6, 0, '2023-10-31', 'Capsul', 'Capsul', '6', 'cash', '2023-10-27', NULL, '90000', 'f34', 6, 'Painkiller', 'Approved', 'B7322', NULL),
-(51, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '6616', 'dddd5', 0, 3, 0, '2023-10-28', 'Asprine', 'Asprine', '1', 'cash', '2023-10-28', NULL, '20000', 'fff-933', 3, 'PainKiller', 'Approved', 'B344', NULL),
-(52, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '124950', 'Hans kk2', 0, 2, 0, '2023-11-04', 'Asprine', 'Asprine', '0', 'cash', '2023-10-28', NULL, '250000', 'fff-933', 2, 'PainKiller', 'Approved', 'B544', NULL),
-(53, 'Asprine44', 'Asprine44', 'Asprine44', '0', '0', '150', '', 'None', 0, 0, 0, '2023-11-02', 'Nov-10-2023', 'Asprine44', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', 'B123', 'Consumable'),
-(54, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '6800', 'whitestar', 0, 3, 0, '2023-11-09', 'Painkiller', 'Painkiller', '2', 'credit', '2023-11-09', NULL, '21000', 'n-20', 3, 'Abdominal', 'Approved', 'B023', NULL),
-(55, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '5950', 'whitestar', 0, 2, 0, '2023-11-09', 'Asprine', 'Asprine', '2', 'cash', '2023-11-09', NULL, '12000', 'fff-933', 2, 'PainKiller', 'Approved', 'B233', NULL),
-(56, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '10800', 'whitestar', 0, 1, 0, '2023-11-09', 'Painkiller', 'Painkiller', '1', 'cash', '2023-11-09', NULL, '11000', 'n-20', 1, 'Abdominal', 'Approved', 'B883', NULL),
-(57, 'Periton ', '', 'Periton ', '900', '900', '1500', '10100', 'abacus pharmacy', 0, 2, 0, '2023-11-09', 'Periton ', 'Periton ', '2', 'cash', '2023-11-09', NULL, '22000', '9s', 2, 'Head ache', 'Approved', 'B83992', NULL),
-(58, 'Quatem7', 'Quatem7', 'Quatem7', '0', '0', '300', '', 'None', 0, -1, 0, '', 'Nov-10-2023', 'Quatem7', '-1', 'Tabs', '11/10/23', NULL, '0', 'D876', -1, 'Anti-spasmotic', 'Approved', 'B533', 'Consumable'),
-(59, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '21850', 'abacus pharmacy', 0, 1, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '1', 'cash', '2023-11-09', NULL, '22000', '124', 1, 'Painkillers', 'Approved', 'B8293', NULL),
-(60, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '1109850', 'abacus pharmacy', 0, 3, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '3330000', '124', 3, 'Painkillers', 'Approved', 'B332', NULL),
-(61, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '169850', 'Guardian Pharmacy', 0, 2, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '340000', '124', 2, 'Painkillers', 'Approved', 'b532', NULL),
-(62, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '7450', 'Guardian Pharmacy', 0, 2, 0, '2023-12-09', 'Asprine', 'Asprine', '2', 'credit', '2023-11-09', NULL, '15000', 'fff-933', 2, 'PainKiller', 'Approved', 'B23', NULL),
-(63, 'Painv', 'Painv', 'Painv', '150', '150', '200', '266516', 'Guardian Pharmacy', 0, 3, 0, '2023-12-08', 'Painv', 'Painv', '0', 'credit', '2023-11-09', NULL, '800000', '203', 3, 'Painkillers', 'Approved', 'B434', NULL),
-(64, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '350', 'Super Medic', 0, 10, 0, '2023-11-11', 'Asprine', 'Asprine', '10', 'cash', '2023-11-11', NULL, '4000', 'fff-933', 10, 'PainKiller', 'Approved', 'B992', NULL),
-(65, 'PIRITON  INDIA', 'PIRITON  INDIA', 'PIRITON  INDIA', '0', '0', '1600', '', 'None', 0, 0, 0, '2026-11-30', 'Nov-11-2023', 'PIRITON  INDIA', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Approved', '10345', 'Consumable');
+INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`, `inventory`, `stockval`) VALUES
+(3, '', '', '', '', '900', '1500', '600', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton ', '109991', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Obsolete', 'B211', NULL, 0),
+(4, '', '', '', '', '900', '1600', '700', 'Phones Ltd', 0, 0, 0, '', '2044-11-01', 'Periton	', '109920', 'Bot', '11/23/20', '07/14/22', '18900', '9s', 100000, 'Head ache', 'Obsolete', 'B111', NULL, 0),
+(5, '', '', '', '', '200', '1000', '800', 'Tech Ltd', 0, 0, 0, '', '2044-11-16', 'Painkiller', '267', 'Bot', '11/15/20', '07/13/22', '32000', 'n-20', 160, 'Abdominal', 'Obsolete', NULL, NULL, 0),
+(7, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '50', 'abacus pharmacy', 0, 20, 20, '2022-07-12', '2022-07-08', 'Paracetamol', '100676', 'Bot', '2022-07-06', '2022-07-12', '3000', '124', 20, 'Painkillers', 'Obsolete', 'BK9201', NULL, 0),
+(8, 'Painv', 'Painv', 'Painv', '150', '150', '200', '50', 'White star', 0, 300, 0, '07/14/22', '2033-07-12', 'Painv', '311', 'Bot', '07/13/22', '07/13/22', '4575000', '203', 305, 'Painkillers', 'Obsolete', 'BR732', NULL, 0),
+(9, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '50', 'abacus pharmacy', 0, 200, 0, '07/16/22', '2022-07-11', 'Mabendozol', '1171', 'Bot', '07/13/22', '07/14/55', '3000000', '392', 200, 'Urinary affection', 'Obsolete', 'BN021', NULL, 0),
+(10, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '100', 'abacus pharmacy', 0, 9000, 0, '2023-09-28', 'Asprine', 'Asprine', '9401', 'Tab', '2023-09-28', NULL, NULL, 'fff-933', 0, 'PainKiller', 'Obsolete', 'BH892', NULL, 0),
+(11, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '50', 'whitestar', 0, 90000, 0, '2026-11-02', 'Capsul', 'Capsul', '89996', 'Tab', '2023-10-02', NULL, NULL, 'f34', 0, 'Painkiller', 'Obsolete', 'BC721', NULL, 0),
+(12, 'Quatem', 'Quatem', 'Quatem', '200', '200', '300', '100', 'Guardian Pharmacy', 0, 9000, 0, '2027-10-07', 'Quatem', 'Quatem', '18904', 'Tab', '2023-10-02', NULL, NULL, 'DD093', 0, 'Painkiller', 'Obsolete', NULL, NULL, 0),
+(13, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '500', 'Super Medic', 0, 10000, 0, '2055-10-05', 'Ceptrine', 'Ceptrine', '10021', 'Tab', '2023-10-01', NULL, '4000000', 'HFFF43', 0, 'Painkiller', 'Obsolete', NULL, NULL, 0),
+(14, 'ArtEFAN', 'ArtEFAN', 'ArtEFAN', '2400', '2400', '4000', '1600', 'Super Medic', 0, 9000, 0, '2033-06-02', 'ArtEFAN', 'ArtEFAN', '8988', 'Tab', '2023-10-02', NULL, '21600000', 'nn-303', 0, 'Antimalario', 'Obsolete', NULL, NULL, 0),
+(15, 'Periton	', '', 'Periton	', NULL, '900', '1600', '2600', 'Super Medic', 0, 200, 0, '2023-10-26', 'Periton	', 'Periton	', '184', 'cash', '2023-10-05', NULL, '700000', '9s', 100000, 'Head ache', 'Obsolete', 'B632', NULL, 0),
+(16, 'Mabendozol', 'Mabendozol', 'Mabendozol', NULL, '150', '200', '5564', 'Super Medic', 0, 140, 0, '2023-11-03', 'Mabendozol', 'Mabendozol', '143', 'cash', '2023-10-05', NULL, '800000', '392', 200, 'Urinary affection', 'Obsolete', 'B6432', NULL, 0),
+(17, 'Asprin 75MG UK', 'Asprin 75MG UK', 'Asprin 75MG UK', '0', '0', '150', '', 'None', 0, 3993, 0, '', 'Nov-11-2023', 'Asprin 75MG UK', '3992', 'Tabs', '11/11/23', NULL, '0', 'D876', 3993, 'Anti-spasmotic', 'Obsolete', 'B11873', 'Consumable', 0),
+(18, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '111516', 'whitestar', 0, 6, 0, '2023-10-05', 'Mabendozol', 'Mabendozol', '310', 'cash', '2023-10-11', NULL, '670000', '392', 6, 'Urinary affection', 'Obsolete', 'RS2132', NULL, 0),
+(19, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '6903', 'abacus pharmacy', 0, 89, 0, '2023-10-04', 'Ceptrine', 'Ceptrine', '8975', 'cash', '2023-10-05', NULL, '650000', 'HFFF43', 89, 'Painkiller', 'Obsolete', 'B987544', NULL, 0),
+(21, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '304', 'Super Medic', 0, 44, 0, '2023-10-12', 'Capsul', 'Capsul', '90037', 'credit', '2023-10-05', NULL, '20000', 'f34', 44, 'Painkiller', 'Obsolete', 'B7201', NULL, 0),
+(22, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '9600', 'Super Medic', 0, 34, 0, '2023-11-01', 'Ceptrine', 'Ceptrine', '123', 'credit', '2023-10-05', NULL, '340000', 'HFFF43', 34, 'Painkiller', 'Obsolete', 'B78532', NULL, 0),
+(23, 'D-Artepp', 'D-Artepp', 'D-Artepp', '120', '120', '200', '80', 'None', 0, 20, 0, '2023-11-01', 'D-Artepp', 'D-Artepp', '16', 'Stp', '2023-10-06', NULL, '2400', 'D876', 0, 'Healer', 'Obsolete', NULL, NULL, 0),
+(24, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '1050', 'Super Medic', 0, 4, 0, '2023-10-07', 'Painkiller', 'Painkiller', '2', 'cash', '2023-10-07', NULL, '5000', 'n-20', 4, 'Abdominal', 'Obsolete', 'b3', NULL, 0),
+(25, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '800', 'Super Medic', 0, 5, 0, '2023-10-04', 'Painkiller', 'Painkiller', '2', 'cash', '2023-10-07', NULL, '5000', 'n-20', 5, 'Abdominal', 'Obsolete', 'b6', NULL, 0),
+(26, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '600', 'Super Medic', 0, 2, 0, '2023-10-25', 'Ceptrine', 'Ceptrine', '2', 'cash', '2023-10-07', NULL, '2000', 'HFFF43', 2, 'Painkiller', 'Obsolete', 'B66', NULL, 0),
+(27, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3850', 'Super Medic', 0, 3, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-07', NULL, '12000', '392', 3, 'Urinary affection', 'Obsolete', 'b4', NULL, 0),
+(28, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '-20', 'abacus pharmacy', 0, 5, 0, '2023-10-07', 'Painkiller', 'Painkiller', '0', 'cash', '', NULL, '900', 'n-20', 5, 'Abdominal', 'Obsolete', 'B64', NULL, 0),
+(29, 'Ceptrine', 'Ceptrine', 'Ceptrine', '400', '400', '900', '-234', 'abacus pharmacy', 0, 6, 0, '2023-10-05', 'Ceptrine', 'Ceptrine', '90200', 'cash', '', NULL, '1000', 'HFFF43', 6, 'Painkiller', 'Obsolete', 'B88', NULL, 0),
+(30, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '3350', 'Guardian Pharmacy', 0, 2, 0, '2023-10-25', 'Mabendozol', 'Mabendozol', '2', 'cash', '2023-10-12', NULL, '7000', '392', 2, 'Urinary affection', 'Obsolete', 'B31', NULL, 0),
+(31, 'Kuiris', 'Kuiris', 'Kuiris', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Kuiris', 'Kuiris', '0', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Obsolete', NULL, NULL, 0),
+(32, 'Centaprintecil', 'Centaprintecil', 'Centaprintecil', '0', '0', '300', '300', 'None', 0, 4, 0, '', 'Centaprintecil', 'Centaprintecil', '4', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Obsolete', NULL, NULL, 0),
+(33, 'Pensil', 'Pensil', 'Pensil', '0', '0', '300', '300', 'None', 0, 12, 0, '', 'Pensil', 'Pensil', '24', 'Bot', '2023-10-07', NULL, '0', 'D876', 0, 'Antibiotics', 'Obsolete', NULL, NULL, 0),
+(34, 'Muniscapuls', 'Munis capuls', 'Muniscapuls', '0', '0', '300', '300', 'None', 0, 0, 0, '', 'Muniscapuls', 'Muniscapuls', '', 'Tab', '2023-10-07', NULL, '0', 'D876', 0, 'Painkiller', 'Obsolete', NULL, NULL, 0),
+(35, 'Asprine99', 'Asprine99', 'Asprine99', '0', '0', '150', '', 'None', 0, 0, 0, '2023-10-11', 'Nov-10-2023', 'Asprine99', '91', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B43', 'Consumable', 0),
+(36, 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', 'ARTEFAN 20/120MG', '0', '0', '4000', '', 'None', 0, 0, 0, '2023-10-17', 'Nov-11-2023', 'ARTEFAN 20/120MG', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B722', 'Consumable', 0),
+(38, 'REMOS', 'REMOS', 'REMOS', '0', '0', '500', '500', 'None', 0, 0, 0, '', 'REMOS', 'REMOS', '8994', 'Tabs', '10/11/23', NULL, '0', 'D876', 0, 'Anti-ulcers', 'Obsolete', '', 'Consumable', 0),
+(39, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(40, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(41, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(42, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 40, 0, '', 'Periton	', 'Periton	', '40', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(43, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(44, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(45, 'Periton	', 'Periton	', 'Periton	', '0', '0', '1600', '', 'None', 0, 10000, 0, '', 'Periton	', 'Periton	', '10000', 'Tabs', '10/12/23', NULL, '0', 'D876', 10000, 'Anti-spasmotic', 'Obsolete', 'B111', 'Consumable', 0),
+(46, 'PIRITON', 'PIRITON', 'PIRITON', '0', '0', '1600', '', 'None', 0, 109920, 0, '', 'Nov-11-2023', 'PIRITON', '109720', 'Tabs', '11/11/23', NULL, '0', 'D876', 109920, 'NA', 'Obsolete', 'B111', 'Consumable', 0),
+(47, 'Amoin88', 'Amoin88', 'Amoin88', '0', '0', '400', '', 'None', 0, 0, 0, '', 'Nov-10-2023', 'Amoin88', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', '', 'Consumable', 0),
+(48, 'Periton	', '', 'Periton	', '900', '900', '1600', '-868', 'Guardian Pharmacy', 0, 8000, 0, '2023-10-26', 'Periton	', 'Periton	', '8003', 'cash', '2023-10-12', NULL, '260000', '9s', 8000, 'Head ache', 'Obsolete', 'B7777', NULL, 0),
+(49, 'Mabendozol', 'Mabendozol', 'Mabendozol', '150', '150', '200', '19850', 'Super Medic', 0, 3, 0, '2023-10-18', 'Mabendozol', 'Mabendozol', '3', 'cash', '2023-10-27', NULL, '60000', '392', 3, 'Urinary affection', 'Obsolete', 'B33', NULL, 0),
+(50, 'Capsul', 'Capsul', 'Capsul', '150', '150', '200', '14850', 'Super Medic', 0, 6, 0, '2023-10-31', 'Capsul', 'Capsul', '6', 'cash', '2023-10-27', NULL, '90000', 'f34', 6, 'Painkiller', 'Obsolete', 'B7322', NULL, 0),
+(51, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '6616', 'dddd5', 0, 3, 0, '2023-10-28', 'Asprine', 'Asprine', '1', 'cash', '2023-10-28', NULL, '20000', 'fff-933', 3, 'PainKiller', 'Obsolete', 'B344', NULL, 0),
+(52, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '124950', 'Hans kk2', 0, 2, 0, '2023-11-04', 'Asprine', 'Asprine', '0', 'cash', '2023-10-28', NULL, '250000', 'fff-933', 2, 'PainKiller', 'Obsolete', 'B544', NULL, 0),
+(53, 'Asprine44', 'Asprine44', 'Asprine44', '0', '0', '150', '', 'None', 0, 0, 0, '2023-11-02', 'Nov-10-2023', 'Asprine44', '0', 'Tabs', '11/10/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B123', 'Consumable', 0),
+(54, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '6800', 'whitestar', 0, 3, 0, '2023-11-09', 'Painkiller', 'Painkiller', '2', 'credit', '2023-11-09', NULL, '21000', 'n-20', 3, 'Abdominal', 'Obsolete', 'B023', NULL, 0),
+(55, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '5950', 'whitestar', 0, 2, 0, '2023-11-09', 'Asprine', 'Asprine', '2', 'cash', '2023-11-09', NULL, '12000', 'fff-933', 2, 'PainKiller', 'Obsolete', 'B233', NULL, 0),
+(56, 'Painkiller', '', 'Painkiller', '200', '200', '1000', '10800', 'whitestar', 0, 1, 0, '2023-11-09', 'Painkiller', 'Painkiller', '1', 'cash', '2023-11-09', NULL, '11000', 'n-20', 1, 'Abdominal', 'Obsolete', 'B883', NULL, 0),
+(57, 'Periton ', '', 'Periton ', '900', '900', '1500', '10100', 'abacus pharmacy', 0, 2, 0, '2023-11-09', 'Periton ', 'Periton ', '2', 'cash', '2023-11-09', NULL, '22000', '9s', 2, 'Head ache', 'Obsolete', 'B83992', NULL, 0),
+(58, 'Quatem7', 'Quatem7', 'Quatem7', '0', '0', '300', '', 'None', 0, -1, 0, '', 'Nov-10-2023', 'Quatem7', '-1', 'Tabs', '11/10/23', NULL, '0', 'D876', -1, 'Anti-spasmotic', 'Obsolete', 'B533', 'Consumable', 0),
+(59, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '21850', 'abacus pharmacy', 0, 1, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '1', 'cash', '2023-11-09', NULL, '22000', '124', 1, 'Painkillers', 'Obsolete', 'B8293', NULL, 0),
+(60, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '1109850', 'abacus pharmacy', 0, 3, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '3330000', '124', 3, 'Painkillers', 'Obsolete', 'B332', NULL, 0),
+(61, 'Paracetamol', 'Paracetamol', 'Paracetamol', '150', '150', '200', '169850', 'Guardian Pharmacy', 0, 2, 20, '2023-11-09', 'Paracetamol', 'Paracetamol', '2', 'cash', '2023-11-09', NULL, '340000', '124', 2, 'Painkillers', 'Obsolete', 'b532', NULL, 0),
+(62, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '7450', 'Guardian Pharmacy', 0, 2, 0, '2023-12-09', 'Asprine', 'Asprine', '2', 'credit', '2023-11-09', NULL, '15000', 'fff-933', 2, 'PainKiller', 'Obsolete', 'B23', NULL, 0),
+(63, 'Painv', 'Painv', 'Painv', '150', '150', '200', '266516', 'Guardian Pharmacy', 0, 3, 0, '2023-12-08', 'Painv', 'Painv', '0', 'credit', '2023-11-09', NULL, '800000', '203', 3, 'Painkillers', 'Obsolete', 'B434', NULL, 0),
+(64, 'Asprine', 'Asprine', 'Asprine', '50', '50', '150', '350', 'Super Medic', 0, 10, 0, '2023-11-11', 'Asprine', 'Asprine', '10', 'cash', '2023-11-11', NULL, '4000', 'fff-933', 10, 'PainKiller', 'Obsolete', 'B992', NULL, 0),
+(65, 'PIRITON  INDIA', 'PIRITON  INDIA', 'PIRITON  INDIA', '0', '0', '1600', '', 'None', 0, 0, 0, '2026-11-30', 'Nov-11-2023', 'PIRITON  INDIA', '0', 'Tabs', '11/11/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', '10345', 'Consumable', 0),
+(122, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin', NULL, 'Unit', '45241', NULL, NULL, NULL, NULL, 'Antibiotics', 'Obsolete', 'B920', 'Consumable', 0),
+(123, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antipyretics', 'Obsolete', 'BC291', 'Consumable', 0),
+(124, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antipyretics', 'Obsolete', 'BK023', 'None Consumable', 0),
+(125, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol', NULL, 'Unit', '45241', NULL, NULL, NULL, NULL, 'Antifungals', 'Obsolete', 'BK024', 'Consumable', 0),
+(126, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45976', '', 'Omeprazole', NULL, 'Unit', '45241', NULL, NULL, NULL, NULL, 'Antibiotics', 'Obsolete', 'BK025', 'Consumable', 0),
+(127, '', '', 'None', NULL, '0', '900', '0', '', 0, 0, 0, '45612', '', 'Ibuprofen', NULL, 'Unit', '45241', NULL, NULL, NULL, NULL, 'Analgesic Balm', 'Obsolete', 'BK026', 'None Consumable', 0),
+(128, '', '', 'None', NULL, '0', '2000', '0', '', 0, 0, 0, '45613', '', 'Multivitamins:', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antibiotics', 'Obsolete', 'BK027', 'Consumable', 0),
+(129, '', '', 'None', NULL, '0', '1000', '0', '', 0, 0, 0, '45614', '', 'Artemether', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Analgesic Balm', 'Obsolete', 'BK028', 'Consumable', 0),
+(132, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole22', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antipyretics', 'Obsolete', 'BC291', 'Consumable', 0),
+(133, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril22', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antipyretics', 'Obsolete', 'BK023', 'None Consumable', 0),
+(134, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril33', NULL, 'Tab', '45241', NULL, NULL, NULL, NULL, 'Antipyretics', 'Obsolete', 'BK023', 'None Consumable', 0),
+(135, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(136, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(137, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril33', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(138, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(139, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(140, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(141, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(142, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(143, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(144, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(145, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(146, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(147, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril33', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(148, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(149, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(150, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(151, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(152, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(153, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(154, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(155, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(156, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(157, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(158, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(159, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(160, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(161, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(162, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(163, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(164, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(165, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(166, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(167, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(168, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(169, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(170, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(171, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(172, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(173, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(174, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(175, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(176, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(177, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(178, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol5', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(179, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(180, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(181, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(182, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(183, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(184, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(185, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(186, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(187, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(188, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(189, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(190, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(191, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(192, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(193, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(194, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(195, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(196, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(197, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(198, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(199, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(200, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(201, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(202, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(203, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(204, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(205, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(206, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(207, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(208, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(209, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(210, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(211, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(212, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(213, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(214, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(215, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(216, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(217, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(218, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(219, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(220, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(221, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(222, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(223, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(224, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(225, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(226, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(227, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(228, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(229, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(230, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(231, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(232, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(233, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(234, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(235, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, NULL, '45241', NULL, NULL, NULL, NULL, NULL, 'Obsolete', 'B920', NULL, 40000),
+(236, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, NULL, '45241', NULL, NULL, NULL, NULL, NULL, 'Obsolete', 'BC291', NULL, 160000),
+(237, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, NULL, '45241', NULL, NULL, NULL, NULL, NULL, 'Obsolete', 'BK023', NULL, 360000),
+(238, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, NULL, '45241', NULL, NULL, NULL, NULL, NULL, 'Obsolete', 'BK024', NULL, 90000),
+(239, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(240, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(241, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(242, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(243, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(244, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Obsolete', NULL, NULL, 0),
+(245, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin6', NULL, '', '45241', NULL, NULL, NULL, NULL, 'Anti Malaria', 'Obsolete', 'B920', 'Consumable', 40000),
+(246, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(247, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(248, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol6', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(250, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(251, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(252, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(253, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(254, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(255, 'Ciprofloxacin7', 'Ciprofloxacin7', 'Ciprofloxacin7', '0', '0', '200', '', 'None', 0, 0, 0, '', 'Nov-15-2023', 'Ciprofloxacin7', '0', 'Tabs', '11/15/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'B920', 'Consumable', 40000),
+(256, 'Metronidazole7', 'Metronidazole7', 'Metronidazole7', '0', '0', '400', '', 'None', 0, 0, 0, '', 'Nov-15-2023', 'Metronidazole7', '0', 'Tabs', '11/15/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'BC291', 'Consumable', 160000),
+(257, 'Lisinopril7', 'Lisinopril7', 'Lisinopril7', '0', '0', '600', '', 'None', 0, 0, 0, '', 'Nov-15-2023', 'Lisinopril7', '0', 'Tabs', '11/15/23', NULL, '0', 'D876', 0, 'Anti-spasmotic', 'Obsolete', 'BK023', 'Consumable', 360000),
+(258, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(259, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(260, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(261, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(262, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(263, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(264, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, 'coms', 0),
+(265, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin71', NULL, '', '45241', NULL, NULL, NULL, NULL, 'Anti Mala', 'Obsolete', 'B920', '', 40000),
+(266, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole71', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(267, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril71', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(268, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol71', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(269, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(270, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(271, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(272, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(273, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(274, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(275, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(276, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole1', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(277, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(278, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(279, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(280, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(281, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(282, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(283, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(284, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(285, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(286, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole1', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(287, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(288, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(289, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(290, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(291, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(292, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(293, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(294, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(295, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 40000),
+(296, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole1', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(297, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK023', '', 360000),
+(298, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol7', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(299, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(300, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(301, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(302, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(303, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(304, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(305, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', NULL, '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 40000),
+(306, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 160000),
+(307, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', NULL, '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 360000),
+(308, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 90000),
+(309, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(310, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(311, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(312, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(313, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(314, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(315, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 10000),
+(316, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(317, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', NULL, '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(318, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', NULL, '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(319, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(320, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(321, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(322, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(323, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(324, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(325, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'B920', '', 10000),
+(326, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'BC291', '', 140000),
+(327, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(328, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(330, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(331, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(333, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(334, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(335, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(336, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(337, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(338, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(339, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(340, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(341, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(342, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(343, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(344, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(345, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(346, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(347, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(348, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(349, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(350, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(351, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(352, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(353, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(354, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(355, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(356, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(357, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(358, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000);
+INSERT INTO `products` (`product_id`, `product_code`, `gen_name`, `product_name`, `cost`, `o_price`, `price`, `profit`, `supplier`, `onhand_qty`, `qty`, `qty_sold`, `expiry_date`, `date_arrival`, `med_name`, `quantity`, `sell_type`, `reg_date`, `exp_date`, `tot_buy`, `del_no`, `qty_left`, `category`, `status`, `batch_no`, `inventory`, `stockval`) VALUES
+(359, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(360, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(361, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(362, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(363, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(364, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(365, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(366, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(367, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', 'Consumable', 330000),
+(368, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(369, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(370, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(371, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(372, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(373, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(374, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(375, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(376, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(377, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(378, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(379, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(380, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(381, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(382, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(383, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(384, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(385, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '45607', '', 'Ciprofloxacin11', '50', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(386, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '45608', '', 'Metronidazole11', '350', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(387, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '45974', '', 'Lisinopril91', '550', '', '45241', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(388, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '45610', '', 'Atenolol91', '250', '', '45241', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(389, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(390, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(391, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(392, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(393, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(394, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, NULL, '', NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(395, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '2024-11-11', '', 'Ciprofloxacin11', '50', '', '2023-11-11', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 10000),
+(396, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '2024-11-12', '', 'Metronidazole11', '350', '', '2023-11-11', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 140000),
+(397, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '2025-11-13', '', 'Lisinopril91', '550', '', '2023-11-11', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 330000),
+(398, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '2024-11-14', '', 'Atenolol91', '250', '', '2023-11-11', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 75000),
+(399, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(400, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(401, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(402, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(403, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(404, '', '', 'None', NULL, '0', NULL, '0', '', 0, 0, 0, '1970-01-01', '', NULL, NULL, '', '1970-01-01', NULL, NULL, NULL, NULL, '', 'Obsolete', NULL, '', 0),
+(405, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '1905-07-16', '', 'Ciprofloxacin11', '25', '', '1905-07-15', NULL, NULL, NULL, NULL, 'Anti malaria', 'Obsolete', 'B920', 'Consumable', 5000),
+(406, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '1905-07-16', '', 'Metronidazole11', '325', '', '1905-07-15', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BC291', '', 130000),
+(407, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '1905-07-17', '', 'Lisinopril91', '525', '', '1905-07-15', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Obsolete', 'BK023', '', 315000),
+(408, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '1905-07-16', '', 'Atenolol91', '225', '', '1905-07-15', NULL, NULL, NULL, NULL, '', 'Obsolete', 'BK024', '', 67500),
+(409, '', '', 'None', NULL, '0', '200', '0', '', 0, 0, 0, '1905-03-19', '', 'Ciprofloxacin11', '20', '', '1905-03-19', NULL, NULL, NULL, NULL, 'Anti malaria', 'Active', 'B920', 'Consumable', 4000),
+(410, '', '', 'None', NULL, '0', '400', '0', '', 0, 0, 0, '1905-03-19', '', 'Metronidazole11', '300', '', '1905-03-19', NULL, NULL, NULL, NULL, '', 'Active', 'BC291', '', 120000),
+(411, '', '', 'None', NULL, '0', '600', '0', '', 0, 0, 0, '1905-03-19', '', 'Lisinopril91', '500', '', '1905-03-19', NULL, NULL, NULL, NULL, 'Anti malaria drug', 'Active', 'BK023', '', 300000),
+(412, '', '', 'None', NULL, '0', '300', '0', '', 0, 0, 0, '1905-03-19', '', 'Atenolol91', '200', '', '1905-03-19', NULL, NULL, NULL, NULL, '', 'Active', 'BK024', '', 60000);
 
 -- --------------------------------------------------------
 
@@ -1267,22 +1700,21 @@ CREATE TABLE `user` (
   `id` int NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `position` varchar(100) NOT NULL
+  `name` varchar(266) DEFAULT NULL,
+  `position` varchar(100) NOT NULL,
+  `emp_id` int DEFAULT NULL,
+  `fname` varchar(200) DEFAULT NULL,
+  `lname` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `name`, `position`) VALUES
-(1, 'store', 'store', 'Medical depot', 'store'),
-(2, 'sab', 'sab', 'sab', 'pharmacist'),
-(3, 'admin', 'admin123', 'Administrator', 'admin'),
-(4, 'abacus', 'abacus', 'abacus pharmacy', 'supplier'),
-(5, 'whitestar', 'whitestar', 'whitestar', 'supplier'),
-(6, 'guardian', 'guardian', 'Guardian Pharmacy', 'supplier'),
-(7, 'medic', 'medic', 'Super Medic', 'supplier');
+INSERT INTO `user` (`id`, `username`, `password`, `name`, `position`, `emp_id`, `fname`, `lname`) VALUES
+(12, 'mins', 'mins2', NULL, 'pharmacist', 7, 'Mins', 'Mins'),
+(13, 'mins3', 'mins', NULL, 'store', 8, 'Mins3', 'Mins3'),
+(14, 'admin', 'admin123', NULL, 'admin', 9, 'sab', 'sab');
 
 -- --------------------------------------------------------
 
@@ -1387,6 +1819,13 @@ INSERT INTO `wsales` (`transaction_id`, `invoice_number`, `cashier`, `curdate`, 
 --
 
 --
+-- Indexes for table `advanced_payment`
+--
+ALTER TABLE `advanced_payment`
+  ADD PRIMARY KEY (`payment_id`),
+  ADD KEY `emp_id` (`emp_id`);
+
+--
 -- Indexes for table `assets`
 --
 ALTER TABLE `assets`
@@ -1423,6 +1862,12 @@ ALTER TABLE `cust_retpayhist`
   ADD PRIMARY KEY (`transaction_id`);
 
 --
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`emp_id`);
+
+--
 -- Indexes for table `equity`
 --
 ALTER TABLE `equity`
@@ -1441,10 +1886,24 @@ ALTER TABLE `liabilities`
   ADD PRIMARY KEY (`transaction_id`);
 
 --
+-- Indexes for table `medical_allowance`
+--
+ALTER TABLE `medical_allowance`
+  ADD PRIMARY KEY (`allowance_id`),
+  ADD KEY `emp_id` (`emp_id`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`);
+
+--
+-- Indexes for table `overtime`
+--
+ALTER TABLE `overtime`
+  ADD PRIMARY KEY (`overtime_id`),
+  ADD KEY `emp_id` (`emp_id`);
 
 --
 -- Indexes for table `products`
@@ -1492,11 +1951,18 @@ ALTER TABLE `supliers`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_user_emp_id` (`emp_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `advanced_payment`
+--
+ALTER TABLE `advanced_payment`
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `assets`
@@ -1535,6 +2001,12 @@ ALTER TABLE `cust_retpayhist`
   MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `emp_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `equity`
 --
 ALTER TABLE `equity`
@@ -1553,16 +2025,28 @@ ALTER TABLE `liabilities`
   MODIFY `transaction_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `medical_allowance`
+--
+ALTER TABLE `medical_allowance`
+  MODIFY `allowance_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT for table `overtime`
+--
+ALTER TABLE `overtime`
+  MODIFY `overtime_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `product_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=413;
 
 --
 -- AUTO_INCREMENT for table `purchases`
@@ -1604,7 +2088,35 @@ ALTER TABLE `supliers`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `advanced_payment`
+--
+ALTER TABLE `advanced_payment`
+  ADD CONSTRAINT `advanced_payment_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `medical_allowance`
+--
+ALTER TABLE `medical_allowance`
+  ADD CONSTRAINT `medical_allowance_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `overtime`
+--
+ALTER TABLE `overtime`
+  ADD CONSTRAINT `overtime_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `fk_user_emp_id` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
