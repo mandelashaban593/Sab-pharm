@@ -1,9 +1,12 @@
 <?php
 session_start();
 require '../conn2.php';
-require 'vendor/autoload.php'; // Make sure you have Composer installed and ran `composer require phpoffice/phpspreadsheet`
+require '../vendor/autoload.php'; // Load PhpSpreadsheet library
+
+//use ZipArchive;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
 
 // Ensure you have a valid PDO connection established
 
@@ -14,35 +17,67 @@ try {
     // Check if a file was uploaded
     if (isset($_FILES['excelFile']) && $_FILES['excelFile']['error'] == UPLOAD_ERR_OK) {
         $file = $_FILES['excelFile']['tmp_name'];
+        $status = "Active";
+        $sell_type = '';
+        $category = '';
+        $inventory= '';
+
 
         $objPHPExcel = IOFactory::load($file);
         $worksheet = $objPHPExcel->getActiveSheet();
         $highestRow = $worksheet->getHighestRow();
 
-        $existingProducts = array(); // To store existing product names
+        try {
+            // Update all products to "Obsolete"
+            $sql = "UPDATE products SET status = 'Obsolete'";
+            $db->exec($sql);
 
-        // Fetch the existing products
-        $stmt = $db->query("SELECT med_name FROM products");
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $existingProducts[] = $row['med_name'];
+            echo "All products updated to 'Obsolete' successfully.";
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
         }
+
 
         $db->beginTransaction(); // Begin a transaction to ensure data consistency
 
         for ($row = 2; $row <= $highestRow; $row++) { // Start from 2 to skip the header row
-            $productName = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
-            $price = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
-            $purchaseCost = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
-            $supplier = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+            $med_name = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+            $reg_date = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
+            $reg_date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp((float)$reg_date);
+            $reg_date = \DateTime::createFromFormat('U', $reg_date);
+            $reg_date= $reg_date->format('Y-m-d');
+            $batch_no = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+            $expiry_date = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+            $expiry_date= \PhpOffice\PhpSpreadsheet\Shared\Date::excelToTimestamp((float)$expiry_date);
+            $expiry_date = \DateTime::createFromFormat('U', $expiry_date);
+            $expiry_date= $expiry_date->format('Y-m-d');
 
-            // Prepare and execute the SQL query to insert or update the product
-            if (in_array($productName, $existingProducts)) {
-                $stmt = $db->prepare("UPDATE products SET price = ?, purchase_cost = ?, supplier = ?, status = 'Obsolete' WHERE product_name = ?");
-                $stmt->execute([$price, $purchaseCost, $supplier, $productName]);
-            } else {
-                $stmt = $db->prepare("INSERT INTO product (product_name, price, purchase_cost, supplier, status) VALUES (?, ?, ?, ?, 'Active')");
-                $stmt->execute([$productName, $price, $purchaseCost, $supplier]);
+            $price = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+            $qty = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+            $stockval = $qty*$price;
+            
+            // Prepare the SQL statement
+            $stat = "Obsolete"; //Status value for retrieving all particular Obsolete product
+            $stmt = $db->prepare("SELECT * FROM products WHERE med_name = :med_name  AND status = :status LIMIT 1");
+            // Bind the parameter
+            $stmt->bindParam(':med_name', $med_name, PDO::PARAM_STR);
+            $stmt->bindParam(':status',$stat, PDO::PARAM_STR);
+            // Execute the query
+            $stmt->execute();
+            // Fetch all rows as an associative array
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Iterate over the result set and echo the category
+            foreach($result as $res) {
+                $cat = $res['category'];
+                $invent= $res['inventory'];
+                $selltype = $res['sell_type'];
+                echo "Category: $cat<br>";
             }
+
+
+          $stmt = $db->prepare("INSERT INTO products (med_name, reg_date, batch_no,category, inventory, sell_type, expiry_date, price,status,stockval, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$med_name, $reg_date, $batch_no, $cat, $invent,$selltype, $expiry_date, $price, $status, $stockval, $qty]);
+
         }
 
         $db->commit(); // Commit the transaction

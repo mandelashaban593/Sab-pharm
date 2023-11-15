@@ -233,6 +233,8 @@ if($position=="admin"){?><!--
 <a rel="facebox" href="selectpaysupplier.php"><i class="icon-list-alt icon-2x"></i><br>Payment</a> 
 <a rel="facebox" href="selreceiptcust.php"><i class="icon-list-alt icon-2x"></i><br>Receipt</a> 
 <a href="salesrecord.php"><i class="icon-list-alt icon-2x"></i><br> Sales</a> 
+<a href="employee.php"><i class="icon-list-alt icon-2x"></i><br> Employee</a> 
+<a href="payroll.php"><i class="icon-list-alt icon-2x"></i><br> Payroll</a> 
 <!-- order-supplies.php -->
 
 <!-- order-supplies.php -->

@@ -3,7 +3,8 @@ session_start();
 //Connect to mysql server and selecting db
 require '../conn2.php';
 
-if(isset($_POST['name'])) $name = $_POST['name'];
+if(isset($_POST['fname'])) $fname = $_POST['fname'];
+if(isset($_POST['lname'])) $lname = $_POST['lname'];
 if(isset($_POST['username'])) $username = $_POST['username'];
 if(isset($_POST['password'])) $password = $_POST['password'];
 if(isset($_POST['position'])) $position = $_POST['position'];
@@ -16,25 +17,53 @@ echo $password;
 echo "\n";
 echo $position;
 
-$q = mysqli_query($con, "SELECT * FROM user WHERE username ='$username' ") or die(mysqli_error($con));
-$rowcount_user=mysqli_num_rows($q);
+
+// Prepare and execute the SELECT query
+$sql = "SELECT COUNT(*) FROM user WHERE username = :username";
+$stmt = $db->prepare($sql);
+$stmt->bindParam(':username', $username, PDO::PARAM_STR);
+$stmt->execute();
+
+// Fetch the result
+$result = $stmt->fetchColumn();
+
+// Check if the username exists
+if ($result > 0) {
+	echo "OOOOOOOOK";
+    header("location:users.php");
+} else{
+
+	echo "User does not exist";
 
 
-/*user_details*/
+// Begin a transaction
+$db->beginTransaction();
 
-echo $rowcount_user;
-if($rowcount_user == 1){
-	header("location:users.php");
+try {
+    // Insert data into Employee table
+    $stmt = $db->prepare("INSERT INTO employee (fname, lname, username) VALUES (?, ?, ?)");
+    $stmt->execute([$fname, $lname, $username]);
+
+    // Get the last inserted employee_id
+    $employee_id = $db->lastInsertId();
+
+    // Insert data into User table with the corresponding employee_id
+    $stmt = $db->prepare("INSERT INTO user (emp_id, username, fname, lname,password, position) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$employee_id, $username, $fname, $lname, $password, $position]);
+
+    // Commit the transaction
+    $db->commit();
+
+    echo "Data inserted successfully!";
+} catch (PDOException $e) {
+    // Rollback the transaction if an error occurs
+    $db->rollBack();
+    throw $e; // Rethrow the exception after rolling back
 }
 
 
+ header("location:users.php");
 
-
-// query
-$sql = "INSERT INTO user (username,password,name,position) VALUES ('$username','$password','$name','$position')";
-$q = mysqli_query($con, $sql) or die(mysqli_error($con));
-
-
-header("location:users.php")
+ }
 
 ?>

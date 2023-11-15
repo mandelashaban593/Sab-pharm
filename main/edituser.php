@@ -12,7 +12,8 @@
 <hr>
 <div id="ac">
 <input type="hidden" name="memi" value="<?php echo $id; ?>" />
-<span>Name: </span><input type="text" style="width:265px; height:30px;" name="name"  value="<?php echo $row['name']; ?>" ><br>
+<span>First Name: </span><input type="text" style="width:265px; height:30px;" name="fname"  value="<?php echo $row['fname']; ?>" ><br>
+<span>Last Name: </span><input type="text" style="width:265px; height:30px;" name="lname"  value="<?php echo $row['lname']; ?>" ><br>
 <span>Username: </span><input type="text" style="width:265px; height:30px;" name="username"  value="<?php echo $row['username']; ?>" ><br>
 <span>Password: </span><input type="password" style="width:265px; height:30px;" name="password"  value="<?php echo $row['password']; ?>" /><br>
 <span>Position: </span>

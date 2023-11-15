@@ -35,12 +35,12 @@
 
 </style>
 
-<form action="saveuploadedprods.php" method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
 <center><h4><i class="icon-plus-sign icon-large"></i> Upload products</h4></center>
 <hr>
 
  <div class="input-container">
-<span>Choose Excel File: </span><input id="med_name" type="file" name="excelFile" style="width:265px; height:50px;" >
+<span>Choose Excel File: </span><input id="excelFile" type="file" name="excelFile" style="width:265px; height:50px;" >
 
 </div>
 <br>
@@ -64,6 +64,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
  <script>
+    function redirectToCurrentPage() {
+    window.location.href = window.location.href;
+}
+
         function handleExcelData() {
             const fileInput = document.getElementById("excelFile");
             const file = fileInput.files[0];
@@ -80,6 +84,7 @@
                 .then(data => {
                     if (data.success) {
                         alert("Data uploaded successfully!");
+                        redirectToCurrentPage();
                     } else {
                         alert("Error: " + data.error);
                     }

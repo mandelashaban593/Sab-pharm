@@ -182,6 +182,8 @@ window.onload=startclock;
 	<thead>
 		<tr>
 			<th width="7%"> User Id </th>
+			<th width="7%"> First Name </th>
+			<th width="7%"> Last Name </th>
 			<th width="12%"> Username </th>
 			<th width="14%"> Name</th>
 			<th width="13%"> Position </th>
@@ -218,6 +220,8 @@ window.onload=startclock;
 			?>
 		
 			<td><?php echo $row['id']; ?></td>
+			<td><?php echo $row['fname']; ?></td>
+			<td><?php echo $row['lname']; ?></td>
 			<td><?php echo $row['username']; ?></td>
 			<td><?php echo $row['name']; ?></td>
 			<td><?php echo $row['position']; ?></td>

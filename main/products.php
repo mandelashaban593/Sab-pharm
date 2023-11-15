@@ -194,6 +194,7 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
 <a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Item</button></a><br><br><br/>
 <a rel="facebox" href="uploadproducts.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Upload products</button></a><br><br><br/>
+<a  href="exportproducts.php" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Export Products</a>
 
 
 <p style="text-align:center">Ojinga Pharmacy</p>
@@ -205,14 +206,15 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 <thead>
 <tr>
 <th width="12%"> Medicine</th>
-<th width="14%"> Quantity</th>
 <th width="13%"> Date </th>
 <th width="13%"> Batch No</th>
 <th width="13%"> Category</th>
 <th width="13%"> Inventory</th>
 <th width="13%"> Particulars</th>
 <th width="13%"> Expiry Date  </th>
+<th width="14%"> Quantity</th>
 <th width="13%"> Selling price </th>
+<th width="13%"> Stock value</th>
 <th width="8%"> Action </th>
 
 
@@ -238,7 +240,10 @@ break;
 return $number;
 }
 
-$result = $db->prepare("SELECT *, price * qty as total FROM products ORDER BY med_name");
+$status = 'Active';
+$result = $db->prepare("SELECT *, price * qty as total FROM products  WHERE status = :status AND med_name IS NOT NULL");
+// Bind the parameter
+$result->bindParam(':status', $status, PDO::PARAM_STR);
 $result->execute();
 for($i=0; $row = $result->fetch(); $i++){
 $total=$row['total'];
@@ -251,18 +256,18 @@ echo '<tr class="record">';
 }
 ?>
 <td><?php echo $row['med_name']; ?></td>
-<td><?php echo $row['quantity']; ?></td>
 <td><?php echo $row['reg_date']; ?></td>
 <td><?php echo $row['batch_no']; ?></td>
 <td><?php echo $row['category']; ?></td>
 <td><?php echo $row['inventory']; ?></td>
 <td><?php echo $row['sell_type']; ?></td>
 <td><?php echo $row['expiry_date']; ?></td>
+<td><?php echo $row['quantity']; ?></td>
 <td><?php
 $pprice=$row['price'];
 echo formatMoney($pprice, true);
 ?></td>
-
+<td><?php echo $row['stockval']; ?></td>
 
 <td><a rel="facebox" title="Click to edit the product" href="editproduct.php?id=<?php echo $row['product_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
 <a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
@@ -271,6 +276,49 @@ echo formatMoney($pprice, true);
 }
 ?>
 
+<tr>
+<td colspan="7" style=" text-align:right;"><strong style="font-size: 12px;"></strong></td>
+<td colspan="1"><strong style="font-size: 12px;">Total Quantity: &nbsp;
+<?php
+
+$resultas = $db->prepare("SELECT SUM(quantity) AS total_quantity FROM products WHERE status = 'Active'");
+$resultas->execute();
+
+for ($i = 0; $rowas = $resultas->fetch(); $i++) {
+    $fgfg = $rowas['total_quantity'];
+    echo formatMoney($fgfg, true);
+}
+?>
+</strong></td>
+
+
+<td colspan="1"><strong style="font-size: 12px;">Total Price: &nbsp;
+<?php
+
+$resultas = $db->prepare("SELECT SUM(price) AS total_price FROM products WHERE status = 'Active'");
+$resultas->execute();
+
+for ($i = 0; $rowas = $resultas->fetch(); $i++) {
+    $fgfg = $rowas['total_price'];
+    echo formatMoney($fgfg, true);
+}
+?>
+</strong></td>
+
+<td colspan="2"><strong style="font-size: 12px;">Total Stock Value: &nbsp;
+<?php
+
+$resultas = $db->prepare("SELECT SUM(stockval) AS total_stockval FROM products WHERE status = 'Active'");
+$resultas->execute();
+
+for ($i = 0; $rowas = $resultas->fetch(); $i++) {
+    $fgfg = $rowas['total_stockval'];
+    echo formatMoney($fgfg, true);
+}
+?>
+</strong></td>
+
+</tr>
 
 
 </tbody>

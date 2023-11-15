@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    
 
         // Fetch suggestions from the database (replace with your query)
-        $query = "SELECT * FROM products WHERE med_name LIKE :userInput";
+        $query = "SELECT * FROM products WHERE med_name LIKE :userInput and status='Active' ";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':userInput', "%$userInput%", PDO::PARAM_STR);
         $stmt->execute();
