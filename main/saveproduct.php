@@ -2,7 +2,7 @@
 session_start();
 require '../conn2.php';
 //Connect to mysql server and selecting db
-$status = "Approved";
+$status = "Active";
 $med_name="";
 $quantity=0;
 
@@ -40,12 +40,15 @@ $rowcount_prod=mysqli_num_rows($q);
 
 
 $result = $db->prepare("SELECT * FROM products WHERE batch_no= :batch_no");
-$result->bindParam(':batch_no', $batch_no);
+//$result->bindParam(':batch_no', $batch_no);
+$result->bindParam(':batch_no', $batch_no, PDO::PARAM_STR);
 $result->execute();
+$rowCount = $result->rowCount(); // Get the number of rows affected
+
 for($i=0; $row = $result->fetch(); $i++){
 $qty=$row['quantity'];
 $product_id=$row['product_id'];
-echo "Product id<br/>";
+echo "Product id batch exist<br/>";
 echo $product_id;
 echo "<br/>Quantity 1\n";
 echo $qty;
@@ -61,9 +64,9 @@ echo $quantity;
 echo "<br/>Batch no 1 maan <br/>";
 echo $batch_no;
 /*purchase_details*/
-echo "<br/>No of records<br/>";
+echo "<br/>No of products<br/>";
 
-echo $rowcount_prod;
+echo $rowCount;
 echo "<br/>";
 
 
@@ -118,7 +121,8 @@ echo "<br/>Expiry date: ";
 echo $exp_date;
 /*$sql = "INSERT INTO products (med_name,category,quantity,sell_type,reg_date,exp_date,price,supplier,o_price,profit,date_arrival,del_no,tot_buy,status, qty_left,product_code,gen_name,product_name, cost,onhand_qty,qty,qty_sold,expiry_date) VALUES ('$med_name','$category','$quantity','$sell_type','$new_reg_date','$new_exp_date','$sell_price','$supplier','$o_price','$profit','$date_arrival','$del_no','$tot_buy_price','$status', '$quantity', '$product_code', '$gen_name', '$gen_name', '$o_price','$onhand_qty','$quantity','$qty_sold', '$new_exp_date')";
 $q = mysqli_query($con, $sql) or die(mysqli_error($con));*/
-if(isset($product_id) || isset($batch_no)) {
+  if ($rowCount > 0)
+  {
 
 echo "Product Value:" .$product_id;
 
@@ -147,14 +151,25 @@ echo "Product Value:" .$product_id;
 } else{
 
 
+try {
+
 $sql = "INSERT INTO products (product_code,category,med_name,price,supplier,quantity,o_price,profit,gen_name,product_name,cost,onhand_qty,qty,qty_sold,expiry_date,date_arrival,sell_type,reg_date,tot_buy,del_no,qty_left,status,batch_no,inventory) VALUES (:a,:b,:c,:e,:f,:g,:h,:i,:j,:k,:l,:m,:n,:o,:p,:k,:r,:s,:t,:u,:v,:w, :x, :y)";
 $q = $db->prepare($sql);
-$q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$supplier,':g'=>$quantity,':h'=>$o_price,':i'=>$profit,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price,':m'=>$onhand_qty,':n'=>$quantity,':o'=>$qty_sold,':p'=>$exp_date,':q'=>$date_arrival,':r'=>$sell_type,':s'=>$reg_date
+$result = $q->execute(array(':a'=>$med_name,':b'=>$category,':c'=>$med_name,':e'=>$sell_price,':f'=>$supplier,':g'=>$quantity,':h'=>$o_price,':i'=>$profit,':j'=>$gen_name,':k'=>$med_name,':l'=>$o_price,':m'=>$onhand_qty,':n'=>$quantity,':o'=>$qty_sold,':p'=>$exp_date,':q'=>$date_arrival,':r'=>$sell_type,':s'=>$reg_date
 	,':t'=>$tot_buy_price,':u'=>$del_no,':v'=>$quantity,':w'=>$status,':x'=>$batch_no,':y'=>$inventory));
+
+  if($result){
+      
+        echo "Product data saved successfully.";
+  } 
+
+
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
 }
 
 
-
+}
 
 header("location: products.php");
 

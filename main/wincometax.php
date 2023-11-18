@@ -117,7 +117,7 @@ window.onload=startclock;
 			</div>
 			<ul class="breadcrumb">
 			<a href="dashboard.php"><li>Dashboard</li></a> /
-			<li class="active">Customer's Ledger</li>
+			<li class="active">Whole Sale Income Tax</li>
 			</ul>
 <div id="maintable">
 <div style="margin-top: -19px; margin-bottom: 21px;">
@@ -164,8 +164,9 @@ try {
 
     
     // Query to retrieve revenue and expenses data within the date range
-    $query_revenue = "SELECT name, amount FROM sales WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start_date AND :end_date";
+    $query_revenue = "SELECT name, amount FROM wsales WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start_date AND :end_date";
     $query_expenses = "SELECT item, amount FROM expenses WHERE entry_date BETWEEN :start_date AND :end_date";
+    $query_purchases = "SELECT invoice_number, amount FROM purchases_ret WHERE DATE_FORMAT(date, '%m/%d/%y') BETWEEN :start_date AND :end_date";
 
     // Execute the queries
     $stmt_revenue = $db->prepare($query_revenue);
@@ -177,52 +178,78 @@ try {
     $stmt_expenses->bindParam(':start_date', $d1);
     $stmt_expenses->bindParam(':end_date', $d2);
     $stmt_expenses->execute();
+
+    $stmt_purchases = $db->prepare($query_purchases);
+    $stmt_purchases->bindParam(':start_date', $d1);
+    $stmt_purchases->bindParam(':end_date', $d2);
+    $stmt_purchases->execute();
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
 
 
  ?>
-<h1>Profit and Loss Statement (<?php echo $d1; ?> to <?php echo $d2; ?>)</h1>
-    <div class="profit-loss">
-        <div class="profit-loss-section">
-            <h2>Revenue</h2>
+<h1>Income Tax (<?php echo $d1; ?> to <?php echo $d2; ?>)</h1>
+    <div class="profit-loss" style="width:1100px">
+        <div class="profit-loss-section" style="">
+           
             <ul>
                 <?php
                 $total_revenue = 0;
                 while ($row = $stmt_revenue->fetch(PDO::FETCH_ASSOC)) {
-                    $total_revenue += $row['amount'];
+                    $total_revenue += (int)$row['amount'];
                 ?>
-                    <li><?php echo $row['name'] . ': UGX ' . $row['amount']; ?></li>
+                    <li></li>
                 <?php
                 }
                 ?>
-                <li>Total Revenue: UGX <?php echo $total_revenue; ?></li>
+                <li>Total Sales: UGX <?php echo $total_revenue; ?></li>
             </ul>
         </div>
+
+
+
         <div class="profit-loss-section">
-            <h2>Expenses</h2>
+           
+            <ul>
+                <?php
+                $total_purchases = 0;
+                while ($row = $stmt_purchases->fetch(PDO::FETCH_ASSOC)) {
+                    $total_purchases += (int)$row['amount'];
+                ?>
+                    <li></li>
+                <?php
+                }
+                ?>
+                <li>Total Purchases: UGX <?php echo $total_purchases; ?></li>
+            </ul>
+        </div>
+
+        <div class="profit-loss-section">
+            
             <ul>
                 <?php
                 $total_expenses = 0;
                 while ($row = $stmt_expenses->fetch(PDO::FETCH_ASSOC)) {
-                    $total_expenses += $row['amount'];
+                    $total_expenses += (int)$row['amount'];
                 ?>
-                    <li><?php echo $row['item'] . ': UGX ' . $row['amount']; ?></li>
+                    <li></li>
                 <?php
                 }
                 ?>
                 <li>Total Expenses: UGX <?php echo $total_expenses; ?></li>
             </ul>
         </div>
-        <div class="profit-loss-section">
-            <h2>Net Profit/Loss</h2>
+        <div class="profit-loss-section" style="width:500px">
+            <h2>Profit Before Tax</h2>
             <?php
-            $net_profit_loss = $total_revenue - $total_expenses;
+            $net_profit = $total_revenue - $total_purchases - $total_expenses;
+            echo $net_profit;
             ?>
-            <p>Total Revenue: UGX <?php echo $total_revenue; ?></p>
-            <p>Total Expenses: UGX <?php echo $total_expenses; ?></p>
-            <p>Net Profit/Loss: UGX <?php echo $net_profit_loss; ?></p>
+            <h2>Profit After Tax: UGX </h2>
+            <p><?php echo $net_profit*0.3; ?></p>
+        
         </div>
     </div>
 
