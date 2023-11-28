@@ -148,7 +148,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'fetch_search_results.php',
+                url: 'fetch_wsearch_results.php',
                 data: { search_item: searchItem },
                 beforeSend: function(){
 				// show loader icon
@@ -168,7 +168,7 @@
             var itemID = $(this).val();
             $.ajax({
                 type: 'POST',
-                url: 'fetch_item.php',
+                url: 'fetch_witem.php',
                 data: { item_id: itemID },
                 success: function(data) {
                     var result = JSON.parse(data);

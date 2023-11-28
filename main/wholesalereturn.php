@@ -426,7 +426,7 @@ function checkQuantity(inputElement, errorId) {
 
     $.ajax({
         type: 'POST',
-        url: 'check_quantity.php',
+        url: 'wcheck_quantity.php',
         data: { product_id: productIdInput.value, quantity: quantityInput },
         success: function(response) {
             console.log("Success function called");

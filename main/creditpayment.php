@@ -182,8 +182,8 @@ $finalcode='RS-'.createRandomPassword();
 				$resulta->bindParam(':suplier_id',  $_SESSION['suplier_id']);
 				$resulta->execute();
 				for($i=0; $rowa = $resulta->fetch(); $i++){
-				$total=$rowa['total'];
-				echo $total;
+			/*	$total=$rowa['total'];
+				echo $total;*/
 				?>
 
 				<?php if ($rowa['pay_type'] == 'cash' || $rowa['pay_type'] == 'bank'){ ?>

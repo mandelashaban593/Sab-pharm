@@ -172,8 +172,8 @@ $finalcode='RS-'.createRandomPassword();
 				$resulta->bindParam(':customer_id',  $_SESSION['customer_id']);
 				$resulta->execute();
 				for($i=0; $rowa = $resulta->fetch(); $i++){
-				$total=$rowa['total'];
-				echo $total;
+			/*	$total=$rowa['total'];
+				echo $total;*/
 				?>
 				<tr class="record">
 			<td><?php echo $rowa['date']; ?></td>

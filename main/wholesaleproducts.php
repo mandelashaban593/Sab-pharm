@@ -197,7 +197,7 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 <a rel="facebx" href="wcategory.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Category</button></a><br><br><br/>
 <a rel="facbox" href="wunit.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Unit</button></a><br><br><br/>
 <a rel="facebox" href="upwsaleprods.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Upload products</button></a><br><br><br/>
-<a  href="exportproducts.php" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Export Products</a>
+<a  href="exportwproducts.php" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Export Products</a>
 
 
 <p style="text-align:center">Ojinga Pharmacy</p>
