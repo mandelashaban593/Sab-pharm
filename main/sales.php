@@ -6,7 +6,7 @@ include('../conn2.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Whole sale</title>
+    <title>Retail sale</title>
   
 <!DOCTYPE html>
 <html>
@@ -47,6 +47,10 @@ padding: 9px 0;
 
 select option {
     width: 400px;
+}
+
+.error {
+    color: red;
 }
 
 </style>
@@ -95,39 +99,19 @@ select option {
             }
         }
 
-          // Initialize an array to store dynamically added input elements
-        let amounts = [];
-
-
         function calculateTotal(inputField) {
-            const totalAmountElement = document.getElementById('totalAmount');
             var row = inputField.closest("tr");
             var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
             var price = parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
-            console.log("calculate total called");
-            console.log("Quantity: ");
-            console.log(quantity);
-            console.log("Price: ");
-            console.log(price);
-
 
             if (!isNaN(quantity) && !isNaN(price)) {
                 var total = (price * quantity).toFixed(2);
-                console.log("Total");
-                console.log(total);
                 row.cells[3].getElementsByTagName("input")[0].value = total;
-
-                var totalGrand = (price * quantity);
-                amounts.push(totalGrand);
-                console.log(amounts);
-                    // Calculate the total from the 'amounts' array
-                const totalAmount = amounts.reduce((acc, val) => acc + val, 0);
-
-                // Display the total
-                totalAmountElement.textContent = totalAmount;
-                
             }
         }
+
+              // Initialize an array to store dynamically added input elements
+        let amounts = [];
 
 
         function calculateRate(inputField) {
@@ -139,15 +123,15 @@ select option {
             const totalAmountElement = document.getElementById('totalAmount');
 
             var row = inputField.closest("tr");
-            var quantity = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
-            var amount = parseFloat(row.cells[5].getElementsByTagName("input")[0].value);
+            var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+            var amount = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
 
             // Add the value to the array
             amounts.push(amount);
 
             if (!isNaN(quantity) && !isNaN(amount)) {
                 var rate = (amount/quantity).toFixed(2);
-                row.cells[4].getElementsByTagName("input")[0].value = rate;
+                row.cells[2].getElementsByTagName("input")[0].value = rate;
             }
 
              // Calculate the total from the 'amounts' array
@@ -157,6 +141,7 @@ select option {
             totalAmountElement.textContent = total;
 
         }
+
    
 
 
@@ -244,8 +229,8 @@ if($position=='admin') {
 
 <?php } ?>  
 
-
-<div class="span10">
+    
+    <div class="span10">
     <div class="contentheader">
             <i class="icon-dashboard"></i> Dashboard
             </div>
@@ -257,7 +242,7 @@ if($position=='admin') {
 <div style="margin-top: -19px; margin-bottom: 21px;">
 <a  href="index.php"><button class="btn btn-default btn-large" style="float: none;"><i class="icon icon-circle-arrow-left icon-large"></i> Back</button></a>
 </div>
-</div>
+<br />
 <br />
 
 <form id="productForm" method="post" action="savesales.php" style="width:250px;margin-top: 50px;">
@@ -271,20 +256,26 @@ if($position=='admin') {
                 <th>Amount</th>
                 <th></th>
                 <th>Batch No</th>
-                <th>Expiry date</th>
+                <th>Expiry Date</th>
             </tr>
             <tr>
                 
                 <td>
-                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" required>
                     <div class="med_name_suggestions"></div>
                 </td>
                 
-                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" onchange="calculateTotal(this)"></td>
-                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
-                <td><input type="number" name="total[]" class="total_input" placeholder="Amount" ></td>
-                 
-                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
+                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" required oninput="calRate(this); calAmount(this); calTot(this);checkQuantity(this, '1'); validateNumber(this, 'error_quantity1')" value="0" step="any"   >
+                <span id="error_quantity1" class="error"></span>
+                </td>
+                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" required  oninput="calAmount(this); calQuantity(this); calTot(this);validateNumber(this, 'error_price1')"  value="0" id="rate" step="any"  >
+                <span id="error_price1" class="error"></span>
+                </td>
+                <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  oninput="calRate(this); calQuantity(this); calTot(this);validateNumber(this, 'error_amount1')" required value="0" id="amount" step="any"  >
+                <span id="error_amount1" class="error"></span>
+                </td>
+               
+                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             </tr>
@@ -297,7 +288,7 @@ if($position=='admin') {
 
 
          <div id="totalDisplay" style="margin:10px">
-            Total: <span id="totalAmount">0</span>
+             <td colspan="4">Total: <span id="totalValue">0.00</span></td>
           </div>
         <br><br>
         <input type="hidden" name="invoice" value="<?php echo $finalcode; ?>" />
@@ -314,9 +305,9 @@ if($position=='admin') {
         <?php
         }
         ?>
-        </select></td><td><input type="date" name="date" placeholder="Date" /></td>
+        </select></td><td><input type="date" name="date" placeholder="Date" required/></td>
         <td>
-        <select name="pay_type"  >
+        <select name="pay_type"  required>
            <option value="cash">Cash</option>
            <option value="credit">Credit</option>
         </select>
@@ -326,8 +317,143 @@ if($position=='admin') {
     </form>
 
 
+<script type="text/javascript">
+    function calRate(element) {
+    
+    var row = element.closest("tr");
+    var amount = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+    var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+    
+
+    // Add the value to the array
+   // amounts.push(amount);
+
+    if (!isNaN(quantity) && !isNaN(amount)) {
+
+        if(amount > 0 && quantity >= 1) {
+        var rate = (amount/quantity).toFixed(2);
+        row.cells[2].getElementsByTagName("input")[0].value = rate;
+        }
 
 
+    }
+
+   
+
+
+    // Set the total in the corresponding cell
+    //element.parentNode.parentNode.cells[4].getElementsByTagName("input")[0].value = total.toFixed(2);
+
+    // Update the total in the HTML
+    calTot();
+}
+
+function calQuantity(element) {
+    var row = element.closest("tr");
+    var amount =  parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+    var rate =  parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
+    if(amount > 0 && rate > 0 ) {
+        var quantity = amount / rate;
+        // Set the Quantity  in the corresponding cell
+        row.cells[1].getElementsByTagName("input")[0].value = quantity.toFixed(2);
+    }
+
+    // Update the total in the HTML
+    calTot();
+}
+
+function calAmount(element) {
+    var row = element.closest("tr");
+    var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+    var rate =  parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
+
+    if(quantity >= 1 && rate > 0 ) {
+    var amount = quantity * rate;
+    // Set the amount in the corresponding cell
+    row.cells[3].getElementsByTagName("input")[0].value = amount.toFixed(2);
+    }
+
+    
+    // Update the total in the HTML
+    calTot();
+}
+
+function calTot() {
+            // Get all input fields with name 'amount[]'
+            var amountInputs = document.getElementsByName('amount[]');
+
+            // Initialize total variable
+            var total = 0;
+
+            // Iterate through each input field and update the total
+            for (var i = 0; i < amountInputs.length; i++) {
+                // Parse the value as a float and add it to the total
+                total += parseFloat(amountInputs[i].value) || 0;
+            }
+
+            // Update the total display
+            document.getElementById('totalValue').innerText = total.toFixed(2);
+        }
+
+
+
+function validateNumber(input, errorId) {
+    // Remove leading zeros
+    input.value = input.value.replace(/^0+/, '');
+
+    // Replace non-numeric characters
+    input.value = input.value.replace(/[^0-9.]/g, '');
+
+    // Ensure there is at most one decimal point
+    input.value = input.value.replace(/(\..*)\./g, '$1');
+
+    // Ensure the value is a valid number
+    if (isNaN(parseFloat(input.value))) {
+        document.getElementById(errorId).innerText = 'Please enter a valid number.';
+    } else {
+        document.getElementById(errorId).innerText = '';
+    }
+}
+
+
+
+function checkQuantity(inputElement, errorId) {
+    var quantityInput = inputElement.value;
+    var productIdInput = inputElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('.productid_input');
+    var errorId = `error_quantity${errorId}`;
+
+    console.log('errorId value:', errorId);
+
+    $.ajax({
+        type: 'POST',
+        url: 'check_quantity.php',
+        data: { product_id: productIdInput.value, quantity: quantityInput },
+        success: function(response) {
+            console.log("Success function called");
+            console.log("Response from php backend", response);
+            console.log('errorId value: ', errorId);
+            document.getElementById(errorId).innerText  = response;
+            if (response.trim() === '') {
+                // If no error, hide the error element
+                document.getElementById(errorId).style.display = 'none';
+                console.log("Success function called");
+            } else {
+                // If there is an error, show the error element
+                document.getElementById(errorId).style.display = 'block';
+            }
+
+            // rest of your code...
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error in AJAX request:", error);
+        }
+    });
+}
+
+
+
+</script>
  
  <script>
         function updateDropdown(input) {
@@ -357,9 +483,7 @@ if($position=='admin') {
                         input.value = suggestion.med_name; // Set the input value
                         row.cells[4].getElementsByTagName("input")[0].value = suggestion.product_id;
                         row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
-                        row.cells[2].getElementsByTagName("input")[0].value = suggestion.price;
                         row.cells[6].getElementsByTagName("input")[0].value = suggestion.expiry_date;
-                        calculateTotal(row.cells[2].getElementsByTagName("input")[0]);
                         suggestionBox.innerHTML = ''; // Clear the suggestions
                     };
                     suggestionBox.appendChild(suggestionItem);
@@ -371,16 +495,37 @@ if($position=='admin') {
         function addRow() {
             const tableBody = document.getElementById('table-body');
             const newRow = document.createElement('tr');
+            const newRowNumber = tableBody.children.length + 1;
+            console.log(`Checking element with ID: error_quantity${newRowNumber}`);
+
             newRow.innerHTML = `
                 <td>
-                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" required>
                     <div class="med_name_suggestions"></div>
                 </td>
                 
-                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" onchange="calculateTotal(this)"></td>
-                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
-                <td><input type="number" name="total[]" class="total_input" placeholder="Amount" ></td>
-                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
+                <td>
+                    <input type="number" name="quantity[]" placeholder="Quantity" class="quantity_input" required 
+                        oninput="calRate(this); calAmount(this); calTot(this); checkQuantity(this, ${newRowNumber});  validateNumber(this, 'error_quantity${newRowNumber}')"
+                        value="0" step="any"  >
+                    <span id="error_quantity${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td>
+                    <input type="number" name="price[]" placeholder="Rate" class="price_input" required 
+                        oninput="calAmount(this); calQuantity(this);calTot(this); validateNumber(this, 'error_price${newRowNumber}')"
+                        value="0" id="rate" step="any"  >
+                    <span id="error_price${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td>
+                    <input type="number" name="amount[]" class="amount_input" placeholder="Amount" required 
+                        oninput="calRate(this); calQuantity(this); calTot(this); validateNumber(this, 'error_amount${newRowNumber}')"
+                        value="0" id="amount" step="any"  >
+                    <span id="error_amount${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             `;
@@ -398,3 +543,6 @@ if($position=='admin') {
 <?php include('footer.php');?>
 </html>
 
+
+
+<!-- example of full mysql pdo source codes  of  document.getQueryselector ('.productid_input') code for the current <tr> element input element in a column <td> js and asign retrived mysql pdo table column value as its value  asumming <input name=" productid[]"  class="productid_input"> is dyanmically generated arrays that is hidden among rows of table tags containg <input name="med_name[]" onlick="updatedropdown(this") > arrays -->

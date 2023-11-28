@@ -49,6 +49,10 @@ select option {
     width: 400px;
 }
 
+.error {
+    color: red;
+}
+
 </style>
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -232,7 +236,7 @@ if($position=='admin') {
             </div>
             <ul class="breadcrumb">
             <a href="dashboard.php"><li>Dashboard</li></a> /
-            <li class="active">Whole Sale Return</li>
+            <li class="active">Whole Sale return</li>
             </ul>
 <div id="maintable">
 <div style="margin-top: -19px; margin-bottom: 21px;">
@@ -257,15 +261,21 @@ if($position=='admin') {
             <tr>
                 
                 <td>
-                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" required>
                     <div class="med_name_suggestions"></div>
                 </td>
                 
-                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" ></td>
-                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
-                <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  onchange="calculateRate(this);"></td>
+                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" required oninput="calRate(this); calAmount(this); calTot(this);checkQuantity(this, '1'); validateNumber(this, 'error_quantity1')" value="0" step="any"   >
+                <span id="error_quantity1" class="error"></span>
+                </td>
+                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" required  oninput="calAmount(this); calQuantity(this); calTot(this);validateNumber(this, 'error_price1')"  value="0" id="rate" step="any"  >
+                <span id="error_price1" class="error"></span>
+                </td>
+                <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  oninput="calRate(this); calQuantity(this); calTot(this);validateNumber(this, 'error_amount1')" required value="0" id="amount" step="any"  >
+                <span id="error_amount1" class="error"></span>
+                </td>
                
-                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
+                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             </tr>
@@ -278,7 +288,7 @@ if($position=='admin') {
 
 
          <div id="totalDisplay" style="margin:10px">
-            Total: <span id="totalAmount">0</span>
+             <td colspan="4">Total: <span id="totalValue">0.00</span></td>
           </div>
         <br><br>
         <input type="hidden" name="invoice" value="<?php echo $finalcode; ?>" />
@@ -295,9 +305,9 @@ if($position=='admin') {
         <?php
         }
         ?>
-        </select></td><td><input type="date" name="date" placeholder="Date" /></td>
+        </select></td><td><input type="date" name="date" placeholder="Date" required/></td>
         <td>
-        <select name="pay_type"  >
+        <select name="pay_type"  required>
            <option value="cash">Cash</option>
            <option value="credit">Credit</option>
         </select>
@@ -307,7 +317,143 @@ if($position=='admin') {
     </form>
 
 
+<script type="text/javascript">
+    function calRate(element) {
+    
+    var row = element.closest("tr");
+    var amount = parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+    var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+    
 
+    // Add the value to the array
+   // amounts.push(amount);
+
+    if (!isNaN(quantity) && !isNaN(amount)) {
+
+        if(amount > 0 && quantity >= 1) {
+        var rate = (amount/quantity).toFixed(2);
+        row.cells[2].getElementsByTagName("input")[0].value = rate;
+        }
+
+
+    }
+
+   
+
+
+    // Set the total in the corresponding cell
+    //element.parentNode.parentNode.cells[4].getElementsByTagName("input")[0].value = total.toFixed(2);
+
+    // Update the total in the HTML
+    calTot();
+}
+
+function calQuantity(element) {
+    var row = element.closest("tr");
+    var amount =  parseFloat(row.cells[3].getElementsByTagName("input")[0].value);
+    var rate =  parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
+    if(amount > 0 && rate > 0 ) {
+        var quantity = amount / rate;
+        // Set the Quantity  in the corresponding cell
+        row.cells[1].getElementsByTagName("input")[0].value = quantity.toFixed(2);
+    }
+
+    // Update the total in the HTML
+    calTot();
+}
+
+function calAmount(element) {
+    var row = element.closest("tr");
+    var quantity = parseFloat(row.cells[1].getElementsByTagName("input")[0].value);
+    var rate =  parseFloat(row.cells[2].getElementsByTagName("input")[0].value);
+
+    if(quantity >= 1 && rate > 0 ) {
+    var amount = quantity * rate;
+    // Set the amount in the corresponding cell
+    row.cells[3].getElementsByTagName("input")[0].value = amount.toFixed(2);
+    }
+
+    
+    // Update the total in the HTML
+    calTot();
+}
+
+function calTot() {
+            // Get all input fields with name 'amount[]'
+            var amountInputs = document.getElementsByName('amount[]');
+
+            // Initialize total variable
+            var total = 0;
+
+            // Iterate through each input field and update the total
+            for (var i = 0; i < amountInputs.length; i++) {
+                // Parse the value as a float and add it to the total
+                total += parseFloat(amountInputs[i].value) || 0;
+            }
+
+            // Update the total display
+            document.getElementById('totalValue').innerText = total.toFixed(2);
+        }
+
+
+
+function validateNumber(input, errorId) {
+    // Remove leading zeros
+    input.value = input.value.replace(/^0+/, '');
+
+    // Replace non-numeric characters
+    input.value = input.value.replace(/[^0-9.]/g, '');
+
+    // Ensure there is at most one decimal point
+    input.value = input.value.replace(/(\..*)\./g, '$1');
+
+    // Ensure the value is a valid number
+    if (isNaN(parseFloat(input.value))) {
+        document.getElementById(errorId).innerText = 'Please enter a valid number.';
+    } else {
+        document.getElementById(errorId).innerText = '';
+    }
+}
+
+
+
+function checkQuantity(inputElement, errorId) {
+    var quantityInput = inputElement.value;
+    var productIdInput = inputElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('.productid_input');
+    var errorId = `error_quantity${errorId}`;
+
+    console.log('errorId value:', errorId);
+
+    $.ajax({
+        type: 'POST',
+        url: 'check_quantity.php',
+        data: { product_id: productIdInput.value, quantity: quantityInput },
+        success: function(response) {
+            console.log("Success function called");
+            console.log("Response from php backend", response);
+            console.log('errorId value: ', errorId);
+            document.getElementById(errorId).innerText  = response;
+            if (response.trim() === '') {
+                // If no error, hide the error element
+                document.getElementById(errorId).style.display = 'none';
+                console.log("Success function called");
+            } else {
+                // If there is an error, show the error element
+                document.getElementById(errorId).style.display = 'block';
+            }
+
+            // rest of your code...
+
+        },
+        error: function(xhr, status, error) {
+            console.error("Error in AJAX request:", error);
+        }
+    });
+}
+
+
+
+</script>
  
  <script>
         function updateDropdown(input) {
@@ -316,7 +462,7 @@ if($position=='admin') {
             var row = input.closest("tr");
 
             // Send the user input to the server to fetch suggestions
-            fetch('fetch_medicine_suggestions.php', {
+            fetch('fetch_wmedicine_suggestions.php', {
                 method: 'POST',
                 body: JSON.stringify({ userInput: userInput }),
                 headers: {
@@ -349,16 +495,37 @@ if($position=='admin') {
         function addRow() {
             const tableBody = document.getElementById('table-body');
             const newRow = document.createElement('tr');
+            const newRowNumber = tableBody.children.length + 1;
+            console.log(`Checking element with ID: error_quantity${newRowNumber}`);
+
             newRow.innerHTML = `
                 <td>
-                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)">
+                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" required>
                     <div class="med_name_suggestions"></div>
                 </td>
                 
-                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" ></td>
-                <td><input type="number" name="price[]" placeholder="Rate" class="price_input" readonly></td>
-                <td><input type="number" name="amount[]" class="amount_input" placeholder="Amount"  onchange="calculateRate(this);"></td>
-                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input"></td>
+                <td>
+                    <input type="number" name="quantity[]" placeholder="Quantity" class="quantity_input" required 
+                        oninput="calRate(this); calAmount(this); calTot(this); checkQuantity(this, ${newRowNumber});  validateNumber(this, 'error_quantity${newRowNumber}')"
+                        value="0" step="any"  >
+                    <span id="error_quantity${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td>
+                    <input type="number" name="price[]" placeholder="Rate" class="price_input" required 
+                        oninput="calAmount(this); calQuantity(this);calTot(this); validateNumber(this, 'error_price${newRowNumber}')"
+                        value="0" id="rate" step="any"  >
+                    <span id="error_price${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td>
+                    <input type="number" name="amount[]" class="amount_input" placeholder="Amount" required 
+                        oninput="calRate(this); calQuantity(this); calTot(this); validateNumber(this, 'error_amount${newRowNumber}')"
+                        value="0" id="amount" step="any"  >
+                    <span id="error_amount${newRowNumber}" class="error"></span>
+                </td>
+                
+                <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             `;

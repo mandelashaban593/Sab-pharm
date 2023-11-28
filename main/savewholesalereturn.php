@@ -303,7 +303,7 @@ try {
 
 
 
-header("location: wholesalesreturnpreview.php?invoice=$invoice");
+header("location: wsaleretprint.php?invoice=$invoice");
 exit();
 
 

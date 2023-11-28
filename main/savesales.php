@@ -12,7 +12,7 @@ if(isset($_POST['date'])) $date = date($_POST['date']);
 if(isset($_POST['pay_type'])) $ptype= $_POST['pay_type'];
 if(isset($_POST['quantity'])) $quantity= $_POST['quantity'];
 if(isset($_POST['price'])) $price = $_POST['price'];
-if(isset($_POST['total'])) $total = $_POST['total'];
+if(isset($_POST['total'])) $total = $_POST['amount'];
 if(isset($_POST['customer_name'])) $suplier_id = $_POST['customer_name'];
 if(isset($_POST['productid'])) $productid = $_POST['productid'];
 if(isset($_POST['batch_no'])) $batch_no=  $_POST['batch_no']; 
@@ -137,7 +137,7 @@ foreach ($productid as $key => $pid) {
 require_once('partial_rcashflow.php');
 
  
-header("location: preview.php?invoice=$invoice");
+header("location: retailsaleprint.php?invoice=$invoice");
 exit();
 
 

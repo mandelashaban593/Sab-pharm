@@ -36,11 +36,11 @@ foreach ($productid as $key => $pid) {
         $expirydate = $expiry_date[$key];  // Use a different variable for product type
 
 
-       echo "Product 2: $prodid<br>";
+  /*     echo "Product 2: $prodid<br>";
        echo "Quantity 2: $qty<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
-       echo "Batch No: $batchno<br><br><br>";
+       echo "Batch No: $batchno<br><br><br>";*/
 
        $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
     $row=mysqli_fetch_array($query);
@@ -63,10 +63,7 @@ foreach ($productid as $key => $pid) {
     $profit2 = (int)$pri - (int)$o_price2;
     $qtyleft=(int)$qty_left2 - (int)$qty;
     //Check if product batch number exists
-    $query = mysqli_query($con, "SELECT * FROM products WHERE batch_no= '$batchno'") or die(mysqli_error($con));
-    $row_batch=mysqli_fetch_array($query);
-    if($row_batch){
-        echo "Update worked";
+
 
   try {
     // Create a PDO database connection
@@ -110,26 +107,10 @@ foreach ($productid as $key => $pid) {
 }
 
 
-
-    }
-
-
-   if($ptype=='cash') {
-        echo "OOOK CASH";
-    $sql = "INSERT INTO wsales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
-    $q = mysqli_query($con, $sql) or die(mysqli_error($con));
-    }
-    
-    if($ptype=='credit') {
-        echo "OOOK CASH";
-    $sql = "INSERT INTO wsales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
-    $q = mysqli_query($con, $sql) or die(mysqli_error($con));
-    }
+$sql = "INSERT INTO wsales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
+$q = mysqli_query($con, $sql) or die(mysqli_error($con));
     
     
-
-    
-
 
  }
 
@@ -138,7 +119,7 @@ foreach ($productid as $key => $pid) {
 require_once('partial_wscashflow.php');
 
 
-header("location: wholesalespreview.php?invoice=$invoice");
+header("location: wsaleprint.php?invoice=$invoice");
 exit();
 
 

@@ -117,7 +117,7 @@ window.onload=startclock;
 			</div>
 			<ul class="breadcrumb">
 			<a href="dashboard.php"><li>Dashboard</li></a> /
-			<li class="active">Customer's Ledger</li>
+			<li class="active">Profit and Loss</li>
 			</ul>
 <div id="maintable">
 <div style="margin-top: -19px; margin-bottom: 21px;">

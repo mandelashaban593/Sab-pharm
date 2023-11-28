@@ -323,7 +323,7 @@ try {
 
 
 
-header("location: purchasepreview.php?invoice=$invoice");
+header("location: purchaseprint.php?invoice=$invoice");
 exit();
 
 

@@ -32,7 +32,7 @@ foreach ($productid as $key => $pid) {
        $prodid = $productid[$key];
        $qtytot = $quantity[$key]; // Use a different variable for quantity
        $pri = $price[$key];    // Use a different variable for price
-        $amt = $total[$key];  // Use a different variable for product type
+        $amt = $amount[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
         $expirydate = $expiry_date[$key];  // Use a different variable for product type
 
@@ -300,7 +300,7 @@ try {
 
 
 
-header("location: retcreditnopreview.php?invoice=$invoice");
+header("location: retailsalereturnprint.php?invoice=$invoice");
 exit();
 
 

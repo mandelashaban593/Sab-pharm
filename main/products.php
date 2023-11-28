@@ -3,6 +3,7 @@ ob_start();
 /* Database config */
 error_reporting(E_ALL);
 ini_set('display_errors', 1); 
+require '../conn2.php';
 ?>
 <html>
 <head>
@@ -193,6 +194,8 @@ Total Number of Products:  <font color="green" style="font:bold 22px 'Aleo';">[<
 
 <input type="text" style="padding:15px;" name="filter" value="" id="filter" placeholder="Search Product..." autocomplete="off" />
 <a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Add Item</button></a><br><br><br/>
+<a rel="facebx" href="category.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Category</button></a><br><br><br/>
+<a rel="facbox" href="unit.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Unit</button></a><br><br><br/>
 <a rel="facebox" href="uploadproducts.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Upload products</button></a><br><br><br/>
 <a  href="exportproducts.php" style="float:right;" class="btn btn-info"><i class="icon-print icon-large"></i> Export Products</a>
 

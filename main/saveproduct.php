@@ -35,13 +35,12 @@ $qty = empty($qty) ? 0 : $qty;
 
 $batch_no = str_replace(' ', '', "$batch_no");
 
-$q = mysqli_query($con, "SELECT * FROM products WHERE batch_no ='$batch_no' ") or die(mysqli_error($con));
-$rowcount_prod=mysqli_num_rows($q);
 
 
-$result = $db->prepare("SELECT * FROM products WHERE batch_no= :batch_no");
+
+$result = $db->prepare("SELECT * FROM products WHERE med_name= :med_name");
 //$result->bindParam(':batch_no', $batch_no);
-$result->bindParam(':batch_no', $batch_no, PDO::PARAM_STR);
+$result->bindParam(':med_name', $med_name, PDO::PARAM_STR);
 $result->execute();
 $rowCount = $result->rowCount(); // Get the number of rows affected
 

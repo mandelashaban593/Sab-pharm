@@ -2,7 +2,7 @@
 session_start();
 require '../conn2.php';
 //Connect to mysql server and selecting db
-$status = "Approved";
+$status = "Active";
 $med_name="";
 $quantity=0;
 

@@ -3,7 +3,7 @@ include('../conn2.php');
 
 ?>
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
-<form action="creditpayment.php" method="post">
+<form action="selectcreditpay.php" method="post">
 <center><h4><i class="icon-plus-sign icon-large"></i> Choose Supplier</h4></center>
 <hr>
 <div style="text-align:left;">
@@ -26,3 +26,5 @@ include('../conn2.php');
 </div>
 </div>
 </form>
+
+

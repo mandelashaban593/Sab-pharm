@@ -228,10 +228,15 @@ if($position=="admin"){?><!--
 <a rel="facebox"  href="saletype.php"><i class="icon-shopping-cart icon-2x"></i><br> Sales</a>   
 <a rel="facebox"  href="returntype.php"><i class="icon-shopping-cart icon-2x"></i><br> Credit Note</a> 
 <a href="ordermedicines.php"><i class="icon-list-alt icon-2x"></i><br> Orders</a>
-<a href="products.php"><i class="icon-list-alt icon-2x"></i><br> Products</a>
-<a href="medorders2.php"><i class="icon-list-alt icon-2x"></i><br> Purchases</a> 
-<a rel="facebox" href="selectpaysupplier.php"><i class="icon-list-alt icon-2x"></i><br>Payment</a> 
+<a  rel="facebox"  href="selproducts.php"><i class="icon-list-alt icon-2x"></i><br> Products</a>
+<a rel="facebox"   href="selpurchases.php"><i class="icon-list-alt icon-2x"></i><br> Purchases</a> 
+<a rel="facebox" href="selectcreditpay.php"><i class="icon-list-alt icon-2x"></i><br>Payment</a> 
 <a rel="facebox" href="selreceiptcust.php"><i class="icon-list-alt icon-2x"></i><br>Receipt</a> 
+<a rel="facebox" href="selrevertype.php"><i class="icon-list-alt icon-2x"></i><br>Reversals</a> 
+<a rel="facebox" href="selreverlisttype.php"><i class="icon-list-alt icon-2x"></i><br>Reversal List</a> 
+
+
+
 <a href="salesrecord.php"><i class="icon-list-alt icon-2x"></i><br> Sales</a> 
 <a href="employee.php"><i class="icon-list-alt icon-2x"></i><br> Employee</a> 
 <a href="payroll.php"><i class="icon-list-alt icon-2x"></i><br> Payroll</a> 
@@ -274,12 +279,12 @@ if($position=="admin"){?>
 <a href="supliers_ledger.php"><i class="icon-group icon-2x"></i><br> Purchase Ledger </a>    
 <a href="customers_ledger.php"><i class="icon-group icon-2x"></i><br> Sales  Ledger </a>  
 <a href="balance_sheet.php"><i class="icon-group icon-2x"></i><br> Balance sheet </a>  
-<a href="profit_loss.php"><i class="icon-group icon-2x"></i><br> Profit and Loss Account </a>  
+<a rel="facebox"  href="selprofitloss.php"><i class="icon-list-alt icon-2x"></i><br> Profit and Loss Account </a>  
 <a rel="facebox"  href="sreporttype.php"><i class="icon-bar-chart icon-2x"></i><br> Sales Report</a>
 
 
 
-<a href="purchasesreport.php?d1=0&d2=0"><i class="icon-bar-chart icon-2x"></i><br> Purchases Report</a>
+<a rel="facebox"  href="selpurchreport.php"><i class="icon-bar-chart icon-2x"></i><br> Purchases Report</a>
 <a href="users.php"><i class="icon-group icon-2x"></i><br> Users </a>  
 <a href="https://edoctorug.com/"><i  class="icon-group icon-2x"></i><br>  Edoctorug </a> 
 

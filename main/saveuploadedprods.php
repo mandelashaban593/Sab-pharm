@@ -29,7 +29,7 @@ try {
 
         try {
             // Update all products to "Obsolete"
-            $sql = "UPDATE products SET status = 'Obsolete'";
+            $sql = "UPDATE products SET status = 'Obsolete' and quantity=0";
             $db->exec($sql);
 
             echo "All products updated to 'Obsolete' successfully.";
