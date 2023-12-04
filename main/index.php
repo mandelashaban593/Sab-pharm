@@ -232,8 +232,8 @@ if($position=="admin"){?><!--
 <a rel="facebox"   href="selpurchases.php"><i class="icon-list-alt icon-2x"></i><br> Purchases</a> 
 <a rel="facebox" href="selectcreditpay.php"><i class="icon-list-alt icon-2x"></i><br>Payment</a> 
 <a rel="facebox" href="selreceiptcust.php"><i class="icon-list-alt icon-2x"></i><br>Receipt</a> 
-<a rel="facebox" href="selrevertype.php"><i class="icon-list-alt icon-2x"></i><br>Reversals</a> 
-<a rel="facebox" href="selreverlisttype.php"><i class="icon-list-alt icon-2x"></i><br>Reversal List</a> 
+<a rel="facebox" href="selrevertype.php"><i class="icon-list-alt icon-2x"></i><br>Purchase Reversal</a> 
+
 
 
 

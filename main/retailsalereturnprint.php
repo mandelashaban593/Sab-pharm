@@ -62,8 +62,22 @@ try {
             $pdf->AddPage();
             $pdf->SetFont('Arial', '', 12);
 
+           // Company Information (Top Left)
+            // Wholesale Invoice Message (Top Center)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Retail sale Return Invoice', 0, 1, 'C'); // Change this line accordingly
+            $pdf->SetFont('Arial', '', 12);
+
+             // Invoice Details (Top Middle)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
+
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
+
             // Company Information (Top Left)
-            $pdf->SetXY(10, 10);
+            $pdf->SetXY(10, 30); // Adjust the Y position based on your layout
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 10, 'Ojinga Pharmacy', 0, 1, 'L');
             $pdf->SetFont('Arial', '', 12);
@@ -71,7 +85,7 @@ try {
             $pdf->Cell(0, 5, 'Plot 95E Kutch Road West', 0, 1, 'L');
 
             // Customer Information (Top Left)
-            $pdf->SetXY(10, 45);
+            $pdf->SetXY(10, 65); // Adjust the Y position based on your layout
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 5, $customer_name, 0, 1, 'L');
             $pdf->SetFont('Arial', '', 12);
@@ -79,15 +93,10 @@ try {
             $pdf->Cell(0, 5, $customer_contact, 0, 1, 'L');
             $pdf->SetXY(10, $pdf->GetY() + 20);
 
-            // Invoice Details (Top Middle)
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
+           
 
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
-        
             // Mode of Payment, Cashier, and Date (Top Right)
-            $pdf->SetXY($pdf->GetPageWidth() - 90, 10);
+            $pdf->SetXY($pdf->GetPageWidth() - 90, 30); // Adjust the Y position based on your layout
             $pdf->Cell(0, 10, 'Payment: ' . $pay_type, 0, 1, 'R');
             $pdf->SetXY($pdf->GetPageWidth() - 90, $pdf->GetY() + 5);
             $pdf->Cell(0, 10, 'Cashier: ' . $cashier, 0, 1, 'R');
@@ -95,6 +104,7 @@ try {
             $pdf->Cell(0, 10, 'Date: ' . $date, 0, 1, 'R');
             $pdf->SetFont('Arial', '', 12);
             $pdf->Ln(16); // Vertical space between details
+
 
             // Table Header
             $pdf->SetFillColor(200, 220, 255);
