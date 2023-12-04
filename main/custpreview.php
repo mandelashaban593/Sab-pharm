@@ -211,7 +211,7 @@ if($position=="admin"){?>
 <div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
 	<div style="width: 100%; height: 190px;" >
 	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';">Customer Receipt</div>
+	<center><div style="font:bold 25px 'Aleo';margin-bottom: 20px;">Whole Sale Customer Receipt</div>
 Ojinga Pharmacy	<br>
 	Jinja,Uganda	<br>	<br>
 	</center>
@@ -372,26 +372,49 @@ Ojinga Pharmacy	<br>
 					?>
 					</strong></td>
 				</tr>
-			
-					<table style="border: 8px; ">
-	<table style="margin-left:700px;margin-top:100px;border:none; border-collapse: collapse;">
-				<tr class="Sign" style="margin-right:800px;margin-padding: 100px;">
-         
-            <td class="bottom-right" style=" border: 0px solid #000;
-            padding: 10px; /* Adjust padding as needed */
-            text-align: left; ">For Ojinja Pharmacy</td>
-        </tr>
-        	
-			</table>
-			<table style="margin-left:700px;margin-top:50px;border:none; border-collapse: collapse;">
-			
-        		<tr style="margin-top: 40px;border: 0px ;">
-        
-            <td class="bottom-right">Authorized  Signatory </td>
-        </tr>
-			</table>
-</table>
 
+
+<style type="text/css">
+	
+        .message-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .custom-message {
+            width: 40%;
+            padding: 20px;
+            box-sizing: border-box;
+            border: none;
+            margin: 0;
+            text-align: left;
+           
+        }
+
+        #right-message {
+            text-align: right;
+        }
+
+        .message-container p {
+            margin-top: 40px;
+        }
+    </style>
+
+<table style="width:900px"><tr><td>
+	<div class="message-container">
+        <div class="custom-message" id="left-message">
+            <p>For <?php echo 	$customer_name; ?> </p>
+            <p>Authorized  Signatory</p>
+        </div>
+
+        <div class="custom-message" id="right-message">
+            <p>For Ojinja Pharmacy</p>
+            <p>Authorized  Signatory</p>
+        </div>
+    </div>
+
+</td></tr></table>
 
 <table style="margin-right:700px;margin-bottom:800px;border:none; border-collapse: collapse;">
 	
