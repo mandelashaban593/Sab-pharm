@@ -107,7 +107,23 @@ window.onload=startclock;
 <body>
 <?php include('navfixed.php');?>
 	
-	
+<?php
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+$number = sprintf('%.2f', $number);
+}
+while (true) {
+$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+if ($replaced != $number) {
+$number = $replaced;
+} else {
+break;
+}
+}
+return $number;
+}
+
+?>                      
 	<div class="container-fluid">
       <div class="row-fluid">
 	
@@ -193,11 +209,11 @@ try {
                 while ($row = $stmt_revenue->fetch(PDO::FETCH_ASSOC)) {
                     $total_revenue += $row['amount'];
                 ?>
-                    <li><?php echo $row['name'] . ': UGX ' . $row['amount']; ?></li>
+                    <li><?php echo $row['name'] . ': UGX ' . formatMoney($row['amount']); ?></li>
                 <?php
                 }
                 ?>
-                <li>Total Revenue: UGX <?php echo $total_revenue; ?></li>
+                <li>Total Revenue: UGX <?php echo formatMoney($total_revenue); ?></li>
             </ul>
         </div>
         <div class="profit-loss-section">
@@ -208,11 +224,11 @@ try {
                 while ($row = $stmt_expenses->fetch(PDO::FETCH_ASSOC)) {
                     $total_expenses += $row['amount'];
                 ?>
-                    <li><?php echo $row['item'] . ': UGX ' . $row['amount']; ?></li>
+                    <li><?php echo $row['item'] . ': UGX ' . formatMoney($row['amount']); ?></li>
                 <?php
                 }
                 ?>
-                <li>Total Expenses: UGX <?php echo $total_expenses; ?></li>
+                <li>Total Expenses: UGX <?php echo formatMoney($total_expenses); ?></li>
             </ul>
         </div>
         <div class="profit-loss-section">
@@ -220,9 +236,9 @@ try {
             <?php
             $net_profit_loss = $total_revenue - $total_expenses;
             ?>
-            <p>Total Revenue: UGX <?php echo $total_revenue; ?></p>
-            <p>Total Expenses: UGX <?php echo $total_expenses; ?></p>
-            <p>Net Profit/Loss: UGX <?php echo $net_profit_loss; ?></p>
+            <p>Total Revenue: UGX <?php echo formatMoney($total_revenue); ?></p>
+            <p>Total Expenses: UGX <?php echo formatMoney($total_expenses); ?></p>
+            <p>Net Profit/Loss: UGX <?php echo formatMoney($net_profit_loss); ?></p>
         </div>
     </div>
 

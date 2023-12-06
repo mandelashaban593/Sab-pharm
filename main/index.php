@@ -205,7 +205,7 @@ if($position=="admin"){?>
 <ul class="breadcrumb">
 <li class="active">Dashboard</li>
 </ul>
-<font style=" font:bold 44px 'Aleo'; text-shadow:1px 1px 25px #000; color:#fff;"><center>Pharmancy  Manager</center></font>
+<font style=" font:bold 44px 'Aleo'; text-shadow:1px 1px 25px #000; color:#fff;"><center>Edoctorug</center></font>
 <div id="mainmain">
 
 
@@ -235,9 +235,6 @@ if($position=="admin"){?><!--
 <a rel="facebox" href="selrevertype.php"><i class="icon-list-alt icon-2x"></i><br>Purchase Reversal</a> 
 
 
-
-
-<a href="salesrecord.php"><i class="icon-list-alt icon-2x"></i><br> Sales</a> 
 <a href="employee.php"><i class="icon-list-alt icon-2x"></i><br> Employee</a> 
 <a href="payroll.php"><i class="icon-list-alt icon-2x"></i><br> Payroll</a> 
 <a rel="facebox"  href="incometaxtype.php"><i class="icon-list-alt icon-2x"></i><br> Income Tax</a> 
@@ -275,10 +272,10 @@ if($position=="admin"){?>
 <a href="assets.php"><i class="icon-group icon-2x"></i><br>  Assets </a>
 <a href="liab.php"><i class="icon-group icon-2x"></i><br> Liabilities </a>
 <a href="expenseslist.php"><i class="icon-group icon-2x"></i><br> Expenses </a> 
-<a href="general_ledger.php"><i class="icon-group icon-2x"></i> General Ledger</a>
-<a href="supliers_ledger.php"><i class="icon-group icon-2x"></i><br> Purchase Ledger </a>    
-<a href="customers_ledger.php"><i class="icon-group icon-2x"></i><br> Sales  Ledger </a>  
-<a href="balance_sheet.php"><i class="icon-group icon-2x"></i><br> Balance sheet </a>  
+<a rel="facebox"  href="selgenledgetype.php"><i class="icon-group icon-2x"></i> General Ledger</a>
+<a rel="facebox" href="selsupledgtype.php"><i class="icon-group icon-2x"></i><br> Purchase Ledger </a>    
+<a rel="facebox" href="selsalesledgtype.php"><i class="icon-group icon-2x"></i><br> Sales  Ledger </a>  
+<a rel="facebox" href="selbalsheettype.php"><i class="icon-group icon-2x"></i><br> Balance sheet </a>  
 <a rel="facebox"  href="selprofitloss.php"><i class="icon-list-alt icon-2x"></i><br> Profit and Loss Account </a>  
 <a rel="facebox"  href="sreporttype.php"><i class="icon-bar-chart icon-2x"></i><br> Sales Report</a>
 

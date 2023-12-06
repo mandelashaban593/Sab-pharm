@@ -59,7 +59,24 @@ POS
 <body>
 <?php include('navfixed.php');?>
 	
-	
+<?php
+	function formatMoney($number, $fractional=false) {
+	if ($fractional) {
+	$number = sprintf('%.2f', $number);
+	}
+	while (true) {
+	$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+	if ($replaced != $number) {
+	$number = $replaced;
+	} else {
+	break;
+	}
+	}
+	return $number;
+	}
+
+?>	
+
 	<div class="container-fluid">
       <div class="row-fluid">
 	
@@ -93,6 +110,7 @@ POS
 	<tbody>
 		
 			<?php
+				$Total = 0;
 				$result = $db->prepare("SELECT * FROM expenses ORDER BY expense_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
@@ -100,7 +118,7 @@ POS
 			<tr class="record">
 			<td><?php echo $row['item']; ?></td>
 			<td><?php echo $row['entry_date']; ?></td>
-			<td><?php echo $row['amount']; ?></td>
+			<td><?php echo formatMoney($row['amount']); if($row['amount']!=0)  $Total += $row['amount']; ?></td>
 			<td><?php echo $row['remarks']; ?></td>
 			<td><a  title="Click To Edit Expenses" rel="facebox" href="editexpenses.php?expense_id=<?php echo $row['expense_id']; ?>"><button class="btn btn-warning btn-mini"><i class="icon-edit"></i> Edit </button></a>
 
@@ -110,7 +128,15 @@ POS
 			<?php
 				}
 			?>
-		
+	
+		<tr>
+		<td colspan="2"><strong style="font-size: 12px; color: #222222;">   <?php
+		echo "Total:   ";
+		echo formatMoney($Total, true);
+		?>
+		</strong></td>
+		</tr>
+
 	</tbody>
 </table>
 </div>

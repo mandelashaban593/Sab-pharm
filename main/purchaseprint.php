@@ -51,7 +51,7 @@ $pdf = new FPDF();
 try {
     $totalAmount = 0;
     $startRecord = 0;
-    $recordCount = 0;
+    $recordCount = 1;
 
     for ($page = 1; $page <= $totalPages; $page++) {
         // Fetch and display records in a table
@@ -144,7 +144,7 @@ try {
                 $pdf->SetXY(10, $pdf->GetY() + 10);
 
                 // Add amount to totalAmount
-                $totalAmount += $record['amount'];
+                $totalAmount += $record['total'];
 
                 $recordCount++;
             }

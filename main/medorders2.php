@@ -265,7 +265,7 @@ if($position=='admin') {
                     <div class="med_name_suggestions"></div>
                 </td>
                 
-                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" required oninput="calRate(this); calAmount(this); calTot(this);checkQuantity(this, '1'); validateNumber(this, 'error_quantity1')" value="0" step="any"   >
+                <td><input type="number" name="quantity[]" placeholder="Quantity"  class="quantity_input" required oninput="calRate(this); calAmount(this); calTot(this);validateNumber(this, 'error_quantity1')" value="0" step="any"   >
                 <span id="error_quantity1" class="error"></span>
                 </td>
                 <td><input type="number" name="price[]" placeholder="Rate" class="price_input" required  oninput="calAmount(this); calQuantity(this); calTot(this);validateNumber(this, 'error_price1')"  value="0" id="rate" step="any"  >
@@ -506,7 +506,7 @@ function checkQuantity(inputElement, errorId) {
                 
                 <td>
                     <input type="number" name="quantity[]" placeholder="Quantity" class="quantity_input" required 
-                        oninput="calRate(this); calAmount(this); calTot(this); checkQuantity(this, ${newRowNumber});  validateNumber(this, 'error_quantity${newRowNumber}')"
+                        oninput="calRate(this); calAmount(this); calTot(this); validateNumber(this, 'error_quantity${newRowNumber}')"
                         value="0" step="any"  >
                     <span id="error_quantity${newRowNumber}" class="error"></span>
                 </td>

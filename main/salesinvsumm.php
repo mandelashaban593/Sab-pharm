@@ -105,6 +105,25 @@ $finalcode='RS-'.createRandomPassword();
 ?>
 <body>
 <?php include('navfixed.php');?>
+
+<?php
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
+}
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
+}
+return $number;
+}
+
+?>
+
 <div class="container-fluid">
 <div class="row-fluid">
 
@@ -140,6 +159,7 @@ if(isset($_GET['invoice_number'])) {
 <tr>
 <th> ID</th>
 <th> Date </th>
+<th> Customer </th>
 <th> Particulars </th>
 <th> Voucher Type </th>
 <th> Invoice number </th>
@@ -175,6 +195,12 @@ foreach ($stmt as $row) {
 <tr class="record" >
     <td><?php echo $row['transaction_id']; ?></td>
 <td><?php echo $row['date']; ?> </td>
+<td><?php   
+$customer_id = $row['customer_id'];
+$query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$customer_id'") or die(mysqli_error($con));
+    $row_cust=mysqli_fetch_array($query);
+    $customer_name=$row_cust['customer_name']; 
+echo $customer_name; ?> </td>
 <td><?php echo $row['pay_type']; ?> </td>
 <td><?php echo $row['vouch_type']; ?> </td>
 <td><?php echo $row['invoice_number']; ?> </td>
@@ -191,8 +217,8 @@ foreach ($stmt as $row) {
 <td> <?php echo $row['cashier']; ?> </td>
 <td> <?php echo $row['batch_no']; ?> </td>
 <td> <?php echo $row['quantity']; ?> </td>
-<td><?php echo  $row['amount']; ?> </td>
-<td><?php echo  $row['amount']*$row['quantity']; ?> </td>
+<td><?php echo  formatMoney($row['amount']); ?> </td>
+<td><?php echo  formatMoney($row['amount']*$row['quantity']); ?> </td>
 </tr>
 <?php
 }
@@ -207,21 +233,6 @@ foreach ($stmt as $row) {
 
 <tr>
 <td colspan="2"><strong style="font-size: 12px; color: #222222;">Total:     <?php
-function formatMoney($number, $fractional=false) {
-if ($fractional) {
-    $number = sprintf('%.2f', $number);
-}
-while (true) {
-    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-    if ($replaced != $number) {
-        $number = $replaced;
-    } else {
-        break;
-    }
-}
-return $number;
-}
-
 
 $sql = "SELECT sum(amount*quantity) as total FROM sales WHERE   invoice_number = :invoice_number";
 $stmt = $db->prepare($sql);
@@ -239,7 +250,6 @@ echo formatMoney($fgfg, true);
 
 </strong></td>
 </tr>
-
 </tbody>
 </table><br>
 </div>

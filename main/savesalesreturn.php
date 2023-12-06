@@ -18,6 +18,9 @@ if(isset($_POST['productid'])) $productid = $_POST['productid'];
 if(isset($_POST['batch_no'])) $batch_no=  $_POST['batch_no']; 
 if(isset($_POST['amount'])) $amount=  $_POST['amount']; 
 if(isset($_POST['expiry_date'])) $expiry_date=  $_POST['expiry_date'];
+if(isset($_POST['transaction_id'])) $transaction_id=  $_POST['transaction_id'];
+if(isset($_POST['return_invoice'])) $return_invoice=  $_POST['return_invoice'];
+
 $vouch_type = "Credit Note";
 
 $query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$suplier_id'") or die(mysqli_error($con));
@@ -25,16 +28,19 @@ $row=mysqli_fetch_array($query);
 $cname=$row['customer_name'];
 
 $total = 0;
- echo "invoice: $invoice<br>";
+echo "invoice: $return_invoice<br>";
 
-foreach ($productid as $key => $pid) {
+foreach ($transaction_id as $key => $pid) {
 
        $prodid = $productid[$key];
        $qtytot = $quantity[$key]; // Use a different variable for quantity
-       $pri = $price[$key];    // Use a different variable for price
+        $pri = $price[$key];    // Use a different variable for price
         $amt = $amount[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
         $expirydate = $expiry_date[$key];  // Use a different variable for product type
+        $invno = $invoice[$key];  // Use a different variable for product type
+        $transid = $transaction_id[$key];  // Use a different variable for product type
+  
 
 
        echo "Product 2: $prodid<br>";
@@ -43,14 +49,10 @@ foreach ($productid as $key => $pid) {
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
 
-
-  
-
+           // Construct and execute the SQL update query
 
 
-  $qty =(int)$qtytot;
-
-try {
+  try {
     // Create a PDO database connection
     // SQL query for update
     $sql = "UPDATE products  SET quantity = quantity + :quantity WHERE product_id= :product_id";
@@ -69,7 +71,7 @@ try {
    
   if ($rowCount > 0)
   {
-  	echo "Product successfully updated";
+    echo "Product successfully updated";
     ?>
     
 
@@ -77,7 +79,7 @@ try {
   }
   else
   {
-  	echo "Product update failed";
+    echo "Product update failed";
     ?>
    
 
@@ -93,44 +95,48 @@ try {
 
 
 
+$sql = "UPDATE sales  SET quantity = quantity - :quantity, total = total - :total WHERE transaction_id= :transaction_id";
 
-    $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
-    $row=mysqli_fetch_array($query);
-    $price2=$row['price'];
-    $category2=$row['category'];
-    $med_name3=$row['med_name'];
-    $profit3=$row['profit'];
-    $qty_left2=$row['quantity'];
-    $o_price2=$row['o_price'];
-    //Retrive other values for insertion into product table
-    $med_name=$row['med_name'];
-    $category=$row['category'];
-    $sell_price=$row['price'];
-    $supplier=$row['supplier'];
-    $gen_name=$row['gen_name'];
-    $onhand_qty=$row['onhand_qty'];
-    $qty_sold=$row['qty_sold'];
-    $del_no=$row['del_no'];
-    $status=$row['status'];
-    $profit2 = (int)$pri - (int)$o_price2;
-    $qtyleft=(int)$qty_left2 - (int)$qty;
-    //Check if product batch number exists
-    
+// Prepare the SQL statement
+$stmt = $db->prepare($sql);
+$qty = (int)$qtytot;
+// Bind parameters
+$stmt->bindParam(':quantity', $qty);
+$stmt->bindParam(':total', $amt);
+$stmt->bindParam(':transaction_id', $transid);
+// Execute the query
+$stmt->execute();
+
+$rowCount = $stmt->rowCount(); // Get the number of rows affected
 
 
-   if($ptype=='cash') {
-        echo "OOOK CASH";
-    $sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,vouch_type,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id', '$vouch_type', '$expirydate')";
-    $q = mysqli_query($con, $sql) or die(mysqli_error($con));
-    }
-    
-    if($ptype=='credit') {
-        echo "OOOK CASH";
-    $sql = "INSERT INTO sales  (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,vouch_type,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id', '$vouch_type', '$expirydate')";
-    $q = mysqli_query($con, $sql) or die(mysqli_error($con));
-    }
-    
-    
+$query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
+$row=mysqli_fetch_array($query);
+$price2=$row['price'];
+$category2=$row['category'];
+$med_name3=$row['med_name'];
+$profit3=$row['profit'];
+$qty_left2=$row['quantity'];
+$o_price2=$row['o_price'];
+//Retrive other values for insertion into product table
+$med_name=$row['med_name'];
+$category=$row['category'];
+$sell_price=$row['price'];
+$supplier=$row['supplier'];
+$gen_name=$row['gen_name'];
+$onhand_qty=$row['onhand_qty'];
+$qty_sold=$row['qty_sold'];
+$del_no=$row['del_no'];
+$status=$row['status'];
+$profit2 = (int)$pri - (int)$o_price2;
+$qtyleft=(int)$qty_left2 - (int)$qty;
+//Check if product batch number exists
+
+
+echo "OOOK CASH";
+$sql = "INSERT INTO sales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,vouch_type,expiry_date,med_name, return_invoice) VALUES ('$invno','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$vouch_type', '$expirydate', '$med_name3', '$return_invoice')";
+$q = mysqli_query($con, $sql) or die(mysqli_error($con));
+
 
 
 
@@ -166,7 +172,7 @@ if($ptype == "credit" ) {
 
     if ($stmt->rowCount() > 0) {
         // The customer_id exists; update the amount
-        $updateQuery = "UPDATE retcustomer_credit SET credit = credit + :credit,customer_name = :customer_name WHERE customer_id = :customer_id";
+        $updateQuery = "UPDATE retcustomer_credit SET credit = credit - :credit,customer_name = :customer_name WHERE customer_id = :customer_id";
         $stmt = $db->prepare($updateQuery);
         $stmt->bindParam(':customer_id', $suplier_id, PDO::PARAM_INT);
          $stmt->bindParam(':customer_name', $cname, PDO::PARAM_STR);
@@ -204,7 +210,7 @@ if($ptype == "cash" ) {
 
     if ($stmt->rowCount() > 0) {
         // The customer_id exists; update the amount
-        $updateQuery = "UPDATE retcustomer_credit SET cash = cash + :cash,customer_name = :customer_name WHERE customer_id = :customer_id";
+        $updateQuery = "UPDATE retcustomer_credit SET cash = cash - :cash,customer_name = :customer_name WHERE customer_id = :customer_id";
         $stmt = $db->prepare($updateQuery);
         $stmt->bindParam(':customer_id', $suplier_id, PDO::PARAM_INT);
          $stmt->bindParam(':customer_name', $cname, PDO::PARAM_STR);
@@ -300,7 +306,7 @@ try {
 
 
 
-header("location: retailsalereturnprint.php?invoice=$invoice");
+header("location: retailsalereturnprint.php?invoice=$return_invoice");
 exit();
 
 

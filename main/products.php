@@ -270,7 +270,7 @@ echo '<tr class="record">';
 $pprice=$row['price'];
 echo formatMoney($pprice, true);
 ?></td>
-<td><?php echo $row['stockval']; ?></td>
+<td><?php echo formatMoney($row['stockval']); ?></td>
 
 <td><a rel="facebox" title="Click to edit the product" href="editproduct.php?id=<?php echo $row['product_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
 <a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>

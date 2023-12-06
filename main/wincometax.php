@@ -105,6 +105,24 @@ window.onload=startclock;
 
 </head>
 <body>
+
+    <?php
+    function formatMoney($number, $fractional=false) {
+    if ($fractional) {
+    $number = sprintf('%.2f', $number);
+    }
+    while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+    $number = $replaced;
+    } else {
+    break;
+    }
+    }
+    return $number;
+    }
+
+    ?>
 <?php include('navfixed.php');?>
 	
 	
@@ -204,7 +222,7 @@ try {
                 <?php
                 }
                 ?>
-                <li>Total Sales: UGX <?php echo $total_revenue; ?></li>
+                <li>Total Sales: UGX <?php echo formatMoney($total_revenue); ?></li>
             </ul>
         </div>
 
@@ -222,7 +240,7 @@ try {
                 <?php
                 }
                 ?>
-                <li>Total Purchases: UGX <?php echo $total_purchases; ?></li>
+                <li>Total Purchases: UGX <?php echo formatMoney($total_purchases); ?></li>
             </ul>
         </div>
 
@@ -238,17 +256,17 @@ try {
                 <?php
                 }
                 ?>
-                <li>Total Expenses: UGX <?php echo $total_expenses; ?></li>
+                <li>Total Expenses: UGX <?php echo formatMoney($total_expenses); ?></li>
             </ul>
         </div>
         <div class="profit-loss-section" style="width:500px">
             <h2>Profit Before Tax</h2>
             <?php
             $net_profit = $total_revenue - $total_purchases - $total_expenses;
-            echo $net_profit;
+            echo formatMoney($net_profit);
             ?>
             <h2>Profit After Tax: UGX </h2>
-            <p><?php echo $net_profit*0.3; ?></p>
+            <p><?php echo formatMoney($net_profit*0.3); ?></p>
         
         </div>
     </div>

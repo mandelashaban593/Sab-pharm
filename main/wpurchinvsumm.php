@@ -105,6 +105,24 @@ $finalcode='RS-'.createRandomPassword();
 ?>
 <body>
 <?php include('navfixed.php');?>
+<?php
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
+}
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
+}
+return $number;
+}
+
+?>
+
 <div class="container-fluid">
 <div class="row-fluid">
 
@@ -140,6 +158,7 @@ if(isset($_GET['invoice_number'])) {
 <tr>
 <th> ID</th>
 <th> Date </th>
+<th> Supplier </th>
 <th> Particulars </th>
 <th> Invoice number </th>
 <th> Name </th>
@@ -174,6 +193,13 @@ foreach ($stmt as $row) {
 
     <td><?php echo $row['transaction_id']; ?></td>
 <td><?php echo $row['date']; ?> </td>
+<td><?php   
+$suplier_id = $row['suplier_id'];
+$query = mysqli_query($con, "SELECT * FROM supliers WHERE suplier_id='$suplier_id'") or die(mysqli_error($con));
+    $row_sup=mysqli_fetch_array($query);
+    $suplier_name=$row_sup['suplier_name']; 
+echo $suplier_name; ?> </td>
+
 <td><?php echo $row['pay_type']; ?> </td>
 <td><?php echo $row['invoice_number']; ?> </td>
 <td><?php $stmt = $db->prepare("SELECT med_name FROM wproducts WHERE product_id = ?");
@@ -189,8 +215,8 @@ foreach ($stmt as $row) {
 <td> <?php echo $row['cashier']; ?> </td>
 <td> <?php echo $row['batch_no']; ?> </td>
 <td> <?php echo $row['quantity']; ?> </td>
-<td><?php echo  $row['amount']; ?> </td>
-<td><?php echo  $row['total']; ?> </td>
+<td><?php echo  formatMoney($row['amount']); ?> </td>
+<td><?php echo  formatMoney($row['total']); ?> </td>
 
 
 </tr>
@@ -204,21 +230,6 @@ foreach ($stmt as $row) {
 
 <tr>
 <td colspan="2"><strong style="font-size: 12px; color: #222222;">Total:     <?php
-function formatMoney($number, $fractional=false) {
-if ($fractional) {
-    $number = sprintf('%.2f', $number);
-}
-while (true) {
-    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-    if ($replaced != $number) {
-        $number = $replaced;
-    } else {
-        break;
-    }
-}
-return $number;
-}
-
 
 $sql = "SELECT sum(total) FROM wpurchases_ret WHERE   invoice_number = :invoice_number";
 $stmt = $db->prepare($sql);

@@ -62,6 +62,31 @@ printWin.close();
 </script>
 </head>
 <?php
+
+
+function addCommaAfterThousand($amount) {
+    // Convert the number to a string
+    $amount_str = strval($amount);
+
+    // Split the string into whole and decimal parts (if any)
+    $parts = explode('.', $amount_str);
+
+    // Add a comma after every three digits in the whole part
+    $whole_part = number_format($parts[0], 0, '', ',');
+
+    // Reassemble the parts, including the decimal part (if any)
+    if (isset($parts[1])) {
+        $formatted_amount = $whole_part . '.' . $parts[1];
+    } else {
+        $formatted_amount = $whole_part;
+    }
+
+    return $formatted_amount;
+}
+
+
+
+
 function createRandomPassword() {
 $chars = "003232303232023232023456789";
 srand((double)microtime()*1000000);
@@ -270,7 +295,7 @@ echo '<tr class="record">';
 $pprice=$row['price'];
 echo formatMoney($pprice, true);
 ?></td>
-<td><?php echo $row['stockval']; ?></td>
+<td><?php echo  formatMoney($row['stockval']); ?></td>
 
 <td><a rel="facebox" title="Click to edit the product" href="editwproduct.php?id=<?php echo $row['product_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
 <a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click to Delete the product"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
