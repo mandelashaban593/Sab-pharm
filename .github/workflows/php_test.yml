@@ -20,6 +20,3 @@ jobs:
 
     - name: Run PHPUnit tests
       run: ./vendor/bin/phpunit
-
-    - name: Install PHP
-        run: sudo apt-get install php
