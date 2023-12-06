@@ -1,22 +1,24 @@
-name: PHP Test
+name: Run Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.1'
+      - name: Install dependencies
+        run: composer install
 
-    - name: Install dependencies
-      run: composer install
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+      
+      - name: Install PHP
+        run: sudo apt-get install php
 
-    - name: Run PHPUnit tests
-      run: phpunit
