@@ -13,12 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install Composer dependencies
         run: composer install
 
-      - name: Run tests
+      - name: Run PHPUnit tests
         run: ./vendor/bin/phpunit
-      
+
       - name: Install PHP
         run: sudo apt-get install php
 
