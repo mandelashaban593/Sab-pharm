@@ -208,9 +208,9 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <td><?php echo $row['date']; ?></td>
         <td><?php echo $row['name']; ?></td>
         <td><?php echo $row['quantity']; ?></td>
-        <td><?php echo $row['amount']; ?></td>
-        <td><?php echo $row['Debit']; ?></td>
-        <td><?php echo $row['Credit']; ?></td>
+        <td><?php echo formatMoney($row['amount']); ?></td>
+        <td><?php echo formatMoney($row['Debit']); ?></td>
+        <td><?php echo formatMoney($row['Credit']); ?></td>
     </tr>
 <?php } ?>
 

@@ -10,8 +10,8 @@ require_once('./fpdf/fpdf.php');
 // Function to fetch records from the database
 function getRecords($db, $invoiceNumber, $start, $perPage)
 {
-    $result = $db->prepare("SELECT * FROM sales WHERE invoice_number = :invoice_number LIMIT :start, :perPage");
-    $result->bindParam(':invoice_number', $invoiceNumber, PDO::PARAM_STR);
+    $result = $db->prepare("SELECT * FROM sales WHERE return_invoice = :return_invoice LIMIT :start, :perPage");
+    $result->bindParam(':return_invoice', $invoiceNumber, PDO::PARAM_STR);
     $result->bindParam(':start', $start, PDO::PARAM_INT);
     $result->bindParam(':perPage', $perPage, PDO::PARAM_INT);
     $result->execute();
@@ -22,7 +22,7 @@ $invoiceNumber = isset($_GET['invoice']) ? $_GET['invoice'] : '';
 //$invoiceNumber = "RS-3232322";
 $recordsPerPage = 8;
 
-$result = $db->prepare("SELECT * FROM sales WHERE invoice_number= :userid LIMIT 1");
+$result = $db->prepare("SELECT * FROM sales WHERE return_invoice= :userid LIMIT 1");
 $result->bindParam(':userid', $invoiceNumber);
 $result->execute();
 for ($i = 0; $rowa = $result->fetch(); $i++) {
@@ -39,7 +39,7 @@ for ($i = 0; $rowa = $result->fetch(); $i++) {
 }
 
 // Fetch total records count from the database
-$result = $db->prepare("SELECT COUNT(*) as total FROM sales WHERE invoice_number = :invoice");
+$result = $db->prepare("SELECT COUNT(*) as total FROM sales WHERE return_invoice = :invoice");
 $result->bindParam(':invoice', $invoiceNumber, PDO::PARAM_STR);
 $result->execute();
 $totalRecords = $result->fetch(PDO::FETCH_ASSOC)['total'];
@@ -154,7 +154,7 @@ try {
                 $pdf->SetXY(10, $pdf->GetY() + 10);
 
                 // Add amount to totalAmount
-                $totalAmount += $record['amount'];
+                $totalAmount += $record['total'];
 
                 $recordCount++;
             }

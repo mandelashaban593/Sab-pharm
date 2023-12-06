@@ -9,16 +9,10 @@ if(isset($_POST['rev_type'])) $rev_type= $_POST['rev_type'];
 echo "<br/>Reversal Type:";
 echo $rev_type;
 
-if($rev_type=='purchase') {
-
-header("location: purchaserever.php?rev_type=$rev_type");
-exit();
-}
-
 
 if($rev_type=='wholesale') {
 
-header("location: wcustpayment.php?customer_id=$customer_id&cust_type=$cust_type");
+header("location: wpurchreversal.php?rev_type=$rev_type");
 exit();
 }
 
@@ -26,7 +20,7 @@ exit();
 
 if($rev_type=='retail') {
 
-header("location: custpayment.php?customer_id=$customer_id&cust_type=$cust_type");
+header("location: retpurchreversal.php?rev_type=$rev_type");
 exit();
 }
 // query

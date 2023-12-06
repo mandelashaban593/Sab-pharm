@@ -59,7 +59,23 @@ POS
 <body>
 <?php include('navfixed.php');?>
 	
-	
+<?php
+	function formatMoney($number, $fractional=false) {
+	if ($fractional) {
+	$number = sprintf('%.2f', $number);
+	}
+	while (true) {
+	$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+	if ($replaced != $number) {
+	$number = $replaced;
+	} else {
+	break;
+	}
+	}
+	return $number;
+	}
+
+?>	
 	<div class="container-fluid">
       <div class="row-fluid">
 	
@@ -94,6 +110,7 @@ POS
 	<tbody>
 		
 			<?php
+			$Total = 0;
 				$result = $db->prepare("SELECT * FROM  assets ORDER BY transaction_id DESC");
 				$result->execute();
 				for($i=0; $row = $result->fetch(); $i++){
@@ -102,7 +119,7 @@ POS
 			<td><?php echo $row['name']; ?></td>
 			<td><?php echo $row['asset_cat']; ?></td>
 			<td><?php echo $row['entry_date']; ?></td>
-			<td><?php echo $row['amount']; ?></td>
+			<td><?php echo formatMoney($row['amount']);  if($row['amount']!=0)  $Total += $row['amount']; ?></td>
 			<td><?php echo $row['remarks']; ?></td>
 			<td><a  title="Click To Edit Assets" rel="facebox" href="editssets.php?transaction_id=<?php echo $row['transaction_id']; ?>"><button class="btn btn-warning btn-mini"><i class="icon-edit"></i> Edit </button></a> 
 				<a rel="facebox" href="view_assets_list.php?transaction_id=<?php echo $row['transaction_id']; ?>"> <button class="btn btn-primary btn-mini"><i class="icon-search"></i> View </button></a> 
@@ -112,6 +129,16 @@ POS
 				}
 			?>
 		
+		<tr>
+		<td colspan="2"><strong style="font-size: 12px; color: #222222;">   <?php
+		echo "Total:   ";
+		echo formatMoney($Total, true);
+
+		?>
+
+		</strong></td>
+		</tr>
+
 	</tbody>
 </table>
 </div>

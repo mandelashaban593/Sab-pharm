@@ -118,7 +118,7 @@ try {
                 $row2=mysqli_fetch_array($query);
                 
                 // Concatenate 'med_name', 'batch_no', and 'expiry_date' with appropriate indentation
-                $medicineInfo = $row2['med_name'] . "\n\t\tBatch: " . $record['batch_no'] . "\n\t\tExpiry: " . $record['expiry_date'];
+                $medicineInfo = $row2['med_name'] . "\n\t\tBatch: " . $record['batch_no'] . "\n\t\tExpiry: " . $record['exp_date'];
 
 
                 $pdf->SetFont('Arial', '', 14);
@@ -144,7 +144,7 @@ try {
                 $pdf->SetXY(10, $pdf->GetY() + 10);
 
                 // Add amount to totalAmount
-                $totalAmount += $record['amount'];
+                $totalAmount += $record['total'];
 
                 $recordCount++;
             }

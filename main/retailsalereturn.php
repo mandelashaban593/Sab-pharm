@@ -6,7 +6,7 @@ include('../conn2.php');
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Retail Sales Return</title>
+    <title>Whole sale</title>
   
 <!DOCTYPE html>
 <html>
@@ -169,7 +169,7 @@ select option {
     }
     return $pass;
     }
-    $finalcode='RS-'.createRandomPassword();
+    $finalcode='RT-'.createRandomPassword();
 
     ?>
 
@@ -236,7 +236,7 @@ if($position=='admin') {
             </div>
             <ul class="breadcrumb">
             <a href="dashboard.php"><li>Dashboard</li></a> /
-            <li class="active">Retail Sales Return</li>
+            <li class="active">Retail Sale return</li>
             </ul>
 <div id="maintable">
 <div style="margin-top: -19px; margin-bottom: 21px;">
@@ -250,18 +250,19 @@ if($position=='admin') {
 
         <table id="table-body" border="1"  style="width:150px">
             <tr>
-                <th>Medicine</th>
+                <th>Item</th>
                 <th>Quantity</th>
                 <th>Rate</th>
                 <th>Amount</th>
                 <th></th>
                 <th>Batch No</th>
                 <th>Expiry Date</th>
+                <th>Invoice Number</th>
             </tr>
             <tr>
                 
                 <td>
-                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" required>
+                <input type="text" name="med_name[]" class="med_name_input" oninput="updateDropdown(this)" placeholder="Enter invoice Number" required>
                     <div class="med_name_suggestions"></div>
                 </td>
                 
@@ -278,6 +279,8 @@ if($position=='admin') {
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
+                <td><input type="text" name="invoice[]" placeholder="Invoice Number" class="invoice_input"></td>
+                <td><input type="hidden" name="transaction_id[]" placeholder="transaction id" class="transaction_id_input"></td>
             </tr>
         </table>
         <button type="button" onclick="addRow()">Add Row</button>
@@ -291,7 +294,7 @@ if($position=='admin') {
              <td colspan="4">Total: <span id="totalValue">0.00</span></td>
           </div>
         <br><br>
-        <input type="hidden" name="invoice" value="<?php echo $finalcode; ?>" />
+        <input type="hidden" name="return_invoice" value="<?php echo $finalcode; ?>" />
         <input type="hidden" name="cashier" value="<?php echo $_SESSION['SESS_LAST_NAME']; ?>" />
         <table><tr><td>
         <select name="customer_name" style="width:290px;" class="chzn-seect" required>
@@ -419,15 +422,15 @@ function validateNumber(input, errorId) {
 
 function checkQuantity(inputElement, errorId) {
     var quantityInput = inputElement.value;
-    var productIdInput = inputElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('.productid_input');
+    var transactionIdInput = inputElement.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('.transaction_id_input');
     var errorId = `error_quantity${errorId}`;
 
     console.log('errorId value:', errorId);
 
     $.ajax({
         type: 'POST',
-        url: 'check_quantity.php',
-        data: { product_id: productIdInput.value, quantity: quantityInput },
+        url: 'cncheck_quantity.php',
+        data: { transaction_id: transactionIdInput.value, quantity: quantityInput },
         success: function(response) {
             console.log("Success function called");
             console.log("Response from php backend", response);
@@ -462,7 +465,7 @@ function checkQuantity(inputElement, errorId) {
             var row = input.closest("tr");
 
             // Send the user input to the server to fetch suggestions
-            fetch('fetch_medicine_suggestions.php', {
+            fetch('fetch_cnitems_suggestions.php', {
                 method: 'POST',
                 body: JSON.stringify({ userInput: userInput }),
                 headers: {
@@ -476,14 +479,16 @@ function checkQuantity(inputElement, errorId) {
                     const suggestionItem = document.createElement('div');
                     suggestionItem.classList.add('suggestion-item');
                     console.log(suggestion.med_name)
-                    suggestionItem.innerText =  suggestion.med_name +  "Batch No: " + suggestion.batch_no + ", Quantity: " + suggestion.quantity; 
+                    suggestionItem.innerText =  suggestion.med_name +  "Batch No: " + suggestion.batch_no + ", Quantity: " + suggestion.quantity +  ", Invoice: " + suggestion.invoice_number; ; 
                     suggestionItem.onclick = function() {
                         console.log("Med Name:" + suggestion.med_name)
                         console.log('Batch No' + suggestion.batch_no)
                         input.value = suggestion.med_name; // Set the input value
-                        row.cells[4].getElementsByTagName("input")[0].value = suggestion.product_id;
+                        row.cells[4].getElementsByTagName("input")[0].value = suggestion.productid;
                         row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
                         row.cells[6].getElementsByTagName("input")[0].value = suggestion.expiry_date;
+                        row.cells[7].getElementsByTagName("input")[0].value = suggestion.invoice_number;
+                        row.cells[8].getElementsByTagName("input")[0].value = suggestion.transaction_id;
                         suggestionBox.innerHTML = ''; // Clear the suggestions
                     };
                     suggestionBox.appendChild(suggestionItem);
@@ -528,6 +533,8 @@ function checkQuantity(inputElement, errorId) {
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
                 <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
+                <td><input type="text" name="invoice[]" placeholder="Invoice Number" class="invoice_input"></td>
+                <td><input type="hidden" name="transaction_id[]" placeholder="transaction id" class="transaction_id_input"></td>
             `;
             tableBody.appendChild(newRow);
         }

@@ -64,10 +64,17 @@ try {
 
             // Company Information (Top Left)
             // Wholesale Invoice Message (Top Center)
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 70, 10);
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 10, 'Wholesale Invoice', 0, 1, 'C'); // Change this line accordingly
             $pdf->SetFont('Arial', '', 12);
+
+              // Invoice Details (Top Middle)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
+
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
 
             // Company Information (Top Left)
             $pdf->SetXY(10, 30); // Adjust the Y position based on your layout
@@ -84,14 +91,9 @@ try {
             $pdf->SetFont('Arial', '', 12);
             $pdf->Cell(0, 10, $address, 0, 1, 'L');
             $pdf->Cell(0, 5, $customer_contact, 0, 1, 'L');
-            $pdf->SetXY(10, $pdf->GetY() + 20);
+            $pdf->SetXY(10, $pdf->GetY() + 10);
 
-            // Invoice Details (Top Middle)
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
-
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
+          
 
             // Mode of Payment, Cashier, and Date (Top Right)
             $pdf->SetXY($pdf->GetPageWidth() - 90, 30); // Adjust the Y position based on your layout

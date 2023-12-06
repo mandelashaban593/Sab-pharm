@@ -42,7 +42,7 @@ foreach ($productid as $key => $pid) {
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";*/
 
-       $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
+       $query = mysqli_query($con, "SELECT * FROM wproducts WHERE product_id= '$prodid'") or die(mysqli_error($con));
     $row=mysqli_fetch_array($query);
     $price2=$row['price'];
     $category2=$row['category'];
@@ -68,7 +68,7 @@ foreach ($productid as $key => $pid) {
   try {
     // Create a PDO database connection
     // SQL query for update
-    $sql = "UPDATE products  SET quantity = :quantity WHERE product_id= :product_id";
+    $sql = "UPDATE wproducts  SET quantity = :quantity WHERE product_id= :product_id";
     
     // Prepare the SQL statement
     $stmt = $db->prepare($sql);
@@ -107,7 +107,7 @@ foreach ($productid as $key => $pid) {
 }
 
 
-$sql = "INSERT INTO wsales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate')";
+$sql = "INSERT INTO wsales (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,customer_id,expiry_date, med_name) VALUES ('$invoice','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$expirydate', '$med_name3')";
 $q = mysqli_query($con, $sql) or die(mysqli_error($con));
     
     

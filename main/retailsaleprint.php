@@ -153,7 +153,7 @@ try {
                 $pdf->SetXY(10, $pdf->GetY() + 10);
 
                 // Add amount to totalAmount
-                $totalAmount += $record['amount'];
+                $totalAmount += $record['total'];
 
                 $recordCount++;
             }
