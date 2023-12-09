@@ -116,7 +116,7 @@ try {
 
 
 
-header("location: custpreview.php?id=$lastInsertedId&customer_id=$customer_id");
+header("location: wcustpreview.php?id=$lastInsertedId&customer_id=$customer_id");
 exit();
 
 

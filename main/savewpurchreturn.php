@@ -41,13 +41,13 @@ foreach ($transaction_id as $key => $pid) {
         $invno = $invoice[$key];  // Use a different variable for product type
         $transid = $transaction_id[$key];  // Use a different variable for product type
 
-
+/*
        echo "Product 2: $prodid<br>";
        echo "Quantity 2: $qtytot<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
-
+*/
            // Construct and execute the SQL update query
 
 
@@ -130,8 +130,7 @@ $profit2 = (int)$pri - (int)$o_price2;
 $qtyleft=(int)$qty_left2 - (int)$qty;
 //Check if product batch number exists
 
-
-echo "OOOK CASH";
+//echo "OOOK CASH";
 $sql = "INSERT INTO wpurchases_ret (invoice_number,cashier,date,type,amount,profit,due_date,name, tme,productid,total,pay_type,quantity,batch_no,suplier_id,vouch_type,exp_date,med_name, return_invoice) VALUES ('$invno','$cashier','$date','$ptype','$pri','$profit2',CURDATE(),'$cname',CURTIME(), '$prodid', '$amt', '$ptype', '$qty', '$batchno', '$suplier_id','$vouch_type', '$expirydate', '$med_name3', '$return_invoice')";
 $q = mysqli_query($con, $sql) or die(mysqli_error($con));
 
@@ -140,10 +139,6 @@ $q = mysqli_query($con, $sql) or die(mysqli_error($con));
 
 
  }
-
-
-
-
 
 
   // Initialize the total amount
@@ -157,13 +152,11 @@ foreach ($_POST['amount'] as $amount) {
     }
 }
 
-
+/*
 echo "Total amount: " . $totalAmount;
 
-
-
 echo "<br/>suplier_id: " . $suplier_id;
-
+*/
 
 if($ptype == "credit" ) {
 
@@ -251,7 +244,6 @@ if($ptype == "cash" ) {
 
 
 
-
 if($ptype == "credit" ) {  //Start if statement
 
 try {
@@ -318,9 +310,6 @@ try {
 }
 
 } // End if statement
-
-
-
 
 
 

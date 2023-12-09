@@ -41,13 +41,12 @@ foreach ($transaction_id as $key => $pid) {
         $invno = $invoice[$key];  // Use a different variable for product type
         $transid = $transaction_id[$key];  // Use a different variable for product type
   
-
-
+/*
        echo "Product 2: $prodid<br>";
        echo "Quantity 2: $qtytot<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
-       echo "Batch No: $batchno<br><br><br>";
+       echo "Batch No: $batchno<br><br><br>";*/
 
            // Construct and execute the SQL update query
 

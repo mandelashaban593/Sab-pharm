@@ -277,7 +277,7 @@ if($position=='admin') {
                
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
-                <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
+                <td><input type="date" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             </tr>
         </table>
         <button type="button" onclick="addRow()">Add Row</button>
@@ -482,8 +482,8 @@ function checkQuantity(inputElement, errorId) {
                         console.log('Batch No' + suggestion.batch_no)
                         input.value = suggestion.med_name; // Set the input value
                         row.cells[4].getElementsByTagName("input")[0].value = suggestion.product_id;
-                        row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
-                        row.cells[6].getElementsByTagName("input")[0].value = suggestion.expiry_date;
+                       // row.cells[5].getElementsByTagName("input")[0].value = suggestion.batch_no;
+                       // row.cells[6].getElementsByTagName("input")[0].value = suggestion.expiry_date;
                         suggestionBox.innerHTML = ''; // Clear the suggestions
                     };
                     suggestionBox.appendChild(suggestionItem);
@@ -527,7 +527,7 @@ function checkQuantity(inputElement, errorId) {
                 
                 <td><input type="hidden" name="productid[]" placeholder="Quantity" class="productid_input" ></td>
                 <td><input type="text" name="batch_no[]" placeholder="batch no" class="batch_no_input"></td>
-                <td><input type="text" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
+                <td><input type="date" name="expiry_date[]" placeholder="Expiry date" class="expiry_date_input"></td>
             `;
             tableBody.appendChild(newRow);
         }

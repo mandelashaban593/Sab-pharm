@@ -100,6 +100,24 @@ function createRandomPassword() {
 	return $pass;
 }
 $finalcode='RS-'.createRandomPassword();
+
+
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
+}
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
+}
+return $number;
+}
+
+
 ?>
 <body>
 <?php include('navfixed.php');?>
@@ -136,7 +154,7 @@ $finalcode='RS-'.createRandomPassword();
 	$total=$rowa['total'];
 
 	if($total > 0){
-	echo $total;
+	echo formatMoney($total);
 
 	}
 
@@ -190,7 +208,7 @@ $finalcode='RS-'.createRandomPassword();
 				<tr class="record">
 			<td><?php echo $rowa['date']; ?></td>
 			<td><?php echo $rowa['suplier_name']; ?></td>
-			<td><?php echo $rowa['cash']; ?></td>
+			<td><?php echo formatMoney($rowa['cash']); ?></td>
 			<td><?php echo $rowa['pay_type']; ?></td>
 
 			</tr>

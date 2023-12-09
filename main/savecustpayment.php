@@ -113,7 +113,7 @@ try {
 
 
 
-header("location: wcustpreview.php?id=$lastInsertedId&customer_id=$customer_id");
+header("location: custpreview.php?id=$lastInsertedId&customer_id=$customer_id");
 exit();
 
 
