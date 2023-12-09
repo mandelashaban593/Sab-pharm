@@ -1,7 +1,7 @@
 <?php  
 $totalAmount = 0;
 // Iterate through the 'amount' array
-foreach($_POST['total'] as $amount) {
+foreach($_POST['amount'] as $amount) {
     // Ensure the value is numeric before adding it to the total
     if (is_numeric($amount)) {
         $totalAmount += floatval($amount);

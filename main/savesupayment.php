@@ -9,7 +9,7 @@ if(isset($_POST['date'])) $date = date($_POST['date']);
 if(isset($_POST['amount'])) $amount = $_POST['amount'];
 
 
-$q = mysqli_query($con, "SELECT * FROM supliers WHERE suplier_name ='$name' ") or die(mysqli_error($con));
+$q = mysqli_query($con, "SELECT * FROM supliers WHERE  suplier_id='$suplier_id' ") or die(mysqli_error($con));
 $rowcount_user=mysqli_num_rows($q);
 
 
@@ -27,13 +27,13 @@ if($rowcount_user == 1){
 }
 */
 $_SESSION['suplier_id'] = $suplier_id;
-echo "suplier_id: $suplier_id<br>";
+/*echo "suplier_id: $suplier_id<br>";
 echo "pay_type: $pay_type<br>";
 echo "date: $date<br>";
 echo "amount: $amount<br>";
 echo "Sup name: $suplier_name<br>";
 
-
+*/
 
  try {
     // Check if the customer_id exists in the database

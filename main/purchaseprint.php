@@ -2,6 +2,22 @@
 ob_start(); // Start output buffering
 require_once('auth.php');
 require '../conn2.php';
+
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
+}
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
+}
+return $number;
+}
+
 ?>
 <?php
 ob_end_clean(); // Clean (erase) the output buffer
@@ -20,7 +36,7 @@ function getRecords($db, $invoiceNumber, $start, $perPage)
 
 $invoiceNumber = isset($_GET['invoice']) ? $_GET['invoice'] : '';
 //$invoiceNumber = "RS-3232322";
-$recordsPerPage = 8;
+$recordsPerPage = 7;
 
 $result = $db->prepare("SELECT * FROM purchases_ret  WHERE invoice_number= :userid LIMIT 1");
 $result->bindParam(':userid', $invoiceNumber);
@@ -63,38 +79,49 @@ try {
             $pdf->SetFont('Arial', '', 12);
 
             // Company Information (Top Left)
-            $pdf->SetXY(10, 10);
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Ojinga Pharmacy', 0, 1, 'L');
-            $pdf->SetFont('Arial', '', 12);
-            $pdf->Cell(0, 10, 'P.o Box 16362 Kampala (U)', 0, 1, 'L');
-            $pdf->Cell(0, 5, 'Plot 95E Kutch Road West', 0, 1, 'L');
-
-            // Customer Information (Top Left)
-            $pdf->SetXY(10, 45);
-            $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 5, $suplier_name, 0, 1, 'L');
-            $pdf->SetFont('Arial', '', 12);
-            $pdf->Cell(0, 10, $address, 0, 1, 'L');
-            $pdf->Cell(0, 5, $suplier_contact, 0, 1, 'L');
-            $pdf->SetXY(10, $pdf->GetY() + 20);
-
-            // Invoice Details (Top Middle)
+            // Wholesale Invoice Message (Top Center)
             $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(0, 10, 'Purchase', 0, 1, 'C'); // Change this line accordingly
+             $pdf->Cell(0, 8,'(Retail)', 0, 1, 'C'); // Change this line accordingly
+            $pdf->SetFont('Arial', '', 12);
+
+             // Invoice Details (Top Middle)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
 
             $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
-        
+
+            // Company Information (Top Left)
+            $pdf->SetXY(10, 30); // Adjust the Y position based on your layout
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Ojinga Pharmacy', 0, 1, 'L');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(0, 10, 'P.o Box 16362 Kampala (U)', 0, 1, 'L');
+            $pdf->Cell(0, 5, 'Plot 95E Kutch Road West', 0, 1, 'L');
+
+            // Customer Information (Top Left)
+            $pdf->SetXY(10, 65); // Adjust the Y position based on your layout
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 5, $suplier_name, 0, 1, 'L');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(0, 10, $address, 0, 1, 'L');
+            $pdf->Cell(0, 5, $suplier_contact, 0, 1, 'L');
+            $pdf->SetXY(10, $pdf->GetY() + 20);
+
+           
+
             // Mode of Payment, Cashier, and Date (Top Right)
-            $pdf->SetXY($pdf->GetPageWidth() - 90, 10);
+            $pdf->SetXY($pdf->GetPageWidth() - 90, 30); // Adjust the Y position based on your layout
             $pdf->Cell(0, 10, 'Payment: ' . $pay_type, 0, 1, 'R');
             $pdf->SetXY($pdf->GetPageWidth() - 90, $pdf->GetY() + 5);
             $pdf->Cell(0, 10, 'Cashier: ' . $cashier, 0, 1, 'R');
             $pdf->SetXY($pdf->GetPageWidth() - 00, $pdf->GetY() + 5);
             $pdf->Cell(0, 10, 'Date: ' . $date, 0, 1, 'R');
-            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetFont('Arial', '', 10);
             $pdf->Ln(16); // Vertical space between details
+
 
             // Table Header
             $pdf->SetFillColor(200, 220, 255);
@@ -113,32 +140,30 @@ try {
             foreach ($records as $record) {
              
 
-                $productid =$record['productid'];
+                
+               $productid =$record['productid'];
                 $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity,expiry_date,sell_type FROM products WHERE product_id= '$productid' ") or die(mysqli_error($con));
                 $row2=mysqli_fetch_array($query);
                 
-                // Concatenate 'med_name', 'batch_no', and 'expiry_date' with appropriate indentation
-                $medicineInfo = $row2['med_name'] . "\n\t\tBatch: " . $record['batch_no'] . "\n\t\tExpiry: " . $record['expiry_date'];
+              
+            // Organized and indented Medicine information
+            $medicineInfo =  $row2['med_name'] . "\n    Batch: " . $record['batch_no'] . "\n    Expiry: " . $record['exp_date'];
 
-
-                $pdf->SetFont('Arial', '', 14);
-
-                // Use MultiCell for Medicine information
-                $pdf->Cell(10, 10, $recordCount, 0, 0, 'C');
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->MultiCell(58, 6.5, $medicineInfo, 0, 'C');
-
-                // Move to the next row
-                $pdf->SetXY($pdf->GetX() + 68, $pdf->GetY() - 18); // Adjust X and Y coordinates
+            // Use MultiCell for slanted Medicine information
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(10, 7, $recordCount, 0, 0, 'C');
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->MultiCell(57, 6.5, $medicineInfo, 0, 'L');
+            $pdf->SetXY($pdf->GetX() + 67, $pdf->GetY() - 10); // Adjust X and Y coordinates for the next line
 
                 // Other cells
-                $pdf->SetFont('Arial', 'B', 14);
-                $pdf->Cell(30, 10, $record['quantity'], 0, 0, 'C');
-                $pdf->SetFont('Arial', '', 14);
-                $pdf->Cell(30, 10, $record['amount'], 0, 0, 'C');
-                $pdf->Cell(30, 10, $row2['sell_type'], 0, 0, 'C');
-                $pdf->SetFont('Arial', 'B', 14);
-                $pdf->Cell(30, 10, $record['total'], 0, 1, 'C');
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(30, 1, $record['quantity'], 0, 0, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(30, 1, formatMoney($record['amount']), 0, 0, 'C');
+                $pdf->Cell(30, 1, $row2['sell_type'], 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(30, 1, formatMoney($record['total']), 0, 1, 'C');
 
                 // Move back to the next row
                 $pdf->SetXY(10, $pdf->GetY() + 10);
@@ -167,8 +192,8 @@ try {
             // Add total amount of records, Ojinga Pharmacy, and Authorized Signatory at the bottom right corner of the last page
             if ($page == $totalPages) {
                 $pdf->Ln(3); // Vertical space
-                $pdf->SetFont('Arial', 'B', 12);
-                $pdf->Cell(0, 7, 'Total Amount: ' . $totalAmount, 0, 1, 'R');
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(0, 7, 'Total Amount: ' . formatMoney($totalAmount), 0, 1, 'R');
 
                 // Ojinga Pharmacy and Authorized Signatory
                 $pdf->Ln(15); // Adjust spacing

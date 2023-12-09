@@ -1,453 +1,227 @@
-<!DOCTYPE html>
-<html>
-<head>
-<?php 
-require_once ('auth.php');
+<?php
+ob_start(); // Start output buffering
+require_once('auth.php');
 require '../conn2.php';
-?>
-<title>
-POS
-</title>
- <link href="css/bootstrap.css" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
-  
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-    <style type="text/css">
-    
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-    </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="src/facebox.css" media="screen" rel="stylesheet" type="text/css" />
-<script src="lib/jquery.js" type="text/javascript"></script>
-<script src="src/facebox.js" type="text/javascript"></script>
-<script language="javascript">
-function Clickheretoprint()
-{ 
-  var disp_setting="toolbar=yes,location=no,directories=yes,menubar=yes,"; 
-      disp_setting+="scrollbars=yes,width=800, height=400, left=100, top=25"; 
-  var content_vlue = document.getElementById("content").innerHTML; 
-  
-  var docprint=window.open("","",disp_setting); 
-   docprint.document.open(); 
-   docprint.document.write('</head><body onLoad="self.print()" style="width: 800px; font-size: 13px; font-family: arial;">');          
-   docprint.document.write(content_vlue); 
-   docprint.document.close(); 
-   docprint.focus(); 
+function formatMoney($number, $fractional=false) {
+if ($fractional) {
+    $number = sprintf('%.2f', $number);
 }
-</script>
-<?php
-$invoice=$_GET['invoice'];
-$result = $db->prepare("SELECT * FROM sales WHERE invoice_number= :userid");
-$result->bindParam(':userid', $invoice);
-$result->execute();
-for($i=0; $row = $result->fetch(); $i++){
-$cname=$row['name'];
-$invoice=$row['invoice_number'];
-$date=$row['date'];
-$due_date=$row['due_date'];
-$cashier=$row['cashier'];
-//$cash=$row['cash'];
-
-$pt=$row['type'];
-$am=$row['amount'];
-if($pt=='cash'){
-$due_date=$row['due_date'];
+while (true) {
+    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
+    if ($replaced != $number) {
+        $number = $replaced;
+    } else {
+        break;
+    }
 }
+return $number;
 }
 ?>
 <?php
-function createRandomPassword() {
-	$chars = "003232303232023232023456789";
-	srand((double)microtime()*1000000);
-	$i = 0;
-	$pass = '' ;
-	while ($i <= 7) {
-
-		$num = rand() % 33;
-
-		$tmp = substr($chars, $num, 1);
-
-		$pass = $pass . $tmp;
-
-		$i++;
-
-	}
-	return $pass;
-}
-$finalcode='RS-'.createRandomPassword();
-?>
+ob_end_clean(); // Clean (erase) the output buffer
+require_once('./fpdf/fpdf.php');
 
 
+$id= isset($_GET['id']) ? $_GET['id'] : '';
+//$invoiceNumber = "RS-3232322";
+$recordsPerPage = 7;
 
- <script language="javascript" type="text/javascript">
-/* Visit http://www.yaldex.com/ for full source code
-and get more free JavaScript, CSS and DHTML scripts! */
-<!-- Begin
-var timerID = null;
-var timerRunning = false;
-function stopclock (){
-if(timerRunning)
-clearTimeout(timerID);
-timerRunning = false;
-}
-function showtime () {
-var now = new Date();
-var hours = now.getHours();
-var minutes = now.getMinutes();
-var seconds = now.getSeconds()
-var timeValue = "" + ((hours >12) ? hours -12 :hours)
-if (timeValue == "0") timeValue = 12;
-timeValue += ((minutes < 10) ? ":0" : ":") + minutes
-timeValue += ((seconds < 10) ? ":0" : ":") + seconds
-timeValue += (hours >= 12) ? " P.M." : " A.M."
-document.clock.face.value = timeValue;
-timerID = setTimeout("showtime()",1000);
-timerRunning = true;
-}
-function startclock() {
-stopclock();
-showtime();
-}
-window.onload=startclock;
-// End -->
-</SCRIPT>
-<body>
-
-<?php include('navfixed.php');?>
-	
-	<div class="container-fluid">
-      <div class="row-fluid">
-	<div class="span2">
-          <div class="well sidebar-nav">
-     <ul class="nav nav-list">
-<li class="active"><a href="#"><i class="icon-dashboard icon-2x"></i> Dashboard </a></li> 
-
-
-<?php
-$position= $_SESSION['SESS_LAST_NAME'];
-if($position=="store"){?>
-
-<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-</li>
-
-<li><a href="search_asupplier.php"><i class="icon-group icon-2x"></i><br>  Suppliers </a>  	
-
-<li><a href="https://edoctorug.com/"><i  class="icon-group icon-2x"></i> Edoctorug </a>     
-</li>
-
-
-<?php } ?>
-
-
-
-<?php
-$position= $_SESSION['SESS_LAST_NAME'];
-if($position=="pharmacist"){?>
-<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
-
-
-<li><a href="ordermedicines.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-</li>
-<li><a href="select_customers.php"><i class="icon-group icon-2x"></i><br>  customers </a>  
-</li>
-
-<li><a href="https://edoctorug.com/"><i  class="iicon-group icon-2x"></i> Edoctorug </a>     
-</li>
-
-
-
-
-
-<?php } ?>
-
-
-
-<?php
-$position= $_SESSION['SESS_LAST_NAME'];
-if($position=="admin"){?>
-<li><a href="sales.php?pay_type=cash&invoice=<?php echo $finalcode ?>"><i class="icon-shopping-cart icon-2x"></i> Sales</a>  </li> 
-
-<li><a href="products.php"><i class="icon-list-alt icon-2"></i> Medicines</a>    
-</li>
-
-<li><a href="https://edoctorug.com/"><i  class="icon-list-alt icon-2"></i> Edoctorug </a>     
-</li>
-
-
-
-</li>	
-
-<?php } ?>	
-
-<?php
-$position= $_SESSION['SESS_LAST_NAME'];
-if($position=="admin"){?>
-
-
-
-<br><br><br><br><br><br>
-
-<?php }?>		
-<li>
-			 <div class="hero-unit-clock">
-		
-			<form name="clock">
-			<font color="white">Time: <br></font>&nbsp;<input style="width:150px;" type="submit" class="trans" name="face" value="">
-			</form>
-			  </div>
-			</li>
-				</ul>                               
-          </div><!--/.well -->
-        </div><!--/span-->
-		
-	<div class="span10">
-	<a href="sales.php?id=cash&invoice=<?php echo $finalcode ?>"><button class="btn btn-default"><i class="icon-arrow-left"></i> Back to Sales</button></a>
-
-<div class="content" id="content">
-<div style="margin: 0 auto; padding: 20px; width: 900px; font-weight: normal;">
-	<div style="width: 100%; height: 190px;" >
-	<div style="width: 900px; float: left;">
-	<center><div style="font:bold 25px 'Aleo';margin-bottom: 20px;">Whole Sale Customer Receipt</div>
-Ojinga Pharmacy	<br>
-	Jinja,Uganda	<br>	<br>
-	</center>
-	<div>
-	<?php
-	$resulta = $db->prepare("SELECT * FROM customer WHERE customer_name= :a");
-	$resulta->bindParam(':a', $cname);
-	$resulta->execute();
-	for($i=0; $rowa = $resulta->fetch(); $i++){
-	$address=$rowa['address'];
-	$contact=$rowa['contact'];
-	}
-	?>
-
-
-		<?php
-	if(isset($_GET['id'])) $id=$_GET['id'];
-	$result = $db->prepare("SELECT * FROM cust_payhist WHERE transaction_id	= :userid LIMIT 1");
-	$result->bindParam(':userid', $id);
-	$result->execute();
-	for($i=0; $rowa = $result->fetch(); $i++){
-	$customer_id = $rowa['customer_id'];
-	$date = $rowa['date'];	
-
-	$query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$customer_id'") or die(mysqli_error($con));
-	$row=mysqli_fetch_array($query);
-	$customer_name=$row['customer_name'];
-	$customer_contact=$row['customer_contact'];
-	$customer_address=$row['customer_address'];
-	
-	echo $customer_name; echo"<br>";
-
-	echo $customer_address; echo "<br>";
-
-	}
-	?>
-
-	</div>
-	</div>
-	<div style="width: 136px; float: left; height: 70px;">
-	<table cellpadding="3" cellspacing="0" style="font-family: arial; font-size: 12px;text-align:left;width : 100%;">
-
-		<tr>
-			<td>OR No. :</td>
-			<td><?php echo $invoice ?></td>
-		</tr>
-		<tr>
-			<td>Date :</td>
-			<td><?php echo $date ?></td>
-		</tr>
-	</table>
-
-	<table style="margin-left:850px;">
-		<tr><td><?php
-	if(isset($_GET['id'])) $id=$_GET['id'];
-	$result = $db->prepare("SELECT * FROM cust_payhist WHERE transaction_id= :userid LIMIT 1");
+	$result = $db->prepare("SELECT * FROM cust_retpayhist WHERE transaction_id= :userid LIMIT 1");
 	$result->bindParam(':userid', $id);
 	$result->execute();
 	for($i=0; $rowa = $result->fetch(); $i++){
 	$pay_type = $rowa['pay_type'];
-
-	echo $pay_type; echo"<br>";
-
-
-	}
-	?></td></tr></table>
-
-	</div>
-	<div class="clearfix"></div>
-	</div>
-	<div style="width: 100%; margin-top:80px;">
-	<table border="1" cellpadding="4" cellspacing="0" style="font-family: arial; font-size: 12px;	text-align:left;" width="100%">
-		<thead>
-			<tr>
-				<th width="90"> Date</th>
-				<th> Amount</th>
-			</tr>
-		</thead>
-		<tbody>
+	$date = $rowa['date'];
+/*
+	echo $pay_type; echo"<br>";*/
 
 
-				<?php
-					
-				  
-					$result = $db->prepare("SELECT * FROM  cust_payhist  WHERE transaction_id= :userid");
-					$result->bindParam(':userid', $id);
-					$result->execute();
-					for($i=0; $row = $result->fetch(); $i++){
-				?>
-				<tr class="record">
+}
+
+$result = $db->prepare("SELECT * FROM cust_retpayhist WHERE transaction_id	= :userid LIMIT 1");
+$result->bindParam(':userid', $id);
+$result->execute();
+for($i=0; $rowa = $result->fetch(); $i++){
+$customer_id = $rowa['customer_id'];
+$date = $rowa['date'];	
+
+$query = mysqli_query($con, "SELECT * FROM customer WHERE customer_id='$customer_id'") or die(mysqli_error($con));
+$row=mysqli_fetch_array($query);
+$customer_name=$row['customer_name'];
+$customer_contact=$row['contact'];
+$customer_address=$row['address'];
+/*
+echo $suplier_name; echo"<br>";
+
+echo $suplier_address; echo "<br>";*/
+
+}
+
 	
-				<td><?php echo $row['date']; ?></td>
-				<td><?php echo $row['cash']; ?></td>
-			
-			
-				</tr>
-				<?php
-					}
-				?>
-			
-				<tr>
-					<td colspan="5" style=" text-align:right;"><strong style="font-size: 12px;">Total: &nbsp;</strong></td>
-					<td colspan="2"><strong style="font-size: 12px;">
-					<?php
 
-					$resultas = $db->prepare("SELECT sum(cash) FROM cust_payhist WHERE transaction_id= :a");
-					$resultas->bindParam(':a', $id);
-					$resultas->execute();
-					for($i=0; $rowas = $resultas->fetch(); $i++){
-					$fgfg=$rowas['sum(cash)'];
-					echo formatMoney($fgfg, true);
-					}
-					?>
-					</strong></td>
-				</tr>
-				<?php if($pt=='cash'){
-				?>
-				<tr>
-					<td colspan="5"style=" text-align:right;"><strong style="font-size: 12px; color: #222222;">Cash Tendered:&nbsp;</strong></td>
-					<td colspan="2"><strong style="font-size: 12px; color: #222222;">
-					<?php
-					echo formatMoney($am, true);
-					?>
-					</strong></td>
-				</tr>
-				<?php
-				}
-				?>
-				<tr>
-					<td colspan="5" style=" text-align:right;"><strong style="font-size: 12px; color: #222222;">
-					<font style="font-size:20px;">
-					<?php
-					if($pt=='cash'){
-					echo 'Change:';
-					}
-					if($pt=='credit'){
-					echo 'Due Date:';
-					}
-					?>&nbsp;
-					</strong></td>
-					<td colspan="2"><strong style="font-size: 15px; color: #222222;">
-					<?php
-					function formatMoney($number, $fractional=false) {
-						if ($fractional) {
-							$number = sprintf('%.2f', $number);
-						}
-						while (true) {
-							$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-							if ($replaced != $number) {
-								$number = $replaced;
-							} else {
-								break;
-							}
-						}
-						return $number;
-					}
-				
-					?>
-					</strong></td>
-				</tr>
+// Fetch total records count from the database
+$result = $db->prepare("SELECT COUNT(*) as total FROM cust_retpayhist  WHERE transaction_id  = :transaction_id");
+$result->bindParam(':transaction_id', $id, PDO::PARAM_STR);
+$result->execute();
+$totalRecords = $result->fetch(PDO::FETCH_ASSOC)['total'];
+
+//$totalPages = ceil($totalRecords / $recordsPerPage);
+
+// Create PDF
+$pdf = new FPDF();
+try {
+    $totalAmount = 0;
+    $startRecord = 0;
+    $recordCount = 1;
+
+        $records = $db->prepare("SELECT * FROM cust_retpayhist  WHERE transaction_id = :transaction_id ");
+	    $records->bindParam(':transaction_id', $id, PDO::PARAM_STR);
+	    $records->execute();
 
 
-<style type="text/css">
-	
-        .message-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        if (!empty($records)) {
+            $pdf->AddPage();
+            $pdf->SetFont('Arial', '', 12);
 
-        .custom-message {
-            width: 40%;
-            padding: 20px;
-            box-sizing: border-box;
-            border: none;
-            margin: 0;
-            text-align: left;
+            // Company Information (Top Left)
+            // Wholesale Invoice Message (Top Center)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(0, 10, 'Receipt', 0, 1, 'C'); // Change this line accordingly
+             $pdf->Cell(0, 8,'(Retail)', 0, 1, 'C'); // Change this line accordingly
+            $pdf->SetFont('Arial', '', 12);
+
+             // Invoice Details (Top Middle)
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Transaction Id: ' . $id, 0, 1, 'C');
+
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 20, $pdf->GetY() + 10);
+
+            // Company Information (Top Left)
+            $pdf->SetXY(10, 30); // Adjust the Y position based on your layout
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 10, 'Ojinga Pharmacy', 0, 1, 'L');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(0, 10, 'P.o Box 16362 Kampala (U)', 0, 1, 'L');
+            $pdf->Cell(0, 5, 'Plot 95E Kutch Road West', 0, 1, 'L');
+
+            // Customer Information (Top Left)
+            $pdf->SetXY(10, 65); // Adjust the Y position based on your layout
+            $pdf->SetFont('Arial', 'B', 12);
+            $pdf->Cell(0, 5, $customer_name, 0, 1, 'L');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(0, 10, $customer_address, 0, 1, 'L');
+            $pdf->Cell(0, 5, $customer_contact, 0, 1, 'L');
+            $pdf->SetXY(10, $pdf->GetY() + 20);
+
            
-        }
 
-        #right-message {
-            text-align: right;
-        }
-
-        .message-container p {
-            margin-top: 40px;
-        }
-    </style>
-
-<table style="width:900px"><tr><td>
-	<div class="message-container">
-        <div class="custom-message" id="left-message">
-            <p>For <?php echo 	$customer_name; ?> </p>
-            <p>Authorized  Signatory</p>
-        </div>
-
-        <div class="custom-message" id="right-message">
-            <p>For Ojinja Pharmacy</p>
-            <p>Authorized  Signatory</p>
-        </div>
-    </div>
-
-</td></tr></table>
-
-<table style="margin-right:700px;margin-bottom:800px;border:none; border-collapse: collapse;">
-	
-    		<tr style=";">
-    Declaration:<br/>
-        We declare that this invoice shows the actual price of the <br/>goods described and that all particulars are true and correct
-    </tr>
-
-    	<tr style="margin-top: 100px;"><br/><br/><br/>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is  a computer generated invoice 
-    </tr>
-
-    <div class="pull-right" style="margin-right:100px;">
-		<a href="javascript:Clickheretoprint()" style="font-size:20px;"><button class="btn btn-success btn-large"><i class="icon-print"></i> Print</button></a>
-		</div>
-
-	</table>
+            // Mode of Payment, Cashier, and Date (Top Right)
+            $pdf->SetXY($pdf->GetPageWidth() - 90, 30); // Adjust the Y position based on your layout
+            $pdf->Cell(0, 10, 'Payment: ' . $pay_type, 0, 1, 'R');
+            $pdf->SetXY($pdf->GetPageWidth() - 00, $pdf->GetY() + 5);
+            $pdf->Cell(0, 10, 'Date: ' . $date, 0, 1, 'R');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Ln(37); // Vertical space between details
 
 
-<table style="margin-right:400px;margin-bottom:200px;border:none; border-collapse: collapse;">
-	
-    	
-	</table>
 
-		</tbody>
-	</table>
-	
-	</div>
-	</div>
-	</div>
-	</div>
-	
-</div>
-</div>
+            // Table Header
+            $pdf->SetFillColor(200, 220, 255);
+            $pdf->SetFont('Arial', 'B', 12);
+
+            // Table Header
+            $pdf->Cell(40, 10, 'S/No', 1, 0, 'C', true);
+            $pdf->Cell(80, 10, 'Date', 1, 0, 'C', true);
+            $pdf->Cell(70, 10, 'Amount', 1, 0, 'C', true);
+            $pdf->Ln(14); // Vertical space between details
+           // $recordCount = 0;
+
+            foreach ($records as $record) {
+             
+   
+            // Use MultiCell for slanted Medicine information
+           		 $pdf->SetFont('Arial', '', 10);
+            	$pdf->Cell(40, 10, $recordCount, 0, 0, 'C');
+
+                // Other cells
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(80, 10, $record['date'], 0, 0, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                if($record['pay_type'] == 'credit') {
+                $pdf->Cell(80, 10, formatMoney($record['credit']), 0, 0, 'C');
+            	$totalAmount += $record['credit'];
+            	}
+            	if($record['pay_type'] == 'cash') {
+                $pdf->Cell(70, 10, formatMoney($record['cash']), 0, 0, 'C');
+            	$totalAmount += $record['cash'];
+            	}
 
 
+                // Add amount to totalAmount
+                //$totalAmount += $record['amount'];
+
+                $recordCount++;
+            }
+
+         
+
+            // Add total amount of records, Ojinga Pharmacy, and Authorized Signatory at the bottom right corner of the last page
+  
+                $pdf->Ln(15); // Vertical space
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(0, 7, 'Total Amount: ' . formatMoney($totalAmount), 0, 1, 'R');
+
+                // Ojinga Pharmacy and Authorized Signatory
+                $pdf->Ln(7); // Adjust spacing
+                $pdf->Cell(0, 3, 'For Ojinga Pharmacy', 0, 1, 'R');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Ln(8); // Adjust spacing
+                $pdf->Cell(0, 7, 'Authorized Signatory', 0, 1, 'R');
+
+                //Suplier and Authorized signatory
+                $pdf->SetFont('Arial', 'B', 10);
+                $pdf->Cell(0, 10, 'For ' . $customer_name, 0, 1, 'L');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(0, 10, 'Authorized Signatory', 0, 1, 'L');
+
+
+                // Declaration message at the bottom left corner
+                $pdf->Cell(0, 8, 'Declaration:', 0, 1, 'L');
+                $pdf->Cell(0, 3, 'We declare that this invoice shows the actual price of the goods described', 0, 1, 'L');
+                $pdf->Cell(0, 3, 'and that all particulars are true and correct.', 0, 1, 'L');
+
+                $pdf->Ln(10);
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(0, 10, 'This is a Computer Generated Invoice', 0, 1, 'C');
+            }
+        
+    
+
+    // Output PDF as a download
+    $pdf->Output('invoice.pdf', 'D');
+} catch (Exception $e) {
+    die("PDF Error: " . $e->getMessage());
+}
+
+?>
+
+
+
+
+<!-- 
+
+Modify the following full source codes of php pdo mysql  fpdf  f such that it includes the functionality of  putting customer name, address, phone number and company name, phone number, address on the first left top page, then displaying the invoice number, delivery note , mode of payment , name of casher at the top  middle of the first page, then display date at the first page in the top middle or center  but customer information and company information should be separeated with two next lines but the customer details, invoice details  should be on the same paragraphs or lines . Maintain the computer generates message in  each page . Make sure each page has only 10 records from wsales mysql table with columns batch_no,quantity,amount and total , and company details, customer details invoice details should also be at the top of every page -->
+
+<!-- 
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(30, 10, 'Medicine', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Batch No', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Quantity', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Amount', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Total', 1, 1, 'C', true);
+ -->
+
+<!--  Modify below source codes to put the invoice number, Delivery note at the top middle of every page  .  Mode of payment, Cashier, and Date at the top right corner of  every page  . And company information and customer information at top left corner of every page . Make sure there is a good vertical space between invoice , delivery note details and the mode of payment , date  -->

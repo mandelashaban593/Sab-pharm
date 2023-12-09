@@ -1,6 +1,6 @@
 <link href="../style.css" media="screen" rel="stylesheet" type="text/css" />
 <form action="savesalesledgetype.php" method="post">
-<center><h4><i class="icon-plus-sign icon-large"></i> Choose Profit & Loss type</h4></center>
+<center><h4><i class="icon-plus-sign icon-large"></i> Choose Sales Ledger type</h4></center>
 <hr>
 <div style="text-align:left;">
 <div id="ac">

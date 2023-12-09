@@ -2,22 +2,6 @@
 ob_start(); // Start output buffering
 require_once('auth.php');
 require '../conn2.php';
-function formatMoney($number, $fractional=false) {
-if ($fractional) {
-    $number = sprintf('%.2f', $number);
-}
-while (true) {
-    $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-    if ($replaced != $number) {
-        $number = $replaced;
-    } else {
-        break;
-    }
-}
-return $number;
-}
-
-
 ?>
 <?php
 ob_end_clean(); // Clean (erase) the output buffer
@@ -26,8 +10,8 @@ require_once('./fpdf/fpdf.php');
 // Function to fetch records from the database
 function getRecords($db, $invoiceNumber, $start, $perPage)
 {
-    $result = $db->prepare("SELECT * FROM sales WHERE return_invoice = :return_invoice LIMIT :start, :perPage");
-    $result->bindParam(':return_invoice', $invoiceNumber, PDO::PARAM_STR);
+    $result = $db->prepare("SELECT * FROM wsales WHERE invoice_number = :invoice_number LIMIT :start, :perPage");
+    $result->bindParam(':invoice_number', $invoiceNumber, PDO::PARAM_STR);
     $result->bindParam(':start', $start, PDO::PARAM_INT);
     $result->bindParam(':perPage', $perPage, PDO::PARAM_INT);
     $result->execute();
@@ -36,9 +20,9 @@ function getRecords($db, $invoiceNumber, $start, $perPage)
 
 $invoiceNumber = isset($_GET['invoice']) ? $_GET['invoice'] : '';
 //$invoiceNumber = "RS-3232322";
-$recordsPerPage = 8;
+$recordsPerPage = 7;
 
-$result = $db->prepare("SELECT * FROM sales WHERE return_invoice= :userid LIMIT 1");
+$result = $db->prepare("SELECT * FROM wsales WHERE invoice_number= :userid LIMIT 1");
 $result->bindParam(':userid', $invoiceNumber);
 $result->execute();
 for ($i = 0; $rowa = $result->fetch(); $i++) {
@@ -55,7 +39,7 @@ for ($i = 0; $rowa = $result->fetch(); $i++) {
 }
 
 // Fetch total records count from the database
-$result = $db->prepare("SELECT COUNT(*) as total FROM sales WHERE return_invoice = :invoice");
+$result = $db->prepare("SELECT COUNT(*) as total FROM wsales WHERE invoice_number = :invoice");
 $result->bindParam(':invoice', $invoiceNumber, PDO::PARAM_STR);
 $result->execute();
 $totalRecords = $result->fetch(PDO::FETCH_ASSOC)['total'];
@@ -76,17 +60,17 @@ try {
 
         if (!empty($records)) {
             $pdf->AddPage();
-            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetFont('Arial', '', 10);
 
-           // Company Information (Top Left)
+            // Company Information (Top Left)
             // Wholesale Invoice Message (Top Center)
-            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, 10);
+            $pdf->SetXY(($pdf->GetPageWidth() / 2) - 95, 10);
             $pdf->SetFont('Arial', 'B', 12);
-            $pdf->Cell(0, 10, 'Credit Note', 0, 1, 'C'); // Change this line accordingly
-            $pdf->Cell(0, 8,'(Retail)', 0, 1, 'C'); // Change this line accordingly
+            $pdf->Cell(0, 10, 'Sale Invoice', 0, 1, 'C'); // Change this line accordingly
+            $pdf->Cell(0, 10, '(Whole sale)', 0, 1, 'C'); // Change this line accordingly
             $pdf->SetFont('Arial', '', 12);
 
-             // Invoice Details (Top Middle)
+              // Invoice Details (Top Middle)
             $pdf->SetXY(($pdf->GetPageWidth() / 2) - 90, $pdf->GetY());
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 10, 'Invoice: ' . $invoiceNumber, 0, 1, 'C');
@@ -108,9 +92,9 @@ try {
             $pdf->SetFont('Arial', '', 10);
             $pdf->Cell(0, 10, $address, 0, 1, 'L');
             $pdf->Cell(0, 5, $customer_contact, 0, 1, 'L');
-            $pdf->SetXY(10, $pdf->GetY() + 20);
+            $pdf->SetXY(10, $pdf->GetY() + 10);
 
-           
+          
 
             // Mode of Payment, Cashier, and Date (Top Right)
             $pdf->SetXY($pdf->GetPageWidth() - 90, 30); // Adjust the Y position based on your layout
@@ -119,17 +103,16 @@ try {
             $pdf->Cell(0, 10, 'Cashier: ' . $cashier, 0, 1, 'R');
             $pdf->SetXY($pdf->GetPageWidth() - 00, $pdf->GetY() + 5);
             $pdf->Cell(0, 10, 'Date: ' . $date, 0, 1, 'R');
-            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetFont('Arial', '', 12);
             $pdf->Ln(16); // Vertical space between details
-
 
             // Table Header
             $pdf->SetFillColor(200, 220, 255);
-            $pdf->SetFont('Arial', 'B', 14);
+            $pdf->SetFont('Arial', 'B', 12);
 
             // Table Header
             $pdf->Cell(10, 10, 'S/No', 1, 0, 'C', true);
-            $pdf->Cell(58, 10, 'Description', 1, 0, 'C', true);
+            $pdf->Cell(57, 10, 'Description', 1, 0, 'C', true);
             $pdf->Cell(30, 10, 'Quantity', 1, 0, 'C', true);
             $pdf->Cell(30, 10, 'Rate', 1, 0, 'C', true);
             $pdf->Cell(30, 10, 'Per', 1, 0, 'C', true);
@@ -141,35 +124,44 @@ try {
              
 
                 $productid =$record['productid'];
-              $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity,expiry_date,sell_type FROM products WHERE product_id= '$productid' ") or die(mysqli_error($con));
-    $row2 = mysqli_fetch_array($query);
+                $query = mysqli_query($con, "SELECT price,category,med_name,profit,quantity,expiry_date,sell_type FROM wproducts WHERE product_id= '$productid' ") or die(mysqli_error($con));
+                $row2=mysqli_fetch_array($query);
+                
+                  // Concatenate 'med_name', 'batch_no', and 'expiry_date' with appropriate indentation
+$space = str_repeat(' ', 4.2); // Adjust the number of spaces as needed
+$space_exp = str_repeat(' ', 3); // Adjust the number of spaces as needed
+$backspace = "\b"; // Backspace character
+$medicineInfo = "Item: " . $row2['med_name'] . PHP_EOL . $space . $space . $space . "Batch  : " . $record['batch_no'] . PHP_EOL . $space .$space . $space . $space_exp .  "  Expiry  : " . $record['expiry_date'];
 
-    // Organized and indented Medicine information
-    $medicineInfo =  $row2['med_name'] . "\n    Batch: " . $record['batch_no'] . "\n    Expiry: " . $record['expiry_date'];
 
-    // Use MultiCell for slanted Medicine information
+
     $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(10, 7, $recordCount, 0, 0, 'C');
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->MultiCell(57, 6.5, $medicineInfo, 0, 'L');
-    $pdf->SetXY($pdf->GetX() + 67, $pdf->GetY() - 10); // Adjust X and Y coordinates for the next line
 
-                // Other cells
-                $pdf->SetFont('Arial', 'B', 14);
-                $pdf->Cell(30, 10, $record['quantity'], 0, 0, 'C');
-                $pdf->SetFont('Arial', '', 14);
-                $pdf->Cell(30, 10, formatMoney($record['amount']), 0, 0, 'C');
-                $pdf->Cell(30, 10, $row2['sell_type'], 0, 0, 'C');
-                $pdf->SetFont('Arial', 'B', 14);
-                $pdf->Cell(30, 10, formatMoney($record['total']), 0, 1, 'C');
+    // Use MultiCell for Medicine information
+    $pdf->Cell(10, 10, $recordCount, 0, 0, 'C');
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->MultiCell(60, 6.5, $medicineInfo, 0, 'C');
 
-                // Move back to the next row
-                $pdf->SetXY(10, $pdf->GetY() + 10);
+    // Move to the next row
+    $pdf->SetXY($pdf->GetX() + 68, $pdf->GetY() - 17.8); // Adjust X and Y coordinates
 
-                // Add amount to totalAmount
-                $totalAmount += $record['total'];
+    // Other cells
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(30, 10, $record['quantity'], 0, 0, 'C');
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(30, 10, $record['amount'], 0, 0, 'C');
+    $pdf->Cell(30, 10, $row2['sell_type'], 0, 0, 'C');
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(30, 10, $record['total'], 0, 1, 'C');
 
-                $recordCount++;
+    // Move back to the next row
+    $pdf->SetXY(10, $pdf->GetY() + 10);
+
+    // Add amount to totalAmount
+    $totalAmount += $record['amount'];
+
+    $recordCount++;
+
             }
 
             // Update start record for the next page
@@ -191,21 +183,21 @@ try {
             if ($page == $totalPages) {
                 $pdf->Ln(3); // Vertical space
                 $pdf->SetFont('Arial', 'B', 12);
-                $pdf->Cell(0, 7, 'Total Amount: ' . formatMoney($totalAmount), 0, 1, 'R');
+                $pdf->Cell(0, 7, 'Total Amount: ' . $totalAmount, 0, 1, 'R');
 
                 // Ojinga Pharmacy and Authorized Signatory
                 $pdf->Ln(12); // Adjust spacing
                 $pdf->Cell(0, 3, 'For Ojinga Pharmacy', 0, 1, 'R');
                 $pdf->SetFont('Arial', '', 10);
-                $pdf->Ln(3); // Adjust spacing
-                $pdf->Cell(0, 5, 'Authorized Signatory', 0, 1, 'R');
+                $pdf->Ln(4); // Adjust spacing
+                $pdf->Cell(0, 7, 'Authorized Signatory', 0, 1, 'R');
 
                 // Declaration message at the bottom left corner
                 $pdf->Cell(0, 5, 'Declaration:', 0, 1, 'L');
                 $pdf->Cell(0, 3, 'We declare that this invoice shows the actual price of the goods described', 0, 1, 'L');
                 $pdf->Cell(0, 3, 'and that all particulars are true and correct.', 0, 1, 'L');
 
-                $pdf->Ln(6);
+                $pdf->Ln(10);
                 $pdf->SetFont('Arial', '', 10);
                 $pdf->Cell(0, 10, 'This is a Computer Generated Invoice', 0, 1, 'C');
             }

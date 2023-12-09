@@ -34,14 +34,13 @@ foreach ($productid as $key => $pid) {
         $amt = $amount[$key];  // Use a different variable for product type
         $batchno = $batch_no[$key];  // Use a different variable for product type
         $expirydate = $expiry_date[$key];  // Use a different variable for product type
-
-
+/*
        echo "Product 2: $prodid<br>";
        echo "Quantity 2: $qty<br>";
        echo "Price 2: $pri<br>";
        echo "Amount: $amt<br><br><br>";
        echo "Batch No: $batchno<br><br><br>";
-
+*/
        $query = mysqli_query($con, "SELECT * FROM products WHERE product_id= '$prodid'") or die(mysqli_error($con));
     $row=mysqli_fetch_array($query);
     $price2=$row['price'];
